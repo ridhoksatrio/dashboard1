@@ -19,6 +19,9 @@ st.set_page_config(
 def load_data():
     try:
         rfm = pd.read_csv('final_customer_segments (1).csv', index_col=0)
+    except:
+        try:
+            rfm = pd.read_csv('final_customer_segments.csv', index_col=0)
         except:
             # Create sample data if file not found
             st.error("Data file not found. Using sample data for demonstration.")
