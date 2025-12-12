@@ -12,7 +12,7 @@ st.set_page_config(page_title="Customer Segmentation Dashboard", layout="wide")
 @st.cache_data
 def load_data():
     try:
-        df = pd.read_csv("final_customer_segments.csv")
+        df = pd.read_csv("final_customer_segments (1).csv")
     except:
         st.error("CSV tidak ditemukan. Pastikan file bernama final_customer_segments.csv.")
         st.stop()
