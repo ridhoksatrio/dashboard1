@@ -644,14 +644,74 @@ def load_data():
 
 rfm = load_data()
 
-# Cluster Strategies dengan warna yang diperbarui
+# Cluster Strategies dengan warna yang DIPERBAIKI (semua dengan #)
 strats = {
-    'champions': {'name':'🏆 Champions','grad':'linear-gradient(135deg,#FFD700 0%,#FF8C00 100%)','color':'#FFD700','priority':'CRITICAL','strategy':'VIP Platinum Program','tactics':['💎 Exclusive Early Access to New Products','🎁 Premium Gifts & Personalized Offers','📞 24/7 Dedicated Account Manager','🌟 VIP-Only Events & Experiences','✨ Celebration Rewards on Milestones'],'kpis':['Retention Rate > 95%','Upsell Conversion > 40%','Referral Rate > 30%'],'budget':'30%','roi':'500%'},
-    'loyal': {'name':'💎 Loyal Customers','grad':'linear-gradient(135deg,#667eea 0%,#764ba2 100%)','color':'#667eea','priority':'HIGH','strategy':'Loyalty Boosting Program','tactics':['🎯 Tiered Rewards System with Exclusive Benefits','📱 Mobile App-Only Perks & Features','🎉 Personalized Birthday & Anniversary Offers','💝 Enhanced Referral Bonus Program','🔔 Early Access to Flash Sales'],'kpis':['Retention Rate > 85%','Purchase Frequency +20%','Net Promoter Score > 8'],'budget':'25%','roi':'380%'},
-    'big': {'name':'💰 Big Spenders','grad':'linear-gradient(135deg,#f093fb 0%,#f5576c 100%)','color':'#f093fb','priority':'CRITICAL','strategy':'Value Maximization Program','tactics':['💳 Flexible Payment Terms & Financing Options','🎁 Luxury Gifts with High-Value Purchases','🚚 Free Express Shipping & Returns','📦 Custom Product Bundles & Packages','🌟 Personal Shopping Concierge Service'],'kpis':['Average Order Value +15%','Retention Rate > 90%','Satisfaction Score > 4.8/5'],'budget':'20%','roi':'420%'},
-    'dormant': {'name':'😴 Dormant Customers','grad':'linear-gradient(135deg,#ff6b6b 0%,#ee5a6f 100%)','color':'#ff6b6b','priority':'URGENT','strategy':'Win-Back Campaign','tactics':['🎁 25-30% Discount on Next Purchase','📧 Multi-Channel Re-engagement Campaign','🎯 Personalized Retargeting Ads','💬 Personal Phone Call from Sales Team','⏰ Limited-Time Urgency Offers'],'kpis':['Win-Back Rate > 25%','Campaign Response Rate > 15%','ROI on Campaign > 200%'],'budget':'15%','roi':'250%'},
-    'potential': {'name':'🌱 High Potential','grad':'linear-gradient(135deg,#11998e 0%,#38ef7d 100%)','color':'#11998e','priority':'MEDIUM','strategy':'Accelerated Conversion Program','tactics':['🎓 Educational Content & Product Guides','🎁 15% Discount on Second Purchase','💌 Automated Welcome Email Sequence','📚 Video Tutorials & How-To Guides','🎯 Intelligent Cross-Sell Recommendations'],'kpis':['Conversion Rate > 35%','Second Purchase Within 30 Days','Lifetime Value +25%'],'budget':'5%','roi':'180%'},
-    'standard': {'name':'📊 Standard Customers','grad':'linear-gradient(135deg,#89f7fe 0%,#66a6ff 100%)','color':'#89f7fe','priority':'MEDIUM','strategy':'Steady Engagement Program','tactics':['📧 Regular Newsletter with Valuable Content','🎯 Seasonal Promotions & Offers','💌 AI-Powered Product Recommendations','🎁 Surprise & Delight Mini-Gifts','📱 Community Building Activities'],'kpis':['Engagement Rate > 40%','Stable Purchase Behavior','Satisfaction Score > 3.5/5'],'budget':'5%','roi':'150%'}
+    'champions': {
+        'name':'🏆 Champions',
+        'grad':'linear-gradient(135deg, #FFD700 0%, #FFA500 100%)',
+        'color':'#FFD700',
+        'priority':'CRITICAL',
+        'strategy':'VIP Platinum Program',
+        'tactics':['💎 Exclusive Early Access to New Products','🎁 Premium Gifts & Personalized Offers','📞 24/7 Dedicated Account Manager','🌟 VIP-Only Events & Experiences','✨ Celebration Rewards on Milestones'],
+        'kpis':['Retention Rate > 95%','Upsell Conversion > 40%','Referral Rate > 30%'],
+        'budget':'30%',
+        'roi':'500%'
+    },
+    'loyal': {
+        'name':'💎 Loyal Customers',
+        'grad':'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+        'color':'#667eea',
+        'priority':'HIGH',
+        'strategy':'Loyalty Boosting Program',
+        'tactics':['🎯 Tiered Rewards System with Exclusive Benefits','📱 Mobile App-Only Perks & Features','🎉 Personalized Birthday & Anniversary Offers','💝 Enhanced Referral Bonus Program','🔔 Early Access to Flash Sales'],
+        'kpis':['Retention Rate > 85%','Purchase Frequency +20%','Net Promoter Score > 8'],
+        'budget':'25%',
+        'roi':'380%'
+    },
+    'big': {
+        'name':'💰 Big Spenders',
+        'grad':'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+        'color':'#f093fb',  # DIPERBAIKI: ditambahkan #
+        'priority':'CRITICAL',
+        'strategy':'Value Maximization Program',
+        'tactics':['💳 Flexible Payment Terms & Financing Options','🎁 Luxury Gifts with High-Value Purchases','🚚 Free Express Shipping & Returns','📦 Custom Product Bundles & Packages','🌟 Personal Shopping Concierge Service'],
+        'kpis':['Average Order Value +15%','Retention Rate > 90%','Satisfaction Score > 4.8/5'],
+        'budget':'20%',
+        'roi':'420%'
+    },
+    'dormant': {
+        'name':'😴 Dormant Customers',
+        'grad':'linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%)',
+        'color':'#ff6b6b',  # DIPERBAIKI: ditambahkan #
+        'priority':'URGENT',
+        'strategy':'Win-Back Campaign',
+        'tactics':['🎁 25-30% Discount on Next Purchase','📧 Multi-Channel Re-engagement Campaign','🎯 Personalized Retargeting Ads','💬 Personal Phone Call from Sales Team','⏰ Limited-Time Urgency Offers'],
+        'kpis':['Win-Back Rate > 25%','Campaign Response Rate > 15%','ROI on Campaign > 200%'],
+        'budget':'15%',
+        'roi':'250%'
+    },
+    'potential': {
+        'name':'🌱 High Potential',
+        'grad':'linear-gradient(135deg, #11998e 0%, #38ef7d 100%)',
+        'color':'#11998e',  # DIPERBAIKI: ditambahkan #
+        'priority':'MEDIUM',
+        'strategy':'Accelerated Conversion Program',
+        'tactics':['🎓 Educational Content & Product Guides','🎁 15% Discount on Second Purchase','💌 Automated Welcome Email Sequence','📚 Video Tutorials & How-To Guides','🎯 Intelligent Cross-Sell Recommendations'],
+        'kpis':['Conversion Rate > 35%','Second Purchase Within 30 Days','Lifetime Value +25%'],
+        'budget':'5%',
+        'roi':'180%'
+    },
+    'standard': {
+        'name':'📊 Standard Customers',
+        'grad':'linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%)',
+        'color':'#89f7fe',  # DIPERBAIKI: ditambahkan #
+        'priority':'MEDIUM',
+        'strategy':'Steady Engagement Program',
+        'tactics':['📧 Regular Newsletter with Valuable Content','🎯 Seasonal Promotions & Offers','💌 AI-Powered Product Recommendations','🎁 Surprise & Delight Mini-Gifts','📱 Community Building Activities'],
+        'kpis':['Engagement Rate > 40%','Stable Purchase Behavior','Satisfaction Score > 3.5/5'],
+        'budget':'5%',
+        'roi':'150%'
+    }
 }
 
 # Champion Sub-segments
@@ -705,177 +765,247 @@ def init_data(rfm):
 
 profs, colors, rfm = init_data(rfm)
 
-# Fungsi untuk membuat chart yang lebih baik
+# Fungsi untuk membuat chart yang lebih baik dan AMAN
 def create_charts(df):
+    charts = []
+    
     # Chart 1: Customer Distribution (Donut)
-    cc = df['Cluster_Label'].value_counts()
-    
-    fig1 = go.Figure(go.Pie(
-        labels=cc.index, 
-        values=cc.values, 
-        hole=0.6,
-        marker=dict(
-            colors=[colors.get(l, '#95A5A6') for l in cc.index],
-            line=dict(color='white', width=2)
-        ),
-        textinfo='label+percent',
-        hoverinfo='label+value+percent',
-        textposition='outside',
-        pull=[0.1 if 'Champions' in str(l) else 0 for l in cc.index]
-    ))
-    
-    fig1.update_layout(
-        title=dict(
-            text="🎯 Customer Distribution by Segment",
-            font=dict(size=18, color='#2d3748'),
-            x=0.5
-        ),
-        height=400,
-        showlegend=True,
-        legend=dict(
-            orientation="h",
-            yanchor="bottom",
-            y=-0.2,
-            xanchor="center",
-            x=0.5
-        ),
-        paper_bgcolor='rgba(0,0,0,0)',
-        plot_bgcolor='rgba(0,0,0,0)'
-    )
+    if 'Cluster_Label' in df.columns:
+        cc = df['Cluster_Label'].value_counts()
+        
+        if not cc.empty:
+            fig1 = go.Figure(go.Pie(
+                labels=cc.index, 
+                values=cc.values, 
+                hole=0.6,
+                marker=dict(
+                    colors=[colors.get(l, '#95A5A6') for l in cc.index],
+                    line=dict(color='white', width=2)
+                ),
+                textinfo='label+percent',
+                hoverinfo='label+value+percent',
+                textposition='outside',
+                pull=[0.1 if 'Champions' in str(l) else 0 for l in cc.index]
+            ))
+            
+            fig1.update_layout(
+                title=dict(
+                    text="🎯 Customer Distribution by Segment",
+                    font=dict(size=18, color='#2d3748'),
+                    x=0.5
+                ),
+                height=400,
+                showlegend=True,
+                legend=dict(
+                    orientation="h",
+                    yanchor="bottom",
+                    y=-0.2,
+                    xanchor="center",
+                    x=0.5
+                ),
+                paper_bgcolor='rgba(0,0,0,0)',
+                plot_bgcolor='rgba(0,0,0,0)'
+            )
+            charts.append(fig1)
+        else:
+            charts.append(go.Figure())
+    else:
+        charts.append(go.Figure())
     
     # Chart 2: Revenue by Segment (Horizontal Bar)
-    if 'Monetary' in df.columns:
-        rv = df.groupby('Cluster_Label')['Monetary'].sum().sort_values(ascending=True)
-        
-        fig2 = go.Figure(go.Bar(
-            x=rv.values, 
-            y=rv.index, 
-            orientation='h',
-            marker=dict(
-                color=[colors.get(l, '#667eea') for l in rv.index],
-                line=dict(color='white', width=1)
-            ),
-            text=[f'£{v/1000:.1f}K' for v in rv.values],
-            textposition='auto',
-            hovertemplate='<b>%{y}</b><br>Revenue: £%{x:,.0f}<extra></extra>'
-        ))
-        
-        fig2.update_layout(
-            title=dict(
-                text="💰 Revenue Contribution by Segment",
-                font=dict(size=18, color='#2d3748'),
-                x=0.5
-            ),
-            xaxis_title="Total Revenue (£)",
-            height=400,
-            paper_bgcolor='rgba(0,0,0,0)',
-            plot_bgcolor='rgba(0,0,0,0)',
-            margin=dict(t=50, b=20, l=150, r=20)
-        )
+    if 'Monetary' in df.columns and 'Cluster_Label' in df.columns:
+        try:
+            rv = df.groupby('Cluster_Label')['Monetary'].sum()
+            if not rv.empty:
+                rv = rv.sort_values(ascending=True)
+                
+                # Pastikan semua warna valid
+                color_list = []
+                for l in rv.index:
+                    color_val = colors.get(l, '#667eea')
+                    # Pastikan format warna benar
+                    if not color_val.startswith('#'):
+                        color_val = '#' + color_val
+                    color_list.append(color_val)
+                
+                fig2 = go.Figure(go.Bar(
+                    x=rv.values, 
+                    y=rv.index, 
+                    orientation='h',
+                    marker=dict(
+                        color=color_list,
+                        line=dict(color='white', width=1)
+                    ),
+                    text=[f'£{v/1000:.1f}K' for v in rv.values],
+                    textposition='auto',
+                    hovertemplate='<b>%{y}</b><br>Revenue: £%{x:,.0f}<extra></extra>'
+                ))
+                
+                fig2.update_layout(
+                    title=dict(
+                        text="💰 Revenue Contribution by Segment",
+                        font=dict(size=18, color='#2d3748'),
+                        x=0.5
+                    ),
+                    xaxis_title="Total Revenue (£)",
+                    height=400,
+                    paper_bgcolor='rgba(0,0,0,0)',
+                    plot_bgcolor='rgba(0,0,0,0)',
+                    margin=dict(t=50, b=20, l=150, r=20)
+                )
+                charts.append(fig2)
+            else:
+                charts.append(go.Figure())
+        except:
+            charts.append(go.Figure())
+    else:
+        charts.append(go.Figure())
     
     # Chart 3: RFM Score Distribution by Cluster
     if 'RFM_Score' in df.columns and 'Cluster_Label' in df.columns:
-        fig3 = go.Figure()
-        
-        for cluster in df['Cluster_Label'].unique():
-            cluster_data = df[df['Cluster_Label'] == cluster]['RFM_Score']
-            fig3.add_trace(go.Box(
-                y=cluster_data,
-                name=cluster,
-                marker_color=colors.get(cluster, '#667eea'),
-                boxpoints='outliers',
-                jitter=0.3,
-                pointpos=-1.8
-            ))
-        
-        fig3.update_layout(
-            title=dict(
-                text="📊 RFM Score Distribution by Segment",
-                font=dict(size=18, color='#2d3748'),
-                x=0.5
-            ),
-            yaxis_title="RFM Score",
-            height=400,
-            paper_bgcolor='rgba(0,0,0,0)',
-            plot_bgcolor='rgba(0,0,0,0)',
-            showlegend=True
-        )
+        try:
+            fig3 = go.Figure()
+            clusters = df['Cluster_Label'].unique()[:6]  # Batasi maksimal 6 cluster
+            
+            for cluster in clusters:
+                cluster_data = df[df['Cluster_Label'] == cluster]['RFM_Score']
+                if not cluster_data.empty:
+                    color_val = colors.get(cluster, '#667eea')
+                    if not color_val.startswith('#'):
+                        color_val = '#' + color_val
+                    
+                    fig3.add_trace(go.Box(
+                        y=cluster_data,
+                        name=cluster[:20],  # Batasi panjang nama
+                        marker_color=color_val,
+                        boxpoints='outliers',
+                        jitter=0.3,
+                        pointpos=-1.8
+                    ))
+            
+            if len(fig3.data) > 0:
+                fig3.update_layout(
+                    title=dict(
+                        text="📊 RFM Score Distribution by Segment",
+                        font=dict(size=18, color='#2d3748'),
+                        x=0.5
+                    ),
+                    yaxis_title="RFM Score",
+                    height=400,
+                    paper_bgcolor='rgba(0,0,0,0)',
+                    plot_bgcolor='rgba(0,0,0,0)',
+                    showlegend=True
+                )
+                charts.append(fig3)
+            else:
+                charts.append(go.Figure())
+        except:
+            charts.append(go.Figure())
+    else:
+        charts.append(go.Figure())
     
     # Chart 4: Recency vs Monetary Scatter
     if all(col in df.columns for col in ['Recency', 'Monetary', 'Cluster_Label']):
-        fig4 = go.Figure()
-        
-        for cluster in df['Cluster_Label'].unique():
-            cluster_data = df[df['Cluster_Label'] == cluster]
-            fig4.add_trace(go.Scatter(
-                x=cluster_data['Recency'],
-                y=cluster_data['Monetary'],
-                mode='markers',
-                name=cluster,
-                marker=dict(
-                    size=8,
-                    color=colors.get(cluster, '#667eea'),
-                    opacity=0.7,
-                    line=dict(width=1, color='white')
-                ),
-                hovertemplate='<b>%{text}</b><br>Recency: %{x} days<br>Spent: £%{y:,.0f}<extra></extra>',
-                text=cluster_data.index
-            ))
-        
-        fig4.update_layout(
-            title=dict(
-                text="📈 Recency vs Monetary Value",
-                font=dict(size=18, color='#2d3748'),
-                x=0.5
-            ),
-            xaxis_title="Recency (Days Since Last Purchase)",
-            yaxis_title="Total Monetary Value (£)",
-            height=400,
-            paper_bgcolor='rgba(0,0,0,0)',
-            plot_bgcolor='rgba(0,0,0,0)',
-            legend=dict(
-                orientation="h",
-                yanchor="bottom",
-                y=-0.3,
-                xanchor="center",
-                x=0.5
-            )
-        )
+        try:
+            fig4 = go.Figure()
+            clusters = df['Cluster_Label'].unique()[:8]  # Batasi jumlah cluster
+            
+            for cluster in clusters:
+                cluster_data = df[df['Cluster_Label'] == cluster]
+                if len(cluster_data) > 0:
+                    color_val = colors.get(cluster, '#667eea')
+                    if not color_val.startswith('#'):
+                        color_val = '#' + color_val
+                    
+                    fig4.add_trace(go.Scatter(
+                        x=cluster_data['Recency'],
+                        y=cluster_data['Monetary'],
+                        mode='markers',
+                        name=cluster[:15],  # Batasi panjang nama
+                        marker=dict(
+                            size=8,
+                            color=color_val,
+                            opacity=0.7,
+                            line=dict(width=1, color='white')
+                        ),
+                        hovertemplate='<b>%{text}</b><br>Recency: %{x} days<br>Spent: £%{y:,.0f}<extra></extra>',
+                        text=cluster_data.index
+                    ))
+            
+            if len(fig4.data) > 0:
+                fig4.update_layout(
+                    title=dict(
+                        text="📈 Recency vs Monetary Value",
+                        font=dict(size=18, color='#2d3748'),
+                        x=0.5
+                    ),
+                    xaxis_title="Recency (Days Since Last Purchase)",
+                    yaxis_title="Total Monetary Value (£)",
+                    height=400,
+                    paper_bgcolor='rgba(0,0,0,0)',
+                    plot_bgcolor='rgba(0,0,0,0)',
+                    legend=dict(
+                        orientation="h",
+                        yanchor="bottom",
+                        y=-0.3,
+                        xanchor="center",
+                        x=0.5
+                    )
+                )
+                charts.append(fig4)
+            else:
+                charts.append(go.Figure())
+        except:
+            charts.append(go.Figure())
+    else:
+        charts.append(go.Figure())
     
     # Chart 5: Segment Metrics Heatmap
     if all(col in df.columns for col in ['Recency', 'Frequency', 'Monetary', 'Cluster_Label']):
-        segment_metrics = df.groupby('Cluster_Label').agg({
-            'Recency': 'mean',
-            'Frequency': 'mean',
-            'Monetary': 'mean',
-            'RFM_Score': 'mean'
-        }).round(1)
-        
-        # Normalize for heatmap
-        normalized = (segment_metrics - segment_metrics.min()) / (segment_metrics.max() - segment_metrics.min())
-        
-        fig5 = go.Figure(go.Heatmap(
-            z=normalized.values,
-            x=['Recency', 'Frequency', 'Monetary', 'RFM Score'],
-            y=normalized.index,
-            colorscale='Viridis',
-            hoverongaps=False,
-            hovertemplate='<b>%{y}</b><br>%{x}: %{customdata}<extra></extra>',
-            customdata=segment_metrics.values
-        ))
-        
-        fig5.update_layout(
-            title=dict(
-                text="🔥 Segment Performance Heatmap",
-                font=dict(size=18, color='#2d3748'),
-                x=0.5
-            ),
-            height=400,
-            paper_bgcolor='rgba(0,0,0,0)',
-            plot_bgcolor='rgba(0,0,0,0)'
-        )
+        try:
+            segment_metrics = df.groupby('Cluster_Label').agg({
+                'Recency': 'mean',
+                'Frequency': 'mean',
+                'Monetary': 'mean'
+            }).round(1)
+            
+            if not segment_metrics.empty:
+                # Normalize for heatmap
+                normalized = (segment_metrics - segment_metrics.min()) / (segment_metrics.max() - segment_metrics.min())
+                
+                fig5 = go.Figure(go.Heatmap(
+                    z=normalized.values,
+                    x=['Recency', 'Frequency', 'Monetary'],
+                    y=normalized.index,
+                    colorscale='Viridis',
+                    hoverongaps=False,
+                    hovertemplate='<b>%{y}</b><br>%{x}: %{customdata}<extra></extra>',
+                    customdata=segment_metrics.values
+                ))
+                
+                fig5.update_layout(
+                    title=dict(
+                        text="🔥 Segment Performance Heatmap",
+                        font=dict(size=18, color='#2d3748'),
+                        x=0.5
+                    ),
+                    height=400,
+                    paper_bgcolor='rgba(0,0,0,0)',
+                    plot_bgcolor='rgba(0,0,0,0)'
+                )
+                charts.append(fig5)
+            else:
+                charts.append(go.Figure())
+        except:
+            charts.append(go.Figure())
+    else:
+        charts.append(go.Figure())
     
-    return fig1, fig2 if 'fig2' in locals() else go.Figure(), fig3 if 'fig3' in locals() else go.Figure(), fig4 if 'fig4' in locals() else go.Figure(), fig5 if 'fig5' in locals() else go.Figure()
+    # Jika ada chart yang kosong, tambahkan chart kosong
+    while len(charts) < 5:
+        charts.append(go.Figure())
+    
+    return charts[0], charts[1], charts[2], charts[3], charts[4]
 
 # Layout utama
 def main():
@@ -932,7 +1062,7 @@ def main():
         """, unsafe_allow_html=True)
     
     with col4:
-        champion_count = len(rfm[rfm['Cluster_Label'].str.contains('Champions')]) if 'Cluster_Label' in rfm.columns else 0
+        champion_count = len(rfm[rfm['Cluster_Label'].str.contains('Champions', na=False)]) if 'Cluster_Label' in rfm.columns else 0
         champion_pct = (champion_count / len(rfm) * 100) if len(rfm) > 0 else 0
         st.markdown(f"""
         <div class="metric-card">
@@ -1114,36 +1244,43 @@ def main():
             # Revenue-based insights
             if 'Monetary' in filtered_df.columns:
                 revenue_by_segment = filtered_df.groupby('Cluster_Label')['Monetary'].sum()
-                top_revenue_segment = revenue_by_segment.idxmax() if not revenue_by_segment.empty else "N/A"
-                top_revenue_value = revenue_by_segment.max() if not revenue_by_segment.empty else 0
-                insights.append(f"💰 **{top_revenue_segment}** generates the highest revenue (£{top_revenue_value/1000:.1f}K)")
+                if not revenue_by_segment.empty:
+                    top_revenue_segment = revenue_by_segment.idxmax()
+                    top_revenue_value = revenue_by_segment.max()
+                    insights.append(f"💰 **{top_revenue_segment}** generates the highest revenue (£{top_revenue_value/1000:.1f}K)")
             
             # Customer count insights
-            segment_counts = filtered_df['Cluster_Label'].value_counts()
-            largest_segment = segment_counts.idxmax() if not segment_counts.empty else "N/A"
-            insights.append(f"👥 **{largest_segment}** is the largest segment ({segment_counts.max():,} customers)")
+            if 'Cluster_Label' in filtered_df.columns:
+                segment_counts = filtered_df['Cluster_Label'].value_counts()
+                if not segment_counts.empty:
+                    largest_segment = segment_counts.idxmax()
+                    insights.append(f"👥 **{largest_segment}** is the largest segment ({segment_counts.max():,} customers)")
             
             # AOV insights
-            if 'AvgOrderValue' in filtered_df.columns:
+            if 'AvgOrderValue' in filtered_df.columns and 'Cluster_Label' in filtered_df.columns:
                 aov_by_segment = filtered_df.groupby('Cluster_Label')['AvgOrderValue'].mean()
-                highest_aov_segment = aov_by_segment.idxmax() if not aov_by_segment.empty else "N/A"
-                highest_aov_value = aov_by_segment.max() if not aov_by_segment.empty else 0
-                insights.append(f"💳 **{highest_aov_segment}** has the highest average order value (£{highest_aov_value:.0f})")
+                if not aov_by_segment.empty:
+                    highest_aov_segment = aov_by_segment.idxmax()
+                    highest_aov_value = aov_by_segment.max()
+                    insights.append(f"💳 **{highest_aov_segment}** has the highest average order value (£{highest_aov_value:.0f})")
             
             # Recency insights
-            if 'Recency' in filtered_df.columns:
+            if 'Recency' in filtered_df.columns and 'Cluster_Label' in filtered_df.columns:
                 recency_by_segment = filtered_df.groupby('Cluster_Label')['Recency'].mean()
-                most_recent_segment = recency_by_segment.idxmin() if not recency_by_segment.empty else "N/A"
-                most_recent_value = recency_by_segment.min() if not recency_by_segment.empty else 0
-                insights.append(f"🕐 **{most_recent_segment}** customers are most active ({most_recent_value:.0f} days since last purchase)")
+                if not recency_by_segment.empty:
+                    most_recent_segment = recency_by_segment.idxmin()
+                    most_recent_value = recency_by_segment.min()
+                    insights.append(f"🕐 **{most_recent_segment}** customers are most active ({most_recent_value:.0f} days since last purchase)")
             
             # Champion insights
-            champion_segments = [s for s in filtered_df['Cluster_Label'].unique() if 'Champions' in str(s)]
-            if champion_segments:
-                champion_count = len(filtered_df[filtered_df['Cluster_Label'].str.contains('Champions')])
-                champion_revenue = filtered_df[filtered_df['Cluster_Label'].str.contains('Champions')]['Monetary'].sum()
-                champion_percent = (champion_revenue / filtered_df['Monetary'].sum() * 100) if filtered_df['Monetary'].sum() > 0 else 0
-                insights.append(f"🏆 **Champions** ({champion_count} customers) drive {champion_percent:.1f}% of total revenue")
+            if 'Cluster_Label' in filtered_df.columns and 'Monetary' in filtered_df.columns:
+                champion_segments = [s for s in filtered_df['Cluster_Label'].unique() if isinstance(s, str) and 'Champions' in s]
+                if champion_segments:
+                    champion_count = len(filtered_df[filtered_df['Cluster_Label'].str.contains('Champions', na=False)])
+                    champion_revenue = filtered_df[filtered_df['Cluster_Label'].str.contains('Champions', na=False)]['Monetary'].sum()
+                    total_revenue = filtered_df['Monetary'].sum() if filtered_df['Monetary'].sum() > 0 else 1
+                    champion_percent = (champion_revenue / total_revenue * 100)
+                    insights.append(f"🏆 **Champions** ({champion_count} customers) drive {champion_percent:.1f}% of total revenue")
             
             # Recommendations
             recommendations = [
@@ -1166,7 +1303,7 @@ def main():
                     <div class="insight-card">
                         <div class="insight-header">📈 Key Findings</div>
                         <ul class="insight-list">
-                            {''.join([f'<li>{insight}</li>' for insight in insights[:4]])}
+                            {''.join([f'<li>{insight}</li>' for insight in insights[:4]]) if insights else '<li>No insights available for selected filters</li>'}
                         </ul>
                     </div>
                     
