@@ -307,7 +307,7 @@ def create_charts(df):
         hoverinfo='label+value'
     ))
     f1.update_layout(
-        title={'text': "🎯 Customer Distribution", 'x': 0.5, 'font': {'color': '#2c3e50'},
+        title={'text': "🎯 Customer Distribution", 'x': 0.5},
         height=400,
         showlegend=True
     )
