@@ -113,316 +113,180 @@ def init_data(rfm):
 profs, colors, rfm = init_data(rfm)
 
 # CSS Custom untuk Streamlit (sama seperti sebelumnya)
-# CSS Custom untuk Streamlit (Ditingkatkan)
 st.markdown("""
 <style>
-/* 🎨 1. Variabel CSS untuk Kustomisasi Cepat */
-:root {
-    /* Warna Utama */
-    --primary-color: #667eea; /* Biru Ungu */
-    --secondary-color: #764ba2; /* Ungu Lebih Dalam */
-    --accent-color: #f093fb; /* Merah Jambu Cerah (untuk gradien latar belakang) */
-    --text-dark: #2c3e50;
-    --text-light: #fff;
-
-    /* Bayangan & Radius */
-    --shadow-base: 0 10px 30px rgba(0,0,0,0.08);
-    --shadow-deep: 0 25px 60px rgba(102,126,234,.45);
-    --border-radius-xl: 24px;
-    --border-radius-lg: 16px;
-    --border-radius-md: 12px;
-
-    /* Spasi */
-    --gap-spacing: 24px;
-}
-
-/* ⚙️ 2. Reset Global & Body */
 * {margin: 0; padding: 0; box-sizing: border-box}
-html {scroll-behavior: smooth;}
-body {
-    font-family: 'Inter', 'Poppins', sans-serif; 
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 50%, var(--accent-color) 100%); 
-    padding: 16px; 
-    min-height: 100vh;
-}
-.stApp {
-    background: transparent !important; 
-    max-width: 100% !important; 
-    padding: 0 !important;
-}
+body {font-family: 'Inter', 'Poppins', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%); padding: 16px; min-height: 100vh}
+.stApp {background: transparent !important; max-width: 100% !important; padding: 0 !important}
 
-/* 🖼️ 3. Container Utama (Memusatkan Konten Aplikasi) */
-.main-container {
-    background: rgba(255,255,255,0.98); 
-    border-radius: 32px; 
-    padding: 40px; /* Sedikit lebih besar untuk tampilan yang lebih premium */
-    box-shadow: 0 40px 100px rgba(0,0,0,0.4);
-    animation: fadeIn .8s ease-out; 
-    margin: 0 auto;
-    max-width: 1400px; /* Batasi lebar agar tidak terlalu melebar di layar besar */
-}
-@keyframes fadeIn {
-    from {opacity: 0; transform: translateY(30px)}
-    to {opacity: 1; transform: translateY(0)}
-}
+/* HEADER */
+.hdr {text-align: center; padding: 28px 24px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+       border-radius: 24px; margin-bottom: 36px; position: relative; overflow: hidden; 
+       box-shadow: 0 15px 40px rgba(102,126,234,0.35)}
+.hdr::before {content: ''; position: absolute; top: -50%; right: -50%; width: 200%; height: 200%; 
+              background: radial-gradient(circle, rgba(255,255,255,.15), transparent 60%); 
+              animation: pulse 4s ease-in-out infinite}
+@keyframes pulse {0%,100% {transform: scale(1) rotate(0deg)} 50% {transform: scale(1.15) rotate(5deg)}}
+.title {font-size: 3.8rem; font-weight: 900; color: #fff; text-shadow: 4px 4px 8px rgba(0,0,0,.35); 
+        margin: 0; letter-spacing: -1.5px; line-height: 1.1}
+.sub {color: rgba(255,255,255,.95); font-size: 1.35rem; margin-top: 10px; font-weight: 500; letter-spacing: 0.5px}
 
-/* 👑 4. HEADER */
-.hdr {
-    text-align: center; 
-    padding: 36px 24px; /* Padding sedikit ditingkatkan */
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-    border-radius: var(--border-radius-xl); 
-    margin-bottom: 40px; /* Margin lebih besar */
-    position: relative; 
-    overflow: hidden; 
-    box-shadow: 0 18px 45px rgba(102,126,234,0.45); /* Bayangan sedikit lebih kuat */
-}
-.hdr::before {
-    content: ''; 
-    position: absolute; 
-    top: -50%; 
-    right: -50%; 
-    width: 200%; 
-    height: 200%; 
-    background: radial-gradient(circle, rgba(255,255,255,.2), transparent 65%); /* Tingkatkan transparansi */
-    animation: pulse 4.5s cubic-bezier(0.4, 0, 0.2, 1) infinite; /* Ubah timing function */
-}
-@keyframes pulse {
-    0%,100% {transform: scale(1) rotate(0deg)} 
-    50% {transform: scale(1.1) rotate(4deg)} /* Skala lebih halus */
-}
-.title {
-    font-size: 4rem; /* Ukuran lebih besar */
-    font-weight: 900; 
-    color: var(--text-light); 
-    text-shadow: 4px 4px 10px rgba(0,0,0,.4); /* Bayangan teks lebih tebal */
-    margin: 0; 
-    letter-spacing: -2px; 
-    line-height: 1.05;
-}
-.sub {
-    color: rgba(255,255,255,1); /* Kurangi transparansi sub-judul */
-    font-size: 1.5rem; /* Ukuran lebih besar */
-    margin-top: 12px; 
-    font-weight: 500; 
-    letter-spacing: 1px;
-    opacity: 0.95;
-}
+/* METRICS */
+.metrics {display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; margin-bottom: 36px}
+.met {background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 22px; 
+      padding: 32px 28px; text-align: center; color: #fff; 
+      box-shadow: 0 15px 40px rgba(102,126,234,.45); 
+      transition: all .4s cubic-bezier(0.4,0,0.2,1); position: relative; overflow: hidden}
+.met::before {content: ''; position: absolute; top: -100%; left: -100%; width: 300%; height: 300%; 
+              background: radial-gradient(circle, rgba(255,255,255,.2), transparent 65%); transition: .7s ease}
+.met:hover {transform: translateY(-14px) scale(1.05); box-shadow: 0 25px 60px rgba(102,126,234,.65)}
+.met:hover::before {top: 0; left: 0}
+.met-icon {font-size: 3.5rem; margin-bottom: 14px; animation: float 3.5s ease-in-out infinite; 
+           filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.2))}
+@keyframes float {0%,100% {transform: translateY(0)} 50% {transform: translateY(-8px)}}
+.met-val {font-size: 3.2rem; font-weight: 900; margin: 12px 0; text-shadow: 3px 3px 6px rgba(0,0,0,.25); 
+          letter-spacing: -1px}
+.met-lbl {font-size: 1rem; text-transform: uppercase; letter-spacing: 2.5px; font-weight: 700; margin-bottom: 6px}
+.met-sub {font-size: .88rem; margin-top: 8px; opacity: .9; font-weight: 500}
 
-/* 🔢 5. METRICS / St.metric */
-/* Gunakan grid Streamlit default, lalu styling */
-div[data-testid="stMetric"] {
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%); 
-    border-radius: var(--border-radius-xl); 
-    padding: 30px 28px; 
-    color: var(--text-light); 
-    box-shadow: 0 15px 40px rgba(102,126,234,.45);
-    transition: all .4s cubic-bezier(0.4,0,0.2,1); 
-    position: relative; 
-    overflow: hidden;
-}
-div[data-testid="stMetric"] > div {
-    /* Reset tata letak internal Streamlit jika perlu */
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-}
-div[data-testid="stMetric"]::before {
-    content: ''; 
-    position: absolute; 
-    top: -100%; 
-    left: -100%; 
-    width: 300%; 
-    height: 300%; 
-    background: radial-gradient(circle, rgba(255,255,255,.2), transparent 65%); 
-    transition: .7s ease;
-}
-div[data-testid="stMetric"]:hover {
-    transform: translateY(-10px) scale(1.03); /* Hover yang lebih halus */
-    box-shadow: var(--shadow-deep);
-}
-div[data-testid="stMetric"]:hover::before {
-    top: 0; left: 0;
-}
-/* Menargetkan value dan label metrik bawaan Streamlit */
-div[data-testid="stMetricValue"] {
-    font-size: 3.5rem !important; /* Ukuran lebih besar */
-    font-weight: 900; 
-    margin: 10px 0 !important; 
-    text-shadow: 3px 3px 6px rgba(0,0,0,.25);
-    letter-spacing: -1.5px; 
-    color: var(--text-light) !important;
-}
-div[data-testid="stMetricLabel"] {
-    font-size: 1.05rem !important; 
-    text-transform: uppercase; 
-    letter-spacing: 3px; /* Jarak huruf lebih lebar */
-    font-weight: 700; 
-    margin-bottom: 6px;
-}
-div[data-testid="stMetricDelta"] {
-    font-size: 1.1rem !important;
-    font-weight: 700 !important;
-    margin-top: 8px !important;
-}
+/* FILTERS */
+.filt {background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); border-radius: 22px; 
+       padding: 32px; margin-bottom: 32px; box-shadow: 0 10px 30px rgba(0,0,0,.12)}
+.filt-t {font-size: 1.6rem; font-weight: 800; color: #2c3e50; margin-bottom: 22px; 
+         display: flex; align-items: center; gap: 12px}
+.filt-g {display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px}
+.filt-g label {display: block; font-weight: 700; color: #34495e; margin-bottom: 8px; 
+               font-size: 1rem; letter-spacing: 0.3px}
 
-/* 🛠️ 6. FILTERS / SIDEBAR (jika menggunakan sidebar) */
-.filt {
-    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); 
-    border-radius: var(--border-radius-xl); 
-    padding: 36px; /* Padding sedikit lebih besar */
-    margin-bottom: 40px; 
-    box-shadow: var(--shadow-base);
-    border: 1px solid rgba(0,0,0,0.05); /* Tambahkan garis tipis untuk definisi */
-}
-.filt-t {
-    font-size: 1.8rem; /* Ukuran lebih besar */
-    font-weight: 800; 
-    color: var(--text-dark); 
-    margin-bottom: 26px; 
-    display: flex; 
-    align-items: center; 
-    gap: 12px;
-}
-/* Menargetkan Widget Input Streamlit */
-div[data-testid="stSelectbox"] div,
-div[data-testid="stSlider"] div,
-div[data-testid="stTextInput"] div[data-baseweb="input"],
-div[data-testid="stDateInput"] div[data-baseweb="input"] {
-    border-radius: var(--border-radius-md); 
-    border: 2px solid #bdc3c7; /* Garis batas yang lebih jelas */
-    transition: all .3s;
-}
-div[data-testid="stSelectbox"] div:hover,
-div[data-testid="stSlider"] div:hover,
-div[data-testid="stTextInput"] div[data-baseweb="input"]:hover {
-    border-color: var(--primary-color);
-}
-div[data-testid="stSelectbox"] div[aria-expanded="true"],
-div[data-testid="stTextInput"] div[data-baseweb="input"]:focus {
-    border-color: var(--secondary-color);
-    box-shadow: 0 0 0 3px rgba(102,126,234,0.3);
-}
+/* TABS */
+.stTabs [data-baseweb="tab-list"] {gap: 12px; margin-bottom: 28px}
+.stTabs [data-baseweb="tab"] {border: none; border-radius: 16px; padding: 14px 32px; 
+                              font-weight: 700; font-size: 1.1rem; color: #667eea; 
+                              background: #f8f9fa; transition: all .3s; letter-spacing: 0.5px}
+.stTabs [data-baseweb="tab"]:hover {background: linear-gradient(135deg, #667eea, #764ba2); 
+                                    color: #fff; transform: translateY(-3px); 
+                                    box-shadow: 0 8px 20px rgba(102,126,234,.35)}
+.stTabs [aria-selected="true"] {background: linear-gradient(135deg, #667eea, #764ba2) !important; 
+                                color: #fff !important; 
+                                box-shadow: 0 8px 20px rgba(102,126,234,.4) !important}
 
-/* 7. TABS */
-.stTabs [data-baseweb="tab-list"] {
-    gap: var(--gap-spacing); /* Gunakan variabel */
-    margin-bottom: 30px;
-    justify-content: center; /* Posisikan tab di tengah */
-}
-.stTabs [data-baseweb="tab"] {
-    border: none; 
-    border-radius: var(--border-radius-lg); 
-    padding: 16px 36px; /* Padding lebih besar */
-    font-weight: 700; 
-    font-size: 1.15rem; /* Ukuran font lebih besar */
-    color: var(--primary-color); 
-    background: #f8f9fa; 
-    transition: all .3s cubic-bezier(0.4,0,0.2,1); 
-    letter-spacing: 0.8px;
-}
-.stTabs [data-baseweb="tab"]:hover {
-    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-    color: var(--text-light); 
-    transform: translateY(-4px) scale(1.02); /* Efek hover yang lebih jelas */
-    box-shadow: 0 10px 25px rgba(102,126,234,.45);
-}
-.stTabs [aria-selected="true"] {
-    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)) !important; 
-    color: var(--text-light) !important; 
-    box-shadow: 0 10px 25px rgba(102,126,234,.55) !important; 
-    border-bottom: 4px solid var(--accent-color) !important; /* Tambahkan indikator aktif */
-}
+/* CHARTS */
+.charts {display: grid; grid-template-columns: repeat(2, 1fr); gap: 26px; margin-bottom: 26px}
+.chart {background: #fff; border-radius: 24px; padding: 32px; 
+        box-shadow: 0 10px 35px rgba(0,0,0,.08); transition: all .35s ease; border: 3px solid transparent}
+.chart:hover {transform: translateY(-6px); box-shadow: 0 20px 50px rgba(0,0,0,.15); border-color: #667eea}
+.chart-full {grid-column: 1 / -1}
 
-/* 📊 8. CHARTS & Konten Umum */
-.charts, .strat-g, .ins-g, .champ-grid {
-    gap: var(--gap-spacing); /* Gunakan variabel gap */
-}
-.chart, .strat, .champ-break, .ins {
-    margin-bottom: var(--gap-spacing);
-}
-.chart {
-    background: var(--text-light); 
-    border-radius: var(--border-radius-xl); 
-    padding: 36px; /* Padding lebih besar */
-    box-shadow: var(--shadow-base); 
-    transition: all .35s ease; 
-    border: 3px solid transparent;
-}
-.chart:hover {
-    transform: translateY(-6px); 
-    box-shadow: 0 15px 40px rgba(0,0,0,.15); 
-    border-color: var(--primary-color);
-}
-.chart-full {
-    grid-column: 1 / -1;
-}
+/* STRATEGY CARDS */
+.strat-g {display: grid; grid-template-columns: repeat(2, 1fr); gap: 26px}
+.strat {border-radius: 24px; padding: 36px 32px; color: #fff; 
+        box-shadow: 0 15px 40px rgba(0,0,0,.22); 
+        transition: all .45s cubic-bezier(0.4,0,0.2,1); position: relative; overflow: hidden}
+.strat::after {content: ''; position: absolute; bottom: -50px; right: -50px; 
+               width: 200px; height: 200px; background: rgba(255,255,255,.12); 
+               border-radius: 50%; transition: .6s ease}
+.strat:hover {transform: translateY(-8px) scale(1.03); box-shadow: 0 25px 60px rgba(0,0,0,.32)}
+.strat:hover::after {bottom: -20px; right: -20px; width: 240px; height: 240px}
+.strat-hdr {display: flex; justify-content: space-between; align-items: center; 
+            margin-bottom: 24px; flex-wrap: wrap; gap: 12px}
+.strat-name {font-size: 2.2rem; font-weight: 900; text-shadow: 3px 3px 6px rgba(0,0,0,.25); 
+             letter-spacing: -0.5px}
+.pri-badge {padding: 10px 22px; border-radius: 24px; font-weight: 800; font-size: .95rem; 
+            letter-spacing: 1.5px; background: rgba(255,255,255,.25); 
+            backdrop-filter: blur(10px); animation: glow 2.5s ease-in-out infinite; 
+            box-shadow: 0 4px 15px rgba(0,0,0,.15)}
+@keyframes glow {0%,100% {box-shadow: 0 0 15px rgba(255,255,255,.3)} 
+                 50% {box-shadow: 0 0 28px rgba(255,255,255,.6)}}
+.strat-sub {font-size: 1.3rem; font-weight: 700; margin-bottom: 20px; opacity: .95; letter-spacing: 0.3px}
+.tactics {background: rgba(255,255,255,.12); border-radius: 16px; padding: 22px; 
+          margin: 20px 0; backdrop-filter: blur(12px); 
+          box-shadow: inset 0 2px 8px rgba(0,0,0,.1)}
+.tact-t {font-size: 1.2rem; font-weight: 800; margin-bottom: 14px; letter-spacing: 0.5px}
+.tact {padding: 14px 18px; margin: 10px 0; background: rgba(255,255,255,.18); 
+       border-radius: 12px; transition: all .3s ease; border-left: 4px solid rgba(255,255,255,.45); 
+       font-weight: 600; font-size: 1.02rem}
+.tact:hover {background: rgba(255,255,255,.28); transform: translateX(8px); 
+             border-left-width: 6px; box-shadow: 0 4px 12px rgba(0,0,0,.1)}
+.kpi-g {display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin: 20px 0}
+.kpi {background: rgba(255,255,255,.16); padding: 12px; border-radius: 10px; 
+      font-weight: 700; text-align: center; backdrop-filter: blur(8px); 
+      font-size: 1.02rem; letter-spacing: 0.3px}
+.budget {display: flex; justify-content: space-between; margin-top: 20px; 
+         padding: 18px; background: rgba(255,255,255,.16); 
+         border-radius: 12px; backdrop-filter: blur(10px); gap: 12px}
+.budget div {text-align: center; flex: 1}
+.budget-l {font-size: .92rem; opacity: .92; margin-bottom: 6px; font-weight: 600; letter-spacing: 0.5px}
+.budget-v {font-size: 1.8rem; font-weight: 900; letter-spacing: -0.5px}
 
-/* 🎯 9. STRATEGY CARDS (Ditingkatkan) */
-.strat {
-    /* Gaya Strat sudah bagus, jaga konsistensi */
-    border-radius: var(--border-radius-xl); 
-    padding: 38px 34px; 
-    box-shadow: 0 18px 45px rgba(0,0,0,.25);
-}
-.pri-badge {
-    /* Animasi glow yang lebih terlihat */
-    animation: glow 3s ease-in-out infinite alternate;
-}
-@keyframes glow {
-    0% {box-shadow: 0 0 15px rgba(255,255,255,.3), 0 0 2px rgba(255,255,255,.3)}
-    100% {box-shadow: 0 0 25px rgba(255,255,255,.6), 0 0 5px rgba(255,255,255,.6)}
-}
+/* CHAMPION BREAKDOWN */
+.champ-break {background: linear-gradient(135deg, #FFD700, #FFA500); border-radius: 24px; 
+              padding: 36px; color: #fff; margin: 26px 0; 
+              box-shadow: 0 15px 40px rgba(255,215,0,.4)}
+.champ-break-t {font-size: 2rem; font-weight: 900; margin-bottom: 26px; 
+                letter-spacing: -0.5px; text-align: center}
+.champ-grid {display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px}
+.champ-card {background: rgba(255,255,255,.16); border-radius: 16px; padding: 24px; 
+             backdrop-filter: blur(10px); transition: all .35s ease; 
+             box-shadow: 0 4px 15px rgba(0,0,0,.1); border-left: 5px solid rgba(255,255,255,.5)}
+.champ-card:hover {background: rgba(255,255,255,.26); transform: translateY(-4px) translateX(4px); 
+                   box-shadow: 0 8px 25px rgba(0,0,0,.15); border-left-width: 8px}
+.champ-num {font-size: 2.5rem; font-weight: 900; margin-bottom: 8px; 
+            text-shadow: 2px 2px 4px rgba(0,0,0,.2)}
+.champ-tier {font-size: 1.3rem; font-weight: 800; margin-bottom: 12px; letter-spacing: 0.3px}
+.champ-desc {font-size: 1.05rem; margin-bottom: 12px; opacity: .95; line-height: 1.5}
+.champ-char {font-size: .95rem; background: rgba(255,255,255,.2); padding: 10px; 
+             border-radius: 8px; font-weight: 600; margin-top: 8px}
 
-/* 🏆 10. CHAMPION BREAKDOWN (Ditingkatkan) */
-.champ-break {
-    background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%); /* Emas/Jingga */
-    box-shadow: 0 18px 45px rgba(255,165,0,.5);
-}
-.champ-card {
-    border-left: 5px solid rgba(255,255,255,.6); /* Border lebih solid */
-}
-.champ-card:hover {
-    border-left-width: 8px;
-}
+/* INSIGHTS */
+.ins {background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); border-radius: 24px; 
+      padding: 36px; color: #fff; margin: 26px 0; 
+      box-shadow: 0 15px 40px rgba(79,172,254,.4)}
+.ins-t {font-size: 2rem; font-weight: 900; margin-bottom: 26px; letter-spacing: -0.5px}
+.ins-g {display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px}
+.ins-card {background: rgba(255,255,255,.16); border-radius: 16px; padding: 24px; 
+           backdrop-filter: blur(10px); transition: all .35s ease; 
+           box-shadow: 0 4px 15px rgba(0,0,0,.1)}
+.ins-card:hover {background: rgba(255,255,255,.26); transform: translateY(-4px); 
+                 box-shadow: 0 8px 25px rgba(0,0,0,.15)}
+.ins-h {font-size: 1.35rem; font-weight: 800; margin-bottom: 16px; letter-spacing: 0.3px}
+.ins-list {list-style: none; padding: 0}
+.ins-list li {padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,.25); 
+              font-size: 1.02rem; font-weight: 500; letter-spacing: 0.2px}
+.ins-list li:last-child {border-bottom: none}
 
-/* 💡 11. INSIGHTS (Ditingkatkan) */
-.ins {
-    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); /* Biru Langit/Sian */
-    box-shadow: 0 18px 45px rgba(79,172,254,.5);
-}
-.ins-list li {
-    padding: 12px 0; /* Padding lebih besar */
-    transition: background-color .2s ease;
-}
-.ins-list li:hover {
-    background-color: rgba(255,255,255,.1); /* Efek hover pada item list */
-}
+/* FOOTER */
+.foot {text-align: center; margin-top: 50px; padding: 26px; 
+       border-top: 4px solid #667eea; color: #7f8c8d; 
+       font-size: 1.05rem; font-weight: 600; letter-spacing: 0.5px}
 
-/* 📄 12. FOOTER */
-.foot {
-    margin-top: 60px; 
-    padding: 30px; 
-    border-top: 4px solid var(--primary-color); /* Gunakan variabel */
-    color: #7f8c8d;
-}
-
-/* 📱 13. RESPONSIVE (Disederhanakan) */
+/* RESPONSIVE */
 @media(max-width: 1200px){
-    .metrics, .charts, .strat-g, .ins-g, .champ-grid {grid-template-columns: repeat(2, 1fr)}
+    .metrics, .charts, .strat-g, .ins-g {grid-template-columns: repeat(2, 1fr)}
     .filt-g {grid-template-columns: 1fr}
     .chart-full {grid-column: 1 / -1}
-    .main-container {padding: 30px; max-width: 95%;}
 }
 @media(max-width: 768px){
-    .metrics, .charts, .strat-g, .ins-g, .champ-grid {grid-template-columns: 1fr}
-    .title {font-size: 2.8rem; letter-spacing: -1px;}
-    .sub {font-size: 1.2rem;}
-    .hdr {padding: 30px 20px;}
-    .main-container {padding: 20px;}
+    .metrics, .charts, .strat-g, .ins-g {grid-template-columns: 1fr}
+    .title {font-size: 2.8rem}
+    .dash {padding: 24px}
 }
+
+/* Container utama */
+.main-container {background: rgba(255,255,255,0.98); border-radius: 32px; padding: 40px; 
+                 box-shadow: 0 40px 100px rgba(0,0,0,0.4); 
+                 animation: fadeIn .8s ease-out; margin: 0 auto}
+@keyframes fadeIn {from {opacity: 0; transform: translateY(30px)} 
+                   to {opacity: 1; transform: translateY(0)}}
+
+/* Streamlit widget styling */
+div[data-testid="stSelectbox"] div {border-radius: 12px}
+div[data-testid="stSlider"] div {border-radius: 12px}
+
+/* Additional styles for empty data handling */
+.empty-message {text-align: center; padding: 40px; font-size: 1.2rem; color: #666; background: #f8f9fa; border-radius: 12px}
 </style>
 """, unsafe_allow_html=True)
+
 # Fungsi untuk membuat chart yang lebih sederhana dan efektif
 def create_charts(df):
     # Pastikan Cluster_Label ada
