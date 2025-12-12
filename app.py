@@ -2,7 +2,6 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import plotly.graph_objects as go
-from plotly.subplots import make_subplots
 import warnings
 
 warnings.filterwarnings('ignore')
@@ -30,10 +29,10 @@ rfm = load_data()
 strats = {
     'champions': {'name':'🏆 Champions','grad':'linear-gradient(135deg,#FFD700,#FFA500)','color':'#FFD700','priority':'CRITICAL','strategy':'VIP Platinum','tactics':['💎 Exclusive Early Access','🎁 Premium Gifts','📞 24/7 Manager','🌟 VIP Events','✨ Celebrations'],'kpis':['Retention>95%','Upsell>40%','Referral>30%'],'budget':'30%','roi':'500%'},
     'loyal': {'name':'💎 Loyal','grad':'linear-gradient(135deg,#667eea,#764ba2)','color':'#667eea','priority':'HIGH','strategy':'Loyalty Boost','tactics':['🎯 Tiered Rewards','📱 App Benefits','🎉 Birthday Offers','💝 Referral Bonus','🔔 Flash Access'],'kpis':['Retention>85%','Frequency+20%','NPS>8'],'budget':'25%','roi':'380%'},
-    'big': {'name':'💰 Big Spenders','grad':'linear-gradient(135deg,#f093fb,#f5576c)','color':'#f093fb','priority':'CRITICAL','strategy':'Value Max','tactics':['💳 Flex Terms','🎁 Luxury Gifts','🚚 Free Express','📦 Custom Bundles','🌟 Concierge'],'kpis':['AOV+15%','Retention>90%','Sat>4.8/5'],'budget':'20%','roi':'420%'},
-    'dormant': {'name':'😴 Dormant','grad':'linear-gradient(135deg,#ff6b6b,#ee5a6f)','color':'#ff6b6b','priority':'URGENT','strategy':'Win-Back','tactics':['🎁 25-30% Off','📧 Multi-Channel','🎯 Retargeting','💬 Personal Call','⏰ Urgency'],'kpis':['Winback>25%','Response>15%','ROI>200%'],'budget':'15%','roi':'250%'},
-    'potential': {'name':'🌱 Potential','grad':'linear-gradient(135deg,#11998e,#38ef7d)','color':'#11998e','priority':'MEDIUM','strategy':'Fast Convert','tactics':['🎓 Education','🎁 15% 2nd Buy','💌 Welcome Flow','📚 Tutorials','🎯 Cross-Sell'],'kpis':['Convert>35%','2nd<30d','LTV+25%'],'budget':'5%','roi':'180%'},
-    'standard': {'name':'📊 Standard','grad':'linear-gradient(135deg,#89f7fe,#66a6ff)','color':'#89f7fe','priority':'MEDIUM','strategy':'Steady Engage','tactics':['📧 Newsletters','🎯 Seasonal','💌 AI Recs','🎁 Surprises','📱 Community'],'kpis':['Engage>40%','Stable','Sat>3.5/5'],'budget':'5%','roi':'150%'}
+    'big': {'name':'💰 Big Spenders','grad':'linear-gradient(135deg,#f093fb,#f5576c)','color':'f093fb','priority':'CRITICAL','strategy':'Value Max','tactics':['💳 Flex Terms','🎁 Luxury Gifts','🚚 Free Express','📦 Custom Bundles','🌟 Concierge'],'kpis':['AOV+15%','Retention>90%','Sat>4.8/5'],'budget':'20%','roi':'420%'},
+    'dormant': {'name':'😴 Dormant','grad':'linear-gradient(135deg,#ff6b6b,#ee5a6f)','color':'ff6b6b','priority':'URGENT','strategy':'Win-Back','tactics':['🎁 25-30% Off','📧 Multi-Channel','🎯 Retargeting','💬 Personal Call','⏰ Urgency'],'kpis':['Winback>25%','Response>15%','ROI>200%'],'budget':'15%','roi':'250%'},
+    'potential': {'name':'🌱 Potential','grad':'linear-gradient(135deg,#11998e,#38ef7d)','color':'11998e','priority':'MEDIUM','strategy':'Fast Convert','tactics':['🎓 Education','🎁 15% 2nd Buy','💌 Welcome Flow','📚 Tutorials','🎯 Cross-Sell'],'kpis':['Convert>35%','2nd<30d','LTV+25%'],'budget':'5%','roi':'180%'},
+    'standard': {'name':'📊 Standard','grad':'linear-gradient(135deg,#89f7fe,#66a6ff)','color':'89f7fe','priority':'MEDIUM','strategy':'Steady Engage','tactics':['📧 Newsletters','🎯 Seasonal','💌 AI Recs','🎁 Surprises','📱 Community'],'kpis':['Engage>40%','Stable','Sat>3.5/5'],'budget':'5%','roi':'150%'}
 }
 
 # Champion Sub-segments Explanation
@@ -45,30 +44,36 @@ champion_details = {
 }
 
 def get_strat(cid, data):
-    cd = data[data['Cluster_KMeans']==cid]
+    cd = data[data['Cluster_KMeans'] == cid]
     r, f, m = cd['Recency'].mean(), cd['Frequency'].mean(), cd['Monetary'].mean()
-    if r < 50 and f > 10 and m > 1000:
+    if r < 50 and f > 10 and m > 1000: 
         s = 'champions'
-    elif r < 50 and f > 5:
+    elif r < 50 and f > 5: 
         s = 'loyal'
-    elif m > 1500:
+    elif m > 1500: 
         s = 'big'
-    elif r > 100:
+    elif r > 100: 
         s = 'dormant'
-    elif r < 50 and f < 5:
+    elif r < 50 and f < 5: 
         s = 'potential'
-    else:
+    else: 
         s = 'standard'
     return {**strats[s], 'cluster_id': cid}
 
-profs = {}
-for c in rfm['Cluster_KMeans'].unique():
-    p = get_strat(c, rfm)
-    profs[c] = p
-    rfm.loc[rfm['Cluster_KMeans']==c, 'Cluster_Label'] = f"{p['name'][:2]} {p['name'][2:]} (C{c})"
-    rfm.loc[rfm['Cluster_KMeans']==c, 'Priority'] = p['priority']
+# Inisialisasi profs dan colors
+@st.cache_data
+def init_data(rfm):
+    profs = {}
+    for c in rfm['Cluster_KMeans'].unique():
+        p = get_strat(c, rfm)
+        profs[c] = p
+        rfm.loc[rfm['Cluster_KMeans'] == c, 'Cluster_Label'] = f"{p['name'][:2]} {p['name'][2:]} (C{c})"
+        rfm.loc[rfm['Cluster_KMeans'] == c, 'Priority'] = p['priority']
+    
+    colors = {f"{p['name'][:2]} {p['name'][2:]} (C{c})": p['color'] for c, p in profs.items()}
+    return profs, colors, rfm
 
-colors = {f"{p['name'][:2]} {p['name'][2:]} (C{c})": p['color'] for c, p in profs.items()}
+profs, colors, rfm = init_data(rfm)
 
 # CSS Custom untuk Streamlit
 st.markdown("""
@@ -237,373 +242,461 @@ body {font-family: 'Inter', 'Poppins', sans-serif; background: linear-gradient(1
                    to {opacity: 1; transform: translateY(0)}}
 
 /* Streamlit widget styling */
-.stSelectbox, .stSlider {border-radius: 12px !important}
 div[data-testid="stSelectbox"] div {border-radius: 12px}
 div[data-testid="stSlider"] div {border-radius: 12px}
+
+/* Additional styles for empty data handling */
+.empty-message {text-align: center; padding: 40px; font-size: 1.2rem; color: #666; background: #f8f9fa; border-radius: 12px}
 </style>
 """, unsafe_allow_html=True)
 
-# Fungsi untuk membuat chart
-def create_charts(df, sc, rr, sp):
-    # Filter data
-    filtered_df = df[(df['RFM_Score'] >= rr[0]) & (df['RFM_Score'] <= rr[1])]
-    if sc != 'all':
-        filtered_df = filtered_df[filtered_df['Cluster_KMeans'] == sc]
-    if sp != 'all':
-        filtered_df = filtered_df[filtered_df['Priority'] == sp]
-    
+# Fungsi untuk membuat chart (disesuaikan dari kode Dash asli)
+def create_charts(df):
     # Chart 1: Customer Distribution Pie
-    cc = filtered_df['Cluster_Label'].value_counts()
-    f1 = go.Figure(go.Pie(labels=cc.index, values=cc.values, hole=.68,
-        marker=dict(colors=[colors.get(l, '#95A5A6') for l in cc.index],
-                   line=dict(color='white', width=5)),
+    cc = df['Cluster_Label'].value_counts()
+    f1 = go.Figure(go.Pie(
+        labels=cc.index, 
+        values=cc.values, 
+        hole=.68,
+        marker=dict(
+            colors=[colors.get(l, '#95A5A6') for l in cc.index],
+            line=dict(color='white', width=5)
+        ),
         textfont=dict(size=14, family='Inter, Poppins', weight=700),
         textposition='outside',
-        pull=[0.05]*len(cc)))
-    f1.update_layout(title={'text':"<b>🎯 Customer Distribution</b>", 'x':.5, 
-                            'font':{'size':20, 'family':'Inter, Poppins', 'color':'#2c3e50'}},
+        pull=[0.05]*len(cc)
+    ))
+    f1.update_layout(
+        title={'text': "<b>🎯 Customer Distribution</b>", 'x': .5, 
+               'font': {'size': 20, 'family': 'Inter, Poppins', 'color': '#2c3e50'}},
         height=420,
-        annotations=[dict(text=f'<b>{len(filtered_df):,}</b><br><span style="font-size:14px">Customers</span>',
-                         x=.5, y=.5, font={'size':24, 'color':'#667eea', 'family':'Inter, Poppins'}, 
-                         showarrow=False)],
-        margin=dict(t=80, b=40, l=40, r=40))
+        annotations=[dict(
+            text=f'<b>{len(df):,}</b><br><span style="font-size:14px">Customers</span>',
+            x=.5, y=.5, 
+            font={'size': 24, 'color': '#667eea', 'family': 'Inter, Poppins'}, 
+            showarrow=False
+        )],
+        margin=dict(t=80, b=40, l=40, r=40)
+    )
     
     # Chart 2: Revenue by Segment
-    rv = filtered_df.groupby('Cluster_Label')['Monetary'].sum().sort_values()
-    f2 = go.Figure(go.Bar(x=rv.values, y=rv.index, orientation='h',
-        marker=dict(color=rv.values, colorscale='Sunset',
-                   line=dict(color='white', width=3)),
+    rv = df.groupby('Cluster_Label')['Monetary'].sum().sort_values()
+    f2 = go.Figure(go.Bar(
+        x=rv.values, 
+        y=rv.index, 
+        orientation='h',
+        marker=dict(
+            color=rv.values, 
+            colorscale='Sunset',
+            line=dict(color='white', width=3)
+        ),
         text=[f'£{v/1000:.1f}K' for v in rv.values],
         textposition='outside',
-        textfont={'size':13, 'weight':700, 'family':'Inter, Poppins'}))
-    f2.update_layout(title={'text':"<b>💰 Revenue by Segment</b>", 'x':.5, 
-                            'font':{'size':20, 'family':'Inter, Poppins', 'color':'#2c3e50'}},
-        xaxis={'title':'<b>Revenue (£)</b>', 'titlefont':{'size':14, 'family':'Inter, Poppins'}, 
-               'gridcolor':'rgba(0,0,0,0.05)'},
-        yaxis={'titlefont':{'size':14, 'family':'Inter, Poppins'}},
+        textfont={'size': 13, 'weight': 700, 'family': 'Inter, Poppins'}
+    ))
+    f2.update_layout(
+        title={'text': "<b>💰 Revenue by Segment</b>", 'x': .5, 
+               'font': {'size': 20, 'family': 'Inter, Poppins', 'color': '#2c3e50'}},
+        xaxis={
+            'title': '<b>Revenue (£)</b>', 
+            'titlefont': {'size': 14, 'family': 'Inter, Poppins'}, 
+            'gridcolor': 'rgba(0,0,0,0.05)'
+        },
+        yaxis={'titlefont': {'size': 14, 'family': 'Inter, Poppins'}},
         height=420,
         plot_bgcolor='rgba(245,247,250,.6)',
-        margin=dict(t=80, b=60, l=140, r=60))
+        margin=dict(t=80, b=60, l=140, r=60)
+    )
     
     # Chart 3: 3D RFM Analysis
-    f3 = go.Figure(go.Scatter3d(x=filtered_df['Recency'], y=filtered_df['Frequency'], 
-                                z=filtered_df['Monetary'], mode='markers',
-        marker=dict(size=7, color=filtered_df['Cluster_KMeans'], colorscale='Rainbow', showscale=True,
-                   line=dict(width=.8, color='white'), opacity=.88,
-                   colorbar=dict(title='Cluster', thickness=20, len=0.7)),
-        text=filtered_df['Cluster_Label'],
-        hovertemplate='<b>%{text}</b><br>Recency: %{x}<br>Frequency: %{y}<br>Monetary: £%{z:,.0f}<extra></extra>'))
-    f3.update_layout(title={'text':"<b>📈 3D RFM Customer Analysis</b>", 'x':.5, 
-                            'font':{'size':20, 'family':'Inter, Poppins', 'color':'#2c3e50'}},
+    f3 = go.Figure(go.Scatter3d(
+        x=df['Recency'], 
+        y=df['Frequency'], 
+        z=df['Monetary'], 
+        mode='markers',
+        marker=dict(
+            size=7, 
+            color=df['Cluster_KMeans'], 
+            colorscale='Rainbow', 
+            showscale=True,
+            line=dict(width=.8, color='white'), 
+            opacity=.88,
+            colorbar=dict(title='Cluster', thickness=20, len=0.7)
+        ),
+        text=df['Cluster_Label'],
+        hovertemplate='<b>%{text}</b><br>Recency: %{x}<br>Frequency: %{y}<br>Monetary: £%{z:,.0f}<extra></extra>'
+    ))
+    f3.update_layout(
+        title={'text': "<b>📈 3D RFM Customer Analysis</b>", 'x': .5, 
+               'font': {'size': 20, 'family': 'Inter, Poppins', 'color': '#2c3e50'}},
         height=650,
-        scene=dict(xaxis=dict(title='<b>Recency (days)</b>', backgroundcolor='rgba(245,247,250,.4)', 
-                              gridcolor='rgba(0,0,0,0.08)'),
-                  yaxis=dict(title='<b>Frequency</b>', backgroundcolor='rgba(245,247,250,.4)', 
-                             gridcolor='rgba(0,0,0,0.08)'),
-                  zaxis=dict(title='<b>Monetary (£)</b>', backgroundcolor='rgba(245,247,250,.4)', 
-                             gridcolor='rgba(0,0,0,0.08)'),
-                  camera=dict(eye=dict(x=1.5, y=1.5, z=1.3))),
+        scene=dict(
+            xaxis=dict(
+                title='<b>Recency (days)</b>', 
+                backgroundcolor='rgba(245,247,250,.4)', 
+                gridcolor='rgba(0,0,0,0.08)'
+            ),
+            yaxis=dict(
+                title='<b>Frequency</b>', 
+                backgroundcolor='rgba(245,247,250,.4)', 
+                gridcolor='rgba(0,0,0,0.08)'
+            ),
+            zaxis=dict(
+                title='<b>Monetary (£)</b>', 
+                backgroundcolor='rgba(245,247,250,.4)', 
+                gridcolor='rgba(0,0,0,0.08)'
+            ),
+            camera=dict(eye=dict(x=1.5, y=1.5, z=1.3))
+        ),
         paper_bgcolor='rgba(245,247,250,.4)',
-        margin=dict(t=80, b=40, l=40, r=40))
+        margin=dict(t=80, b=40, l=40, r=40)
+    )
     
     # Charts 4-6: Histograms
     def mh(d, col, ttl, clr):
-        fig = go.Figure(go.Histogram(x=d[col], nbinsx=35,
-            marker=dict(color=clr, line=dict(color='white', width=2), opacity=.85)))
-        fig.update_layout(title={'text':f"<b>{ttl}</b>", 'x':.5, 
-                                 'font':{'size':18, 'family':'Inter, Poppins', 'color':'#2c3e50'}},
-            xaxis={'title':f'<b>{col}</b>', 'titlefont':{'size':13, 'family':'Inter, Poppins'}, 
-                   'gridcolor':'rgba(0,0,0,0.05)'},
-            yaxis={'title':'<b>Count</b>', 'titlefont':{'size':13, 'family':'Inter, Poppins'}, 
-                   'gridcolor':'rgba(0,0,0,0.05)'},
+        fig = go.Figure(go.Histogram(
+            x=d[col], 
+            nbinsx=35,
+            marker=dict(
+                color=clr, 
+                line=dict(color='white', width=2), 
+                opacity=.85
+            )
+        ))
+        fig.update_layout(
+            title={'text': f"<b>{ttl}</b>", 'x': .5, 
+                   'font': {'size': 18, 'family': 'Inter, Poppins', 'color': '#2c3e50'}},
+            xaxis={
+                'title': f'<b>{col}</b>', 
+                'titlefont': {'size': 13, 'family': 'Inter, Poppins'}, 
+                'gridcolor': 'rgba(0,0,0,0.05)'
+            },
+            yaxis={
+                'title': '<b>Count</b>', 
+                'titlefont': {'size': 13, 'family': 'Inter, Poppins'}, 
+                'gridcolor': 'rgba(0,0,0,0.05)'
+            },
             height=340,
             plot_bgcolor='rgba(245,247,250,.5)',
-            margin=dict(t=70, b=50, l=60, r=40))
+            margin=dict(t=70, b=50, l=60, r=40)
+        )
         return fig
     
-    f4 = mh(filtered_df, 'Recency', '⏰ Recency Distribution', '#ff6b6b')
-    f5 = mh(filtered_df, 'Frequency', '🔄 Frequency Distribution', '#4ecdc4')
-    f6 = mh(filtered_df, 'Monetary', '💵 Monetary Distribution', '#45b7d1')
+    f4 = mh(df, 'Recency', '⏰ Recency Distribution', '#ff6b6b')
+    f5 = mh(df, 'Frequency', '🔄 Frequency Distribution', '#4ecdc4')
+    f6 = mh(df, 'Monetary', '💵 Monetary Distribution', '#45b7d1')
     
     # Chart 7: Segment Summary Table
-    tb = filtered_df.groupby('Cluster_Label').agg(
-        {'Recency':'mean', 'Frequency':'mean', 'Monetary':'mean', 
-         'AvgOrderValue':'mean', 'RFM_Score':'mean'}).round(1).reset_index()
-    tb['Count'] = filtered_df.groupby('Cluster_Label').size().values
+    tb = df.groupby('Cluster_Label').agg({
+        'Recency': 'mean', 
+        'Frequency': 'mean', 
+        'Monetary': 'mean', 
+        'AvgOrderValue': 'mean', 
+        'RFM_Score': 'mean'
+    }).round(1).reset_index()
+    tb['Count'] = df.groupby('Cluster_Label').size().values
     
     f7 = go.Figure(go.Table(
-        header=dict(values=['<b>Segment</b>', '<b>Count</b>', '<b>Recency</b>', '<b>Frequency</b>',
-                           '<b>Monetary</b>', '<b>Avg Order</b>', '<b>RFM Score</b>'],
-                   fill_color='#667eea',
-                   font=dict(color='white', size=13, family='Inter, Poppins'),
-                   align='center',
-                   height=42,
-                   line=dict(color='white', width=2)),
-        cells=dict(values=[tb['Cluster_Label'],
-                          tb['Count'],
-                          [f"{v:.0f}d" for v in tb['Recency']],
-                          tb['Frequency'].round(1),
-                          [f"£{v:,.0f}" for v in tb['Monetary']],
-                          [f"£{v:.0f}" for v in tb['AvgOrderValue']],
-                          tb['RFM_Score']],
-                  fill_color=[['white', '#f8f9fc']*len(tb)],
-                  align='center',
-                  font={'size':12, 'family':'Inter, Poppins'},
-                  height=38,
-                  line=dict(color='#e0e0e0', width=1))))
+        header=dict(
+            values=[
+                '<b>Segment</b>', '<b>Count</b>', '<b>Recency</b>', '<b>Frequency</b>',
+                '<b>Monetary</b>', '<b>Avg Order</b>', '<b>RFM Score</b>'
+            ],
+            fill_color='#667eea',
+            font=dict(color='white', size=13, family='Inter, Poppins'),
+            align='center',
+            height=42,
+            line=dict(color='white', width=2)
+        ),
+        cells=dict(
+            values=[
+                tb['Cluster_Label'],
+                tb['Count'],
+                [f"{v:.0f}d" for v in tb['Recency']],
+                tb['Frequency'].round(1),
+                [f"£{v:,.0f}" for v in tb['Monetary']],
+                [f"£{v:.0f}" for v in tb['AvgOrderValue']],
+                tb['RFM_Score']
+            ],
+            fill_color=[['white', '#f8f9fc']*len(tb)],
+            align='center',
+            font={'size': 12, 'family': 'Inter, Poppins'},
+            height=38,
+            line=dict(color='#e0e0e0', width=1)
+        )
+    ))
     f7.update_layout(height=380, margin=dict(t=20, b=20, l=20, r=20))
     
-    return f1, f2, f3, f4, f5, f6, f7, filtered_df
+    return f1, f2, f3, f4, f5, f6, f7
 
 # Layout utama Streamlit
 def main():
     # Container utama
-    with st.container():
-        st.markdown('<div class="main-container">', unsafe_allow_html=True)
-        
-        # Header
-        st.markdown("""
-        <div class="hdr">
-            <h1 class="title">🎯 Customer Intelligence Hub</h1>
-            <p class="sub">Customer Segmentation for Personalized Retail Marketing</p>
+    st.markdown('<div class="main-container">', unsafe_allow_html=True)
+    
+    # Header
+    st.markdown("""
+    <div class="hdr">
+        <h1 class="title">🎯 Customer Intelligence Hub</h1>
+        <p class="sub">Customer Segmentation for Personalized Retail Marketing</p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Metrics
+    col1, col2, col3, col4 = st.columns(4)
+    with col1:
+        st.markdown(f"""
+        <div class="met">
+            <div class="met-icon">👥</div>
+            <div class="met-val">{len(rfm):,}</div>
+            <div class="met-lbl">Customers</div>
+            <div class="met-sub">Active Database</div>
         </div>
         """, unsafe_allow_html=True)
+    
+    with col2:
+        st.markdown(f"""
+        <div class="met">
+            <div class="met-icon">🎯</div>
+            <div class="met-val">{rfm['Cluster_KMeans'].nunique()}</div>
+            <div class="met-lbl">Segments</div>
+            <div class="met-sub">AI-Classified</div>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col3:
+        st.markdown(f"""
+        <div class="met">
+            <div class="met-icon">💰</div>
+            <div class="met-val">£{rfm['Monetary'].sum()/1e6:.2f}M</div>
+            <div class="met-lbl">Revenue</div>
+            <div class="met-sub">Avg £{rfm['Monetary'].mean():.0f}</div>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col4:
+        st.markdown(f"""
+        <div class="met">
+            <div class="met-icon">📈</div>
+            <div class="met-val">£{rfm['AvgOrderValue'].mean():.0f}</div>
+            <div class="met-lbl">Avg Order</div>
+            <div class="met-sub">Peak £{rfm['AvgOrderValue'].max():.0f}</div>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    # Filters
+    st.markdown('<div class="filt">', unsafe_allow_html=True)
+    st.markdown('<div class="filt-t">🎛️ Smart Filters</div>', unsafe_allow_html=True)
+    
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        # Segment Filter
+        segment_options = [{'label': '🌐 All Segments', 'value': 'all'}]
+        for c, p in profs.items():
+            if p['name'] == '🏆 Champions' and c in champion_details:
+                label = f"{p['name']} - {champion_details[c]['tier']}"
+            else:
+                label = p['name']
+            segment_options.append({'label': label, 'value': c})
         
-        # Metrics
-        col1, col2, col3, col4 = st.columns(4)
-        with col1:
-            st.markdown(f"""
-            <div class="met">
-                <div class="met-icon">👥</div>
-                <div class="met-val">{len(rfm):,}</div>
-                <div class="met-lbl">Customers</div>
-                <div class="met-sub">Active Database</div>
-            </div>
-            """, unsafe_allow_html=True)
-        
-        with col2:
-            st.markdown(f"""
-            <div class="met">
-                <div class="met-icon">🎯</div>
-                <div class="met-val">{rfm['Cluster_KMeans'].nunique()}</div>
-                <div class="met-lbl">Segments</div>
-                <div class="met-sub">AI-Classified</div>
-            </div>
-            """, unsafe_allow_html=True)
-        
-        with col3:
-            st.markdown(f"""
-            <div class="met">
-                <div class="met-icon">💰</div>
-                <div class="met-val">£{rfm['Monetary'].sum()/1e6:.2f}M</div>
-                <div class="met-lbl">Revenue</div>
-                <div class="met-sub">Avg £{rfm['Monetary'].mean():.0f}</div>
-            </div>
-            """, unsafe_allow_html=True)
-        
-        with col4:
-            st.markdown(f"""
-            <div class="met">
-                <div class="met-icon">📈</div>
-                <div class="met-val">£{rfm['AvgOrderValue'].mean():.0f}</div>
-                <div class="met-lbl">Avg Order</div>
-                <div class="met-sub">Peak £{rfm['AvgOrderValue'].max():.0f}</div>
-            </div>
-            """, unsafe_allow_html=True)
-        
-        # Filters
-        st.markdown('<div class="filt">', unsafe_allow_html=True)
-        st.markdown('<div class="filt-t">🎛️ Smart Filters</div>', unsafe_allow_html=True)
-        
-        col1, col2, col3 = st.columns(3)
-        with col1:
-            # Segment Filter
-            segment_options = [{'label':'🌐 All Segments', 'value':'all'}]
-            for c, p in profs.items():
-                label = f"{p['name']} - {champion_details[c]['tier']}" if p['name']=='🏆 Champions' and c in champion_details else p['name']
-                segment_options.append({'label': label, 'value': c})
-            
-            segment_filter = st.selectbox(
-                "🎨 Segment Filter",
-                options=[opt['value'] for opt in segment_options],
-                format_func=lambda x: next((opt['label'] for opt in segment_options if opt['value'] == x), x),
-                index=0,
-                key="segment_filter"
-            )
-        
-        with col2:
-            # RFM Score Range
-            rfm_min = int(rfm['RFM_Score'].min())
-            rfm_max = int(rfm['RFM_Score'].max())
-            rfm_filter = st.slider(
-                "📊 RFM Score Range",
-                min_value=rfm_min,
-                max_value=rfm_max,
-                value=[rfm_min, rfm_max],
-                key="rfm_filter"
-            )
-        
-        with col3:
-            # Priority Level
-            priority_options = [
-                {'label':'🌐 All Priorities', 'value':'all'},
-                {'label':'🔴 CRITICAL', 'value':'CRITICAL'},
-                {'label':'🔥 URGENT', 'value':'URGENT'},
-                {'label':'⚡ HIGH', 'value':'HIGH'},
-                {'label':'📊 MEDIUM', 'value':'MEDIUM'}
-            ]
-            priority_filter = st.selectbox(
-                "🔥 Priority Level",
-                options=[opt['value'] for opt in priority_options],
-                format_func=lambda x: next((opt['label'] for opt in priority_options if opt['value'] == x), x),
-                index=0,
-                key="priority_filter"
-            )
-        
-        st.markdown('</div>', unsafe_allow_html=True)
-        
-        # Tabs
-        tab1, tab2, tab3 = st.tabs(["📊 Analytics Dashboard", "🎯 Growth Strategies", "💡 AI Insights"])
-        
-        with tab1:
-            # Generate charts based on filters
-            f1, f2, f3, f4, f5, f6, f7, filtered_df = create_charts(
-                rfm, segment_filter, rfm_filter, priority_filter
-            )
+        segment_filter = st.selectbox(
+            "🎨 Segment Filter",
+            options=[opt['value'] for opt in segment_options],
+            format_func=lambda x: next((opt['label'] for opt in segment_options if opt['value'] == x), x),
+            index=0,
+            key="segment_filter"
+        )
+    
+    with col2:
+        # RFM Score Range
+        rfm_min = int(rfm['RFM_Score'].min())
+        rfm_max = int(rfm['RFM_Score'].max())
+        rfm_filter = st.slider(
+            "📊 RFM Score Range",
+            min_value=rfm_min,
+            max_value=rfm_max,
+            value=[rfm_min, rfm_max],
+            key="rfm_filter"
+        )
+    
+    with col3:
+        # Priority Level
+        priority_options = [
+            {'label': '🌐 All Priorities', 'value': 'all'},
+            {'label': '🔴 CRITICAL', 'value': 'CRITICAL'},
+            {'label': '🔥 URGENT', 'value': 'URGENT'},
+            {'label': '⚡ HIGH', 'value': 'HIGH'},
+            {'label': '📊 MEDIUM', 'value': 'MEDIUM'}
+        ]
+        priority_filter = st.selectbox(
+            "🔥 Priority Level",
+            options=[opt['value'] for opt in priority_options],
+            format_func=lambda x: next((opt['label'] for opt in priority_options if opt['value'] == x), x),
+            index=0,
+            key="priority_filter"
+        )
+    
+    st.markdown('</div>', unsafe_allow_html=True)
+    
+    # Apply filters
+    filtered_df = rfm[
+        (rfm['RFM_Score'] >= rfm_filter[0]) & 
+        (rfm['RFM_Score'] <= rfm_filter[1])
+    ]
+    
+    if segment_filter != 'all':
+        filtered_df = filtered_df[filtered_df['Cluster_KMeans'] == segment_filter]
+    
+    if priority_filter != 'all':
+        filtered_df = filtered_df[filtered_df['Priority'] == priority_filter]
+    
+    # Tabs
+    tab1, tab2, tab3 = st.tabs(["📊 Analytics Dashboard", "🎯 Growth Strategies", "💡 AI Insights"])
+    
+    with tab1:
+        if len(filtered_df) > 0:
+            # Generate charts based on filtered data
+            f1, f2, f3, f4, f5, f6, f7 = create_charts(filtered_df)
             
             # Row 1: Two charts
             col1, col2 = st.columns(2)
             with col1:
                 st.markdown('<div class="chart">', unsafe_allow_html=True)
-                st.plotly_chart(f1, use_container_width=True)
+                st.plotly_chart(f1, use_container_width=True, config={'displayModeBar': False})
                 st.markdown('</div>', unsafe_allow_html=True)
             
             with col2:
                 st.markdown('<div class="chart">', unsafe_allow_html=True)
-                st.plotly_chart(f2, use_container_width=True)
+                st.plotly_chart(f2, use_container_width=True, config={'displayModeBar': False})
                 st.markdown('</div>', unsafe_allow_html=True)
             
             # Row 2: Full width 3D chart
             st.markdown('<div class="chart chart-full">', unsafe_allow_html=True)
-            st.plotly_chart(f3, use_container_width=True)
+            st.plotly_chart(f3, use_container_width=True, config={'displayModeBar': False})
             st.markdown('</div>', unsafe_allow_html=True)
             
             # Row 3: Three histograms
             col1, col2, col3 = st.columns(3)
             with col1:
                 st.markdown('<div class="chart">', unsafe_allow_html=True)
-                st.plotly_chart(f4, use_container_width=True)
+                st.plotly_chart(f4, use_container_width=True, config={'displayModeBar': False})
                 st.markdown('</div>', unsafe_allow_html=True)
             
             with col2:
                 st.markdown('<div class="chart">', unsafe_allow_html=True)
-                st.plotly_chart(f5, use_container_width=True)
+                st.plotly_chart(f5, use_container_width=True, config={'displayModeBar': False})
                 st.markdown('</div>', unsafe_allow_html=True)
             
             with col3:
                 st.markdown('<div class="chart">', unsafe_allow_html=True)
-                st.plotly_chart(f6, use_container_width=True)
+                st.plotly_chart(f6, use_container_width=True, config={'displayModeBar': False})
                 st.markdown('</div>', unsafe_allow_html=True)
             
             # Row 4: Full width table
             st.markdown('<div class="chart chart-full">', unsafe_allow_html=True)
-            st.plotly_chart(f7, use_container_width=True)
+            st.plotly_chart(f7, use_container_width=True, config={'displayModeBar': False})
             st.markdown('</div>', unsafe_allow_html=True)
+        else:
+            st.markdown('<div class="empty-message">No data available for the selected filters.</div>', unsafe_allow_html=True)
+    
+    with tab2:
+        # Champion Breakdown Section
+        champion_clusters = [c for c in filtered_df['Cluster_KMeans'].unique() 
+                            if profs[c]['name'] == '🏆 Champions']
         
-        with tab2:
-            # Generate filtered data for strategies
-            filtered_df = rfm[(rfm['RFM_Score'] >= rfm_filter[0]) & (rfm['RFM_Score'] <= rfm_filter[1])]
-            if segment_filter != 'all':
-                filtered_df = filtered_df[filtered_df['Cluster_KMeans'] == segment_filter]
-            if priority_filter != 'all':
-                filtered_df = filtered_df[filtered_df['Priority'] == priority_filter]
+        if len(champion_clusters) > 0:
+            champ_cards_html = ""
+            for cid in sorted(champion_clusters):
+                if cid in champion_details:
+                    det = champion_details[cid]
+                    champ_cards_html += f"""
+                    <div class="champ-card">
+                        <div class="champ-num">Champion C{cid}</div>
+                        <div class="champ-tier">🏅 {det['tier']}</div>
+                        <div class="champ-desc">{det['desc']}</div>
+                        <div class="champ-char">📊 Characteristics: {det['char']}</div>
+                    </div>
+                    """
             
-            # Champion Breakdown Section
-            champion_clusters = [c for c in filtered_df['Cluster_KMeans'].unique() 
-                                if profs[c]['name'] == '🏆 Champions']
-            
-            if len(champion_clusters) > 0:
-                champ_cards = []
-                for cid in sorted(champion_clusters):
-                    if cid in champion_details:
-                        det = champion_details[cid]
-                        champ_cards.append(f"""
-                        <div class="champ-card">
-                            <div class="champ-num">Champion C{cid}</div>
-                            <div class="champ-tier">🏅 {det['tier']}</div>
-                            <div class="champ-desc">{det['desc']}</div>
-                            <div class="champ-char">📊 Characteristics: {det['char']}</div>
-                        </div>
-                        """)
+            if champ_cards_html:
+                st.markdown(f"""
+                <div class="champ-break">
+                    <div class="champ-break-t">🏆 Champion Segments Breakdown</div>
+                    <div style="text-align:center; font-size:1.1rem; margin-bottom:24px; opacity:0.95">
+                        Understanding the 4 Different Champion Tiers
+                    </div>
+                    <div class="champ-grid">
+                        {champ_cards_html}
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
+        
+        # Strategy Cards
+        st_cards_html = ""
+        for cid, p in profs.items():
+            if segment_filter == 'all' or segment_filter == cid:
+                # Build tactics HTML
+                tactics_html = ""
+                for tactic in p['tactics']:
+                    tactics_html += f'<div class="tact">{tactic}</div>'
                 
-                if champ_cards:
-                    st.markdown("""
-                    <div class="champ-break">
-                        <div class="champ-break-t">🏆 Champion Segments Breakdown</div>
-                        <div style="text-align:center; font-size:1.1rem; margin-bottom:24px; opacity:0.95">
-                            Understanding the 4 Different Champion Tiers
-                        </div>
-                        <div class="champ-grid">
-                    """ + "".join(champ_cards) + """
+                # Build KPIs HTML
+                kpis_html = ""
+                for kpi in p['kpis']:
+                    kpis_html += f'<div class="kpi">{kpi}</div>'
+                
+                st_cards_html += f"""
+                <div class="strat" style="background: {p['grad']}">
+                    <div class="strat-hdr">
+                        <div class="strat-name">{p['name']}</div>
+                        <div class="pri-badge">{p['priority']}</div>
+                    </div>
+                    <div class="strat-sub">📋 {p['strategy']} Strategy</div>
+                    <div class="tactics">
+                        <div class="tact-t">🎯 Key Tactics</div>
+                        {tactics_html}
+                    </div>
+                    <div class="tactics">
+                        <div class="tact-t">📊 Target KPIs</div>
+                        <div class="kpi-g">
+                            {kpis_html}
                         </div>
                     </div>
-                    """, unsafe_allow_html=True)
-            
-            # Strategy Cards
-            st_cards = []
-            for cid, p in profs.items():
-                if segment_filter == 'all' or segment_filter == cid:
-                    tactics_html = "".join([f'<div class="tact">{t}</div>' for t in p['tactics']])
-                    kpis_html = "".join([f'<div class="kpi">{k}</div>' for k in p['kpis']])
-                    
-                    st_cards.append(f"""
-                    <div class="strat" style="background: {p['grad']}">
-                        <div class="strat-hdr">
-                            <div class="strat-name">{p['name']}</div>
-                            <div class="pri-badge">{p['priority']}</div>
+                    <div class="budget">
+                        <div>
+                            <div class="budget-l">Budget Allocation</div>
+                            <div class="budget-v">{p['budget']}</div>
                         </div>
-                        <div class="strat-sub">📋 {p['strategy']} Strategy</div>
-                        <div class="tactics">
-                            <div class="tact-t">🎯 Key Tactics</div>
-                            {tactics_html}
-                        </div>
-                        <div class="tactics">
-                            <div class="tact-t">📊 Target KPIs</div>
-                            <div class="kpi-g">
-                                {kpis_html}
-                            </div>
-                        </div>
-                        <div class="budget">
-                            <div>
-                                <div class="budget-l">Budget Allocation</div>
-                                <div class="budget-v">{p['budget']}</div>
-                            </div>
-                            <div>
-                                <div class="budget-l">ROI Target</div>
-                                <div class="budget-v">{p['roi']}</div>
-                            </div>
+                        <div>
+                            <div class="budget-l">ROI Target</div>
+                            <div class="budget-v">{p['roi']}</div>
                         </div>
                     </div>
-                    """)
-            
-            st.markdown(f'<div class="strat-g">{"".join(st_cards)}</div>', unsafe_allow_html=True)
+                </div>
+                """
         
-        with tab3:
-            # Generate filtered data for insights
-            filtered_df = rfm[(rfm['RFM_Score'] >= rfm_filter[0]) & (rfm['RFM_Score'] <= rfm_filter[1])]
-            if segment_filter != 'all':
-                filtered_df = filtered_df[filtered_df['Cluster_KMeans'] == segment_filter]
-            if priority_filter != 'all':
-                filtered_df = filtered_df[filtered_df['Priority'] == priority_filter]
-            
+        if st_cards_html:
+            st.markdown(f'<div class="strat-g">{st_cards_html}</div>', unsafe_allow_html=True)
+        else:
+            st.markdown('<div class="empty-message">No strategy cards available for the selected filters.</div>', unsafe_allow_html=True)
+    
+    with tab3:
+        if len(filtered_df) > 0:
             # Calculate insights
-            highest_revenue = filtered_df.groupby('Cluster_Label')['Monetary'].sum().idxmax()
-            largest_group = filtered_df['Cluster_Label'].value_counts().idxmax()
-            largest_group_count = filtered_df['Cluster_Label'].value_counts().max()
-            best_aov_segment = filtered_df.groupby('Cluster_Label')['AvgOrderValue'].mean().idxmax()
-            best_aov_value = filtered_df.groupby('Cluster_Label')['AvgOrderValue'].mean().max()
-            most_frequent = filtered_df.groupby('Cluster_Label')['Frequency'].mean().idxmax()
-            most_frequent_value = filtered_df.groupby('Cluster_Label')['Frequency'].mean().max()
+            highest_revenue = filtered_df.groupby('Cluster_Label')['Monetary'].sum()
+            highest_revenue_segment = highest_revenue.idxmax() if not highest_revenue.empty else "N/A"
+            
+            largest_group = filtered_df['Cluster_Label'].value_counts()
+            largest_group_segment = largest_group.idxmax() if not largest_group.empty else "N/A"
+            largest_group_count = largest_group.max() if not largest_group.empty else 0
+            
+            best_aov = filtered_df.groupby('Cluster_Label')['AvgOrderValue'].mean()
+            best_aov_segment = best_aov.idxmax() if not best_aov.empty else "N/A"
+            best_aov_value = best_aov.max() if not best_aov.empty else 0
+            
+            most_frequent = filtered_df.groupby('Cluster_Label')['Frequency'].mean()
+            most_frequent_segment = most_frequent.idxmax() if not most_frequent.empty else "N/A"
+            most_frequent_value = most_frequent.max() if not most_frequent.empty else 0
             
             insights_html = f"""
             <div class="ins">
@@ -612,10 +705,10 @@ def main():
                     <div class="ins-card">
                         <div class="ins-h">📊 Top Performers</div>
                         <ul class="ins-list">
-                            <li>🏆 Highest Revenue: {highest_revenue}</li>
-                            <li>👥 Largest Group: {largest_group} ({largest_group_count:,} customers)</li>
+                            <li>🏆 Highest Revenue: {highest_revenue_segment}</li>
+                            <li>👥 Largest Group: {largest_group_segment} ({largest_group_count:,} customers)</li>
                             <li>💰 Best AOV: {best_aov_segment} (£{best_aov_value:.0f})</li>
-                            <li>🔄 Most Frequent: {most_frequent} ({most_frequent_value:.1f} orders)</li>
+                            <li>🔄 Most Frequent: {most_frequent_segment} ({most_frequent_value:.1f} orders)</li>
                         </ul>
                     </div>
                     <div class="ins-card">
@@ -632,15 +725,17 @@ def main():
             </div>
             """
             st.markdown(insights_html, unsafe_allow_html=True)
-        
-        # Footer
-        st.markdown("""
-        <div class="foot">
-            Customer Intelligence Hub v2.0 • Powered by AI Segmentation • Data Updated Daily
-        </div>
-        """, unsafe_allow_html=True)
-        
-        st.markdown('</div>', unsafe_allow_html=True)
+        else:
+            st.markdown('<div class="empty-message">No insights available for the selected filters.</div>', unsafe_allow_html=True)
+    
+    # Footer
+    st.markdown("""
+    <div class="foot">
+        Customer Intelligence Hub v2.0 • Powered by AI Segmentation • Data Updated Daily
+    </div>
+    """, unsafe_allow_html=True)
+    
+    st.markdown('</div>', unsafe_allow_html=True)
 
 if __name__ == "__main__":
     main()
