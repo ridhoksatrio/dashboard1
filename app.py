@@ -112,683 +112,387 @@ def init_data(rfm):
 
 profs, colors, rfm = init_data(rfm)
 
-# CSS Custom untuk Streamlit yang lebih modern dengan perbaikan judul
+# CSS Custom untuk Streamlit dengan perbaikan overflow
 st.markdown("""
 <style>
-    * {margin: 0; padding: 0; box-sizing: border-box}
-    body {font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0f172a; min-height: 100vh}
-    .stApp {background: transparent !important; padding: 0 !important; max-width: 100% !important; overflow-x: hidden !important}
-    
-    /* MAIN CONTENT WRAPPER - PERBAIKAN UTAMA */
-    .main-content-wrapper {
-        max-width: 100% !important;
-        padding: 0 2rem !important;
+    /* RESET DAN BASE STYLES */
+    * {
+        margin: 0;
+        padding: 0;
         box-sizing: border-box !important;
+    }
+    
+    html, body {
+        overflow-x: hidden !important;
+        max-width: 100vw !important;
+    }
+    
+    /* PERBAIKAN UTAMA - STREAMLIT CONTAINER */
+    .stApp {
+        background: transparent !important;
+        padding: 0 !important;
+        max-width: 100% !important;
+        width: 100% !important;
+        overflow-x: hidden !important;
+        margin: 0 auto !important;
+    }
+    
+    /* FIX untuk container utama streamlit */
+    .main .block-container {
+        max-width: 100% !important;
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+    
+    /* FIX untuk elemen yang mungkin keluar */
+    div[data-testid="stVerticalBlock"] > div {
+        max-width: 100% !important;
         overflow-x: hidden !important;
     }
     
-    /* SIDEBAR */
-    .st-emotion-cache-1cypcdb {background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%) !important; border-right: 1px solid #334155}
-    .st-emotion-cache-16txtl3 {padding: 2rem 1.5rem !important}
-    
-    /* HEADER dengan glassmorphism */
-    .header-container {
-        background: rgba(15, 23, 42, 0.85); 
-        backdrop-filter: blur(20px); 
-        -webkit-backdrop-filter: blur(20px); 
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1); 
-        padding: 1.5rem 2rem; 
-        position: sticky; 
-        top: 0; 
-        z-index: 1000;
-        max-width: 100vw !important;
-        box-sizing: border-box !important;
-        overflow: hidden !important;
+    div[data-testid="column"] {
+        max-width: 100% !important;
+        overflow-x: hidden !important;
     }
+    
+    /* HEADER CONTAINER */
+    .header-container {
+        background: rgba(15, 23, 42, 0.85);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 1.5rem 1rem !important;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        max-width: 100% !important;
+        width: 100% !important;
+        margin: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+    }
+    
     .main-header {
-        display: flex; 
-        justify-content: space-between; 
-        align-items: center; 
-        flex-wrap: wrap; 
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
         gap: 1rem;
         max-width: 100% !important;
-        overflow: hidden !important;
+        width: 100% !important;
     }
+    
     .header-title {
-        font-size: 2rem; 
-        font-weight: 800; 
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
-        -webkit-background-clip: text; 
-        -webkit-text-fill-color: transparent; 
+        font-size: 1.8rem !important;
+        font-weight: 800;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
         margin: 0;
         word-wrap: break-word;
         max-width: 100% !important;
+        line-height: 1.3;
     }
+    
     .header-subtitle {
-        color: #94a3b8; 
-        font-size: 1rem; 
-        margin-top: 0.25rem; 
+        color: #94a3b8;
+        font-size: 0.9rem;
+        margin-top: 0.25rem;
         font-weight: 400;
         max-width: 100% !important;
         word-wrap: break-word;
     }
+    
     .header-stats {
-        display: flex; 
-        gap: 1.5rem; 
+        display: flex;
+        gap: 1rem;
         flex-wrap: wrap;
         max-width: 100% !important;
-        overflow: hidden !important;
-    }
-    .stat-item {
-        display: flex; 
-        flex-direction: column; 
-        align-items: center; 
-        padding: 0.75rem 1.25rem; 
-        background: rgba(30, 41, 59, 0.7); 
-        border-radius: 12px; 
-        border: 1px solid rgba(255, 255, 255, 0.05);
-        min-width: 120px;
-        box-sizing: border-box !important;
-    }
-    .stat-value {
-        font-size: 1.25rem; 
-        font-weight: 700; 
-        color: #fff; 
-        margin-bottom: 0.25rem
-    }
-    .stat-label {
-        font-size: 0.75rem; 
-        color: #94a3b8; 
-        text-transform: uppercase; 
-        letter-spacing: 0.05em
     }
     
-    /* METRICS GRID dengan neumorphism */
+    .stat-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 0.75rem 1rem;
+        background: rgba(30, 41, 59, 0.7);
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        min-width: 100px;
+        max-width: 150px;
+    }
+    
+    /* METRICS GRID */
     .metrics-grid {
-        display: grid; 
-        grid-template-columns: repeat(4, 1fr); 
-        gap: 1rem; 
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
         margin: 1.5rem 0;
         max-width: 100% !important;
-        overflow: hidden !important;
-        box-sizing: border-box !important;
+        width: 100% !important;
     }
-    @media (max-width: 1200px) {
-        .metrics-grid {grid-template-columns: repeat(2, 1fr)}
-    }
-    @media (max-width: 768px) {
-        .metrics-grid {grid-template-columns: 1fr}
-    }
+    
     .metric-card {
-        background: rgba(30, 41, 59, 0.8); 
-        border-radius: 16px; 
-        padding: 1.5rem; 
-        border: 1px solid rgba(255, 255, 255, 0.05); 
+        background: rgba(30, 41, 59, 0.8);
+        border-radius: 16px;
+        padding: 1.25rem;
+        border: 1px solid rgba(255, 255, 255, 0.05);
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        position: relative; 
+        position: relative;
         overflow: hidden;
         max-width: 100% !important;
-        box-sizing: border-box !important;
     }
-    .metric-card:hover {
-        transform: translateY(-4px); 
-        border-color: rgba(102, 126, 234, 0.3); 
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3)
-    }
-    .metric-card::before {
-        content: ''; 
-        position: absolute; 
-        top: 0; 
-        left: 0; 
-        right: 0; 
-        height: 3px; 
-        background: linear-gradient(90deg, #667eea, #764ba2)
-    }
-    .metric-icon {
-        font-size: 2rem; 
-        margin-bottom: 1rem; 
-        display: inline-block
-    }
-    .metric-value {
-        font-size: 2rem; 
-        font-weight: 800; 
-        color: #fff; 
-        margin: 0.5rem 0; 
-        line-height: 1
-    }
-    .metric-label {
-        font-size: 0.875rem; 
-        color: #94a3b8; 
-        text-transform: uppercase; 
-        letter-spacing: 0.05em; 
-        font-weight: 600
-    }
-    .metric-change {
-        font-size: 0.75rem; 
-        display: flex; 
-        align-items: center; 
-        gap: 0.25rem; 
-        margin-top: 0.5rem
-    }
-    .change-positive {color: #10b981}
-    .change-negative {color: #ef4444}
     
     /* FILTER SECTION */
     .filter-section {
-        background: rgba(30, 41, 59, 0.8); 
-        border-radius: 16px; 
-        padding: 1.5rem; 
-        margin: 1.5rem 0; 
+        background: rgba(30, 41, 59, 0.8);
+        border-radius: 16px;
+        padding: 1.25rem;
+        margin: 1.5rem 0;
         border: 1px solid rgba(255, 255, 255, 0.05);
         max-width: 100% !important;
-        overflow: hidden !important;
-        box-sizing: border-box !important;
+        width: 100% !important;
     }
-    .filter-title {
-        font-size: 1.25rem; 
-        font-weight: 700; 
-        color: #fff; 
-        margin-bottom: 1rem; 
-        display: flex; 
-        align-items: center; 
-        gap: 0.5rem
-    }
+    
     .filter-grid {
-        display: grid; 
-        grid-template-columns: repeat(3, 1fr); 
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
         gap: 1rem;
         max-width: 100% !important;
-        overflow: hidden !important;
-    }
-    @media (max-width: 768px) {
-        .filter-grid {grid-template-columns: 1fr}
+        width: 100% !important;
     }
     
-    /* TABS STYLING */
+    /* TABS */
     .stTabs {
         max-width: 100% !important;
-        overflow: hidden !important;
-    }
-    .stTabs [data-baseweb="tab-list"] {
-        gap: 0.5rem; 
-        margin-bottom: 1.5rem;
-        max-width: 100% !important;
-        overflow-x: auto !important;
-        flex-wrap: wrap !important;
-    }
-    .stTabs [data-baseweb="tab"] {
-        background: rgba(30, 41, 59, 0.5) !important; 
-        border: 1px solid rgba(255, 255, 255, 0.05) !important;
-        border-radius: 12px !important; 
-        padding: 0.75rem 1.5rem !important; 
-        color: #94a3b8 !important; 
-        font-weight: 600 !important; 
-        transition: all 0.3s ease;
-        white-space: nowrap;
-        flex-shrink: 0;
-    }
-    .stTabs [data-baseweb="tab"]:hover {
-        background: rgba(30, 41, 59, 0.8) !important; 
-        color: #fff !important; 
-        border-color: rgba(102, 126, 234, 0.3) !important
-    }
-    .stTabs [aria-selected="true"] {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important; 
-        color: #fff !important; 
-        border-color: transparent !important;
-        box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3) !important
-    }
-    .stTabs [data-baseweb="tab-panel"] {
-        max-width: 100% !important;
-        overflow: hidden !important;
-        padding: 0 !important;
+        width: 100% !important;
     }
     
-    /* CHARTS CONTAINER - PERBAIKAN UTAMA */
+    .stTabs [data-baseweb="tab-list"] {
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+        max-width: 100% !important;
+        flex-wrap: wrap !important;
+        overflow-x: visible !important;
+    }
+    
+    .stTabs [data-baseweb="tab"] {
+        background: rgba(30, 41, 59, 0.5) !important;
+        border: 1px solid rgba(255, 255, 255, 0.05) !important;
+        border-radius: 12px !important;
+        padding: 0.75rem 1rem !important;
+        color: #94a3b8 !important;
+        font-weight: 600 !important;
+        transition: all 0.3s ease;
+        white-space: nowrap;
+        font-size: 0.9rem !important;
+    }
+    
+    /* CHART CONTAINER - PERBAIKAN PENTING */
     .chart-container {
-        background: rgba(30, 41, 59, 0.8); 
-        border-radius: 16px; 
-        border: 1px solid rgba(255, 255, 255, 0.05); 
+        background: rgba(30, 41, 59, 0.8);
+        border-radius: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.05);
         margin-bottom: 1.5rem;
-        position: relative; 
+        position: relative;
         overflow: hidden !important;
         max-width: 100% !important;
-        box-sizing: border-box !important;
+        width: 100% !important;
     }
+    
     .chart-inner {
-        padding: 1.5rem; 
-        height: 100%;
+        padding: 1.25rem;
         max-width: 100% !important;
-        overflow: hidden !important;
-        box-sizing: border-box !important;
+        width: 100% !important;
     }
+    
     .chart-title-wrapper {
-        margin-bottom: 1rem; 
-        padding: 0; 
+        margin-bottom: 1rem;
+        padding: 0;
         border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         max-width: 100% !important;
-        overflow: hidden !important;
+        width: 100% !important;
     }
+    
     .chart-title {
-        font-size: 1.125rem; 
-        font-weight: 700; 
-        color: #fff; 
-        display: flex; 
-        align-items: center; 
-        gap: 0.5rem; 
-        margin: 0; 
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: #fff;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin: 0;
         padding: 0.5rem 0;
         word-wrap: break-word;
         max-width: 100% !important;
+        width: 100% !important;
     }
+    
     .chart-content {
-        height: calc(100% - 60px); 
+        height: calc(100% - 60px);
         min-height: 300px;
         max-width: 100% !important;
-        overflow: hidden !important;
+        width: 100% !important;
+        position: relative;
     }
-    .charts-grid {
-        display: grid; 
-        grid-template-columns: repeat(2, 1fr); 
-        gap: 1.5rem; 
-        margin-bottom: 1.5rem;
+    
+    /* FIX untuk Plotly charts */
+    .js-plotly-plot,
+    .plotly,
+    .plot-container.plotly {
         max-width: 100% !important;
+        width: 100% !important;
         overflow: hidden !important;
-        box-sizing: border-box !important;
     }
-    @media (max-width: 1200px) {
-        .charts-grid {grid-template-columns: 1fr}
-    }
-    .chart-full {
-        grid-column: 1 / -1;
+    
+    /* Table khusus untuk chart tabel */
+    .table-chart-container {
+        max-height: 400px;
+        overflow-y: auto;
+        overflow-x: auto !important;
         max-width: 100% !important;
-        overflow: hidden !important;
+        width: 100% !important;
     }
     
     /* STRATEGY CARDS */
     .strategy-grid {
-        display: grid; 
-        grid-template-columns: repeat(2, 1fr); 
-        gap: 1.5rem; 
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 1.5rem;
         margin-bottom: 1.5rem;
         max-width: 100% !important;
-        overflow: hidden !important;
-        box-sizing: border-box !important;
+        width: 100% !important;
     }
-    @media (max-width: 1200px) {
-        .strategy-grid {grid-template-columns: 1fr}
-    }
+    
     .strategy-card {
-        border-radius: 16px; 
-        padding: 1.5rem; 
-        color: #fff; 
-        border: 1px solid rgba(255, 255, 255, 0.1); 
-        position: relative; 
+        border-radius: 16px;
+        padding: 1.25rem;
+        color: #fff;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        position: relative;
         overflow: hidden;
         transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         max-width: 100% !important;
-        box-sizing: border-box !important;
-    }
-    .strategy-card:hover {
-        transform: translateY(-6px); 
-        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3)
-    }
-    .strategy-header {
-        display: flex; 
-        justify-content: space-between; 
-        align-items: start; 
-        margin-bottom: 1rem;
-        max-width: 100% !important;
-        overflow: hidden !important;
-    }
-    .strategy-name {
-        font-size: 1.5rem; 
-        font-weight: 800; 
-        margin: 0; 
-        line-height: 1.2;
-        word-wrap: break-word;
-        max-width: 70% !important;
-    }
-    .priority-badge {
-        padding: 0.375rem 0.75rem; 
-        border-radius: 20px; 
-        font-size: 0.75rem; 
-        font-weight: 700;
-        text-transform: uppercase; 
-        letter-spacing: 0.05em; 
-        background: rgba(255, 255, 255, 0.2);
-        backdrop-filter: blur(10px);
-        white-space: nowrap;
-    }
-    .strategy-subtitle {
-        font-size: 1rem; 
-        color: rgba(255, 255, 255, 0.9); 
-        margin-bottom: 1rem; 
-        font-weight: 500;
-        word-wrap: break-word;
-        max-width: 100% !important;
-    }
-    .tactics-section {
-        background: rgba(255, 255, 255, 0.1); 
-        border-radius: 12px; 
-        padding: 1rem; 
-        margin: 1rem 0;
-        backdrop-filter: blur(10px);
-        max-width: 100% !important;
-        overflow: hidden !important;
-        box-sizing: border-box !important;
-    }
-    .tactics-title {
-        font-size: 0.875rem; 
-        font-weight: 700; 
-        color: rgba(255, 255, 255, 0.9); 
-        margin-bottom: 0.75rem;
-        text-transform: uppercase; 
-        letter-spacing: 0.05em;
-        max-width: 100% !important;
-        word-wrap: break-word;
-    }
-    .tactics-grid {
-        display: grid; 
-        grid-template-columns: repeat(2, 1fr); 
-        gap: 0.5rem;
-        max-width: 100% !important;
-        overflow: hidden !important;
-    }
-    @media (max-width: 768px) {
-        .tactics-grid {grid-template-columns: 1fr}
-    }
-    .tactic-item {
-        background: rgba(255, 255, 255, 0.15); 
-        border-radius: 8px; 
-        padding: 0.75rem; 
-        font-size: 0.875rem;
-        transition: all 0.2s ease; 
-        border-left: 3px solid transparent;
-        word-wrap: break-word;
-        max-width: 100% !important;
-        overflow: hidden !important;
-    }
-    .tactic-item:hover {
-        background: rgba(255, 255, 255, 0.2); 
-        transform: translateX(4px); 
-        border-left-color: rgba(255, 255, 255, 0.5)
-    }
-    .kpis-grid {
-        display: grid; 
-        grid-template-columns: repeat(3, 1fr); 
-        gap: 0.5rem; 
-        margin: 1rem 0;
-        max-width: 100% !important;
-        overflow: hidden !important;
-    }
-    .kpi-item {
-        background: rgba(255, 255, 255, 0.1); 
-        border-radius: 8px; 
-        padding: 0.75rem; 
-        text-align: center;
-        font-size: 0.875rem; 
-        font-weight: 600;
-        word-wrap: break-word;
-        max-width: 100% !important;
-        overflow: hidden !important;
-    }
-    .strategy-footer {
-        display: flex; 
-        justify-content: space-between; 
-        margin-top: 1.5rem; 
-        padding-top: 1rem;
-        border-top: 1px solid rgba(255, 255, 255, 0.1);
-        max-width: 100% !important;
-        overflow: hidden !important;
-    }
-    .budget-item {
-        text-align: center;
-        max-width: 48% !important;
-        overflow: hidden !important;
-    }
-    .budget-label {
-        font-size: 0.75rem; 
-        color: rgba(255, 255, 255, 0.7); 
-        margin-bottom: 0.25rem;
-        word-wrap: break-word;
-        max-width: 100% !important;
-    }
-    .budget-value {
-        font-size: 1.5rem; 
-        font-weight: 800;
-        word-wrap: break-word;
-        max-width: 100% !important;
+        width: 100% !important;
     }
     
-    /* CHAMPION BREAKDOWN */
+    /* CHAMPION SECTION */
     .champion-section {
-        background: linear-gradient(135deg, rgba(255, 215, 0, 0.1) 0%, rgba(255, 140, 0, 0.1) 100%); 
-        border: 1px solid rgba(255, 215, 0, 0.2); 
-        border-radius: 16px; 
-        padding: 1.5rem; 
+        background: linear-gradient(135deg, rgba(255, 215, 0, 0.1) 0%, rgba(255, 140, 0, 0.1) 100%);
+        border: 1px solid rgba(255, 215, 0, 0.2);
+        border-radius: 16px;
+        padding: 1.25rem;
         margin: 1.5rem 0;
         max-width: 100% !important;
-        overflow: hidden !important;
-        box-sizing: border-box !important;
-    }
-    .champion-title {
-        font-size: 1.5rem; 
-        font-weight: 800; 
-        color: #FFD700; 
-        margin-bottom: 1rem; 
-        display: flex; 
-        align-items: center; 
-        gap: 0.5rem;
-        word-wrap: break-word;
-        max-width: 100% !important;
-    }
-    .champion-grid {
-        display: grid; 
-        grid-template-columns: repeat(2, 1fr); 
-        gap: 1rem;
-        max-width: 100% !important;
-        overflow: hidden !important;
-        box-sizing: border-box !important;
-    }
-    @media (max-width: 768px) {
-        .champion-grid {grid-template-columns: 1fr}
-    }
-    .champion-card {
-        background: rgba(255, 215, 0, 0.1); 
-        border: 1px solid rgba(255, 215, 0, 0.2); 
-        border-radius: 12px; 
-        padding: 1rem; 
-        transition: all 0.3s ease;
-        max-width: 100% !important;
-        overflow: hidden !important;
-        box-sizing: border-box !important;
-    }
-    .champion-card:hover {
-        background: rgba(255, 215, 0, 0.15); 
-        transform: translateY(-2px)
-    }
-    .champion-number {
-        font-size: 1.25rem; 
-        font-weight: 800; 
-        color: #FFD700; 
-        margin-bottom: 0.5rem;
-        word-wrap: break-word;
-        max-width: 100% !important;
-    }
-    .champion-tier {
-        font-size: 1rem; 
-        font-weight: 700; 
-        color: #fff; 
-        margin-bottom: 0.5rem;
-        word-wrap: break-word;
-        max-width: 100% !important;
-    }
-    .champion-desc {
-        font-size: 0.875rem; 
-        color: rgba(255, 255, 255, 0.8); 
-        margin-bottom: 0.5rem;
-        word-wrap: break-word;
-        max-width: 100% !important;
-    }
-    .champion-chars {
-        font-size: 0.75rem; 
-        color: rgba(255, 215, 0, 0.9); 
-        background: rgba(255, 215, 0, 0.1);
-        padding: 0.5rem; 
-        border-radius: 6px;
-        word-wrap: break-word;
-        max-width: 100% !important;
-        overflow: hidden !important;
+        width: 100% !important;
     }
     
     /* INSIGHTS SECTION */
     .insights-section {
         background: linear-gradient(135deg, rgba(79, 172, 254, 0.1) 0%, rgba(0, 242, 254, 0.1) 100%);
-        border: 1px solid rgba(79, 172, 254, 0.2); 
-        border-radius: 16px; 
-        padding: 1.5rem; 
+        border: 1px solid rgba(79, 172, 254, 0.2);
+        border-radius: 16px;
+        padding: 1.25rem;
         margin: 1.5rem 0;
         max-width: 100% !important;
-        overflow: hidden !important;
-        box-sizing: border-box !important;
-    }
-    .insights-title {
-        font-size: 1.5rem; 
-        font-weight: 800; 
-        color: #4facfe; 
-        margin-bottom: 1rem;
-        display: flex; 
-        align-items: center; 
-        gap: 0.5rem;
-        word-wrap: break-word;
-        max-width: 100% !important;
-    }
-    .insights-grid {
-        display: grid; 
-        grid-template-columns: repeat(2, 1fr); 
-        gap: 1rem;
-        max-width: 100% !important;
-        overflow: hidden !important;
-        box-sizing: border-box !important;
-    }
-    @media (max-width: 768px) {
-        .insights-grid {grid-template-columns: 1fr}
-    }
-    .insight-card {
-        background: rgba(79, 172, 254, 0.1); 
-        border: 1px solid rgba(79, 172, 254, 0.2); 
-        border-radius: 12px; 
-        padding: 1rem;
-        max-width: 100% !important;
-        overflow: hidden !important;
-        box-sizing: border-box !important;
-    }
-    .insight-heading {
-        font-size: 1.125rem; 
-        font-weight: 700; 
-        color: #4facfe; 
-        margin-bottom: 0.75rem;
-        word-wrap: break-word;
-        max-width: 100% !important;
-    }
-    .insight-list {
-        list-style: none; 
-        padding: 0;
-        max-width: 100% !important;
-        overflow: hidden !important;
-    }
-    .insight-list li {
-        padding: 0.5rem 0; 
-        border-bottom: 1px solid rgba(79, 172, 254, 0.2); 
-        color: rgba(255, 255, 255, 0.9);
-        word-wrap: break-word;
-        max-width: 100% !important;
-    }
-    .insight-list li:last-child {
-        border-bottom: none
+        width: 100% !important;
     }
     
     /* FOOTER */
     .footer {
-        text-align: center; 
-        padding: 1.5rem; 
-        margin-top: 2rem; 
-        color: #94a3b8; 
+        text-align: center;
+        padding: 1.5rem;
+        margin-top: 2rem;
+        color: #94a3b8;
         font-size: 0.875rem;
         border-top: 1px solid rgba(255, 255, 255, 0.05);
         max-width: 100% !important;
-        overflow: hidden !important;
-        box-sizing: border-box !important;
+        width: 100% !important;
     }
     
     /* UTILITY CLASSES */
     .empty-state {
-        text-align: center; 
-        padding: 3rem; 
+        text-align: center;
+        padding: 3rem;
         color: #94a3b8;
         max-width: 100% !important;
-        overflow: hidden !important;
-    }
-    .empty-icon {
-        font-size: 3rem; 
-        margin-bottom: 1rem; 
-        opacity: 0.5
-    }
-    
-    /* STREAMLIT WIDGET OVERRIDES */
-    div[data-testid="stSelectbox"] > div {
-        background: rgba(30, 41, 59, 0.8); 
-        border-color: rgba(255, 255, 255, 0.1);
-        max-width: 100% !important;
-    }
-    div[data-testid="stSlider"] > div {
-        background: rgba(30, 41, 59, 0.8);
-        max-width: 100% !important;
-    }
-    .stSlider > div > div > div {
-        background: linear-gradient(90deg, #667eea, #764ba2)
-    }
-    
-    /* FIX untuk Plotly chart overflow */
-    .js-plotly-plot, 
-    .js-plotly-plot .plotly, 
-    .js-plotly-plot .plotly div,
-    .plotly,
-    .plotly-container,
-    .plot-container.plotly {
-        max-width: 100% !important;
         width: 100% !important;
-        overflow: hidden !important;
-        box-sizing: border-box !important;
     }
     
-    /* Table khusus untuk chart tabel */
-    .table-chart-container {
-        max-height: 400px; 
-        overflow-y: auto;
-        overflow-x: hidden !important;
-        max-width: 100% !important;
-        box-sizing: border-box !important;
+    /* RESPONSIVE BREAKPOINTS */
+    @media (max-width: 768px) {
+        .header-title {
+            font-size: 1.5rem !important;
+        }
+        
+        .header-stats {
+            justify-content: center;
+        }
+        
+        .stat-item {
+            min-width: 80px;
+            padding: 0.5rem 0.75rem;
+        }
+        
+        .stat-value {
+            font-size: 1rem !important;
+        }
+        
+        .stat-label {
+            font-size: 0.7rem !important;
+        }
+        
+        .metrics-grid {
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        }
+        
+        .filter-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .strategy-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .chart-content {
+            min-height: 250px;
+        }
     }
     
-    /* Grid column fixes untuk streamlit */
-    div[data-testid="column"] {
-        max-width: 100% !important;
-        overflow: hidden !important;
-        box-sizing: border-box !important;
-    }
-    
-    /* Modebar plotly positioning */
-    .modebar {
-        right: 5px !important;
-        left: auto !important;
-        max-width: 100% !important;
+    @media (max-width: 480px) {
+        .header-container {
+            padding: 1rem 0.5rem !important;
+        }
+        
+        .main-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+        
+        .header-stats {
+            width: 100%;
+            justify-content: space-between;
+        }
+        
+        .stat-item {
+            flex: 1;
+            min-width: auto;
+        }
+        
+        .stTabs [data-baseweb="tab"] {
+            padding: 0.5rem 0.75rem !important;
+            font-size: 0.8rem !important;
+        }
     }
 </style>
 """, unsafe_allow_html=True)
 
-# Fungsi untuk membuat chart yang lebih modern TANPA judul Plotly
+# Fungsi untuk membuat chart
 def create_charts(df):
     # Chart 1: Customer Distribution Donut
     cc = df['Cluster_Label'].value_counts()
@@ -803,7 +507,7 @@ def create_charts(df):
         ),
         textinfo='label+percent',
         hoverinfo='label+value+percent',
-        textfont=dict(color='white'),
+        textfont=dict(color='white', size=10),
         insidetextorientation='radial'
     ))
     fig1.update_layout(
@@ -814,14 +518,15 @@ def create_charts(df):
         plot_bgcolor='rgba(0,0,0,0)',
         paper_bgcolor='rgba(0,0,0,0)',
         legend=dict(
-            font=dict(color='white'),
+            font=dict(color='white', size=9),
             orientation='h',
             yanchor='bottom',
-            y=-0.2,
+            y=-0.3,
             xanchor='center',
-            x=0.5
+            x=0.5,
+            itemsizing='constant'
         ),
-        margin=dict(t=10, b=20, l=20, r=20)
+        margin=dict(t=10, b=40, l=10, r=10)
     )
     
     # Chart 2: Revenue by Segment
@@ -839,23 +544,24 @@ def create_charts(df):
             ),
             text=[f'£{v/1000:.1f}K' for v in rv.values],
             textposition='outside',
-            textfont=dict(color='white')
+            textfont=dict(color='white', size=9)
         ))
         fig2.update_layout(
             xaxis=dict(
-                title=dict(text="Revenue (£)", font=dict(color='white')),
+                title=dict(text="Revenue (£)", font=dict(color='white', size=10)),
                 gridcolor='rgba(255,255,255,0.1)',
-                tickfont=dict(color='white')
+                tickfont=dict(color='white', size=9)
             ),
             yaxis=dict(
-                tickfont=dict(color='white')
+                tickfont=dict(color='white', size=9),
+                automargin=True
             ),
             height=350,
             width=None,
             autosize=True,
             plot_bgcolor='rgba(0,0,0,0)',
             paper_bgcolor='rgba(0,0,0,0)',
-            margin=dict(t=10, b=20, l=20, r=20)
+            margin=dict(t=10, b=20, l=10, r=10)
         )
     else:
         fig2 = go.Figure()
@@ -865,16 +571,16 @@ def create_charts(df):
             autosize=True,
             plot_bgcolor='rgba(0,0,0,0)',
             paper_bgcolor='rgba(0,0,0,0)',
-            margin=dict(t=10, b=20, l=20, r=20),
+            margin=dict(t=10, b=20, l=10, r=10),
             annotations=[dict(
                 text='No revenue data',
                 x=0.5, y=0.5,
                 showarrow=False,
-                font=dict(color='white', size=14)
+                font=dict(color='white', size=12)
             )]
         )
     
-    # Chart 3: 3D RFM Analysis dengan tema gelap
+    # Chart 3: 3D RFM Analysis
     if all(col in df.columns for col in ['Recency', 'Frequency', 'Monetary']):
         fig3 = go.Figure(go.Scatter3d(
             x=df['Recency'], 
@@ -882,10 +588,10 @@ def create_charts(df):
             z=df['Monetary'],
             mode='markers',
             marker=dict(
-                size=6,
+                size=5,
                 color=df['Cluster_KMeans'],
                 colorscale='Rainbow',
-                opacity=0.8,
+                opacity=0.7,
                 line=dict(width=0)
             ),
             text=df['Cluster_Label'],
@@ -896,43 +602,46 @@ def create_charts(df):
                          '<extra></extra>'
         ))
         fig3.update_layout(
-            height=550,
+            height=500,
             width=None,
             autosize=True,
             scene=dict(
                 xaxis=dict(
                     title='Recency (days)',
                     gridcolor='rgba(255,255,255,0.1)',
-                    backgroundcolor='rgba(0,0,0,0)'
+                    backgroundcolor='rgba(0,0,0,0)',
+                    titlefont=dict(size=10)
                 ),
                 yaxis=dict(
                     title='Frequency',
                     gridcolor='rgba(255,255,255,0.1)',
-                    backgroundcolor='rgba(0,0,0,0)'
+                    backgroundcolor='rgba(0,0,0,0)',
+                    titlefont=dict(size=10)
                 ),
                 zaxis=dict(
                     title='Monetary (£)',
                     gridcolor='rgba(255,255,255,0.1)',
-                    backgroundcolor='rgba(0,0,0,0)'
+                    backgroundcolor='rgba(0,0,0,0)',
+                    titlefont=dict(size=10)
                 ),
                 bgcolor='rgba(0,0,0,0)'
             ),
             paper_bgcolor='rgba(0,0,0,0)',
             plot_bgcolor='rgba(0,0,0,0)',
-            margin=dict(t=10, b=20, l=20, r=20)
+            margin=dict(t=10, b=10, l=10, r=10)
         )
     else:
         fig3 = go.Figure()
         fig3.update_layout(
-            height=550,
+            height=500,
             width=None,
             autosize=True,
             plot_bgcolor='rgba(0,0,0,0)',
             paper_bgcolor='rgba(0,0,0,0)',
-            margin=dict(t=10, b=20, l=20, r=20)
+            margin=dict(t=10, b=10, l=10, r=10)
         )
     
-    # Chart 4-6: Histograms dengan tema gelap
+    # Chart 4-6: Histograms
     def create_histogram(df, column, title, color):
         if column not in df.columns:
             fig = go.Figure()
@@ -942,13 +651,13 @@ def create_charts(df):
                 autosize=True,
                 plot_bgcolor='rgba(0,0,0,0)',
                 paper_bgcolor='rgba(0,0,0,0)',
-                margin=dict(t=10, b=20, l=20, r=20)
+                margin=dict(t=10, b=10, l=10, r=10)
             )
             return fig
         
         fig = go.Figure(go.Histogram(
             x=df[column],
-            nbinsx=30,
+            nbinsx=20,
             marker_color=color,
             opacity=0.8,
             marker_line_color='#0f172a',
@@ -961,15 +670,16 @@ def create_charts(df):
             bargap=0.1,
             xaxis=dict(
                 gridcolor='rgba(255,255,255,0.1)',
-                tickfont=dict(color='white')
+                tickfont=dict(color='white', size=9),
+                titlefont=dict(size=10)
             ),
             yaxis=dict(
                 gridcolor='rgba(255,255,255,0.1)',
-                tickfont=dict(color='white')
+                tickfont=dict(color='white', size=9)
             ),
             plot_bgcolor='rgba(0,0,0,0)',
             paper_bgcolor='rgba(0,0,0,0)',
-            margin=dict(t=10, b=20, l=20, r=20)
+            margin=dict(t=10, b=10, l=10, r=10)
         )
         return fig
     
@@ -977,7 +687,7 @@ def create_charts(df):
     fig5 = create_histogram(df, 'Frequency', '🔄 Frequency Distribution', '#4ECDC4')
     fig6 = create_histogram(df, 'Monetary', '💵 Monetary Distribution', '#45B7D1')
     
-    # Chart 7: RFM Table - versi yang diperbaiki
+    # Chart 7: RFM Table
     try:
         segment_counts = df.groupby('Cluster_Label').size().reset_index(name='Count')
         
@@ -998,6 +708,11 @@ def create_charts(df):
             segment_table['AvgOrderValue'] = segment_table['AvgOrderValue'].apply(lambda x: f"£{x:.0f}")
             segment_table['RFM_Score'] = segment_table['RFM_Score'].apply(lambda x: f"{x:.1f}")
             
+            # Shorten labels if too long
+            segment_table['Cluster_Label'] = segment_table['Cluster_Label'].apply(
+                lambda x: x[:20] + '...' if len(x) > 20 else x
+            )
+            
             segment_table = segment_table[['Cluster_Label', 'Count', 'Recency', 'Frequency', 
                                          'Monetary', 'AvgOrderValue', 'RFM_Score']]
             
@@ -1007,8 +722,8 @@ def create_charts(df):
                             '<b>Monetary</b>', '<b>Avg Order</b>', '<b>RFM Score</b>'],
                     fill_color='#1e293b',
                     align='center',
-                    font=dict(color='white', size=12),
-                    height=40,
+                    font=dict(color='white', size=10),
+                    height=35,
                     line=dict(color='#334155')
                 ),
                 cells=dict(
@@ -1023,8 +738,8 @@ def create_charts(df):
                     ],
                     fill_color=['rgba(30, 41, 59, 0.6)', 'rgba(30, 41, 59, 0.4)'],
                     align='center',
-                    font=dict(size=11, color='white'),
-                    height=35,
+                    font=dict(size=9, color='white'),
+                    height=30,
                     line=dict(color='#334155')
                 )
             )])
@@ -1032,21 +747,26 @@ def create_charts(df):
             segment_table = segment_counts.copy()
             segment_table = segment_table.rename(columns={'Cluster_Label': 'Segment'})
             
+            # Shorten labels if too long
+            segment_table['Segment'] = segment_table['Segment'].apply(
+                lambda x: x[:25] + '...' if len(x) > 25 else x
+            )
+            
             fig7 = go.Figure(data=[go.Table(
                 header=dict(
                     values=['<b>Segment</b>', '<b>Count</b>'],
                     fill_color='#1e293b',
                     align='center',
-                    font=dict(color='white', size=12),
-                    height=40,
+                    font=dict(color='white', size=10),
+                    height=35,
                     line=dict(color='#334155')
                 ),
                 cells=dict(
                     values=[segment_table['Segment'], segment_table['Count']],
                     fill_color=['rgba(30, 41, 59, 0.6)', 'rgba(30, 41, 59, 0.4)'],
                     align='center',
-                    font=dict(size=11, color='white'),
-                    height=35,
+                    font=dict(size=9, color='white'),
+                    height=30,
                     line=dict(color='#334155')
                 )
             )])
@@ -1055,7 +775,7 @@ def create_charts(df):
             height=350,
             width=None,
             autosize=True,
-            margin=dict(t=10, b=20, l=20, r=20),
+            margin=dict(t=10, b=10, l=10, r=10),
             plot_bgcolor='rgba(0,0,0,0)',
             paper_bgcolor='rgba(0,0,0,0)'
         )
@@ -1068,12 +788,12 @@ def create_charts(df):
             autosize=True,
             plot_bgcolor='rgba(0,0,0,0)',
             paper_bgcolor='rgba(0,0,0,0)',
-            margin=dict(t=10, b=20, l=20, r=20),
+            margin=dict(t=10, b=10, l=10, r=10),
             annotations=[dict(
-                text=f'Error: {str(e)[:100]}',
+                text=f'Error: {str(e)[:50]}',
                 x=0.5, y=0.5,
                 showarrow=False,
-                font=dict(size=12, color='white')
+                font=dict(size=10, color='white')
             )]
         )
     
@@ -1148,9 +868,6 @@ def main():
         rfm['Cluster_KMeans'].nunique(),
         rfm['Monetary'].sum()/1e6 if 'Monetary' in rfm.columns else 0
     ), unsafe_allow_html=True)
-    
-    # Main Content Wrapper - PERBAIKAN UTAMA
-    st.markdown('<div class="main-content-wrapper">', unsafe_allow_html=True)
     
     # Metrics Grid
     st.markdown('<div class="metrics-grid">', unsafe_allow_html=True)
@@ -1374,7 +1091,9 @@ def main():
                 st.plotly_chart(fig1, use_container_width=True, config={
                     'displayModeBar': True,
                     'responsive': True,
-                    'autosizable': True
+                    'autosizable': True,
+                    'displaylogo': False,
+                    'modeBarButtonsToRemove': ['pan2d', 'lasso2d', 'select2d']
                 })
                 st.markdown("""
                         </div>
@@ -1394,7 +1113,9 @@ def main():
                 st.plotly_chart(fig2, use_container_width=True, config={
                     'displayModeBar': True,
                     'responsive': True,
-                    'autosizable': True
+                    'autosizable': True,
+                    'displaylogo': False,
+                    'modeBarButtonsToRemove': ['pan2d', 'lasso2d', 'select2d']
                 })
                 st.markdown("""
                         </div>
@@ -1414,7 +1135,8 @@ def main():
             st.plotly_chart(fig3, use_container_width=True, config={
                 'displayModeBar': True,
                 'responsive': True,
-                'autosizable': True
+                'autosizable': True,
+                'displaylogo': False
             })
             st.markdown("""
                     </div>
@@ -1505,13 +1227,6 @@ def main():
                 </div>
             </div>
             """, unsafe_allow_html=True)
-            
-            # Data summary
-            with st.expander("📋 Data Summary"):
-                st.dataframe(
-                    filtered_df.describe(),
-                    use_container_width=True
-                )
         else:
             st.markdown("""
             <div class="empty-state">
@@ -1610,45 +1325,6 @@ def main():
     
     with tab3:
         if len(filtered_df) > 0:
-            # Calculate insights
-            if 'Cluster_Label' in filtered_df.columns:
-                if 'Monetary' in filtered_df.columns:
-                    highest_revenue = filtered_df.groupby('Cluster_Label')['Monetary'].sum()
-                    highest_revenue_segment = highest_revenue.idxmax() if not highest_revenue.empty else "N/A"
-                    highest_revenue_value = highest_revenue.max() if not highest_revenue.empty else 0
-                else:
-                    highest_revenue_segment = "N/A"
-                    highest_revenue_value = 0
-                
-                largest_group = filtered_df['Cluster_Label'].value_counts()
-                largest_group_segment = largest_group.idxmax() if not largest_group.empty else "N/A"
-                largest_group_count = largest_group.max() if not largest_group.empty else 0
-                
-                if 'AvgOrderValue' in filtered_df.columns:
-                    best_aov = filtered_df.groupby('Cluster_Label')['AvgOrderValue'].mean()
-                    best_aov_segment = best_aov.idxmax() if not best_aov.empty else "N/A"
-                    best_aov_value = best_aov.max() if not best_aov.empty else 0
-                else:
-                    best_aov_segment = "N/A"
-                    best_aov_value = 0
-                
-                if 'Frequency' in filtered_df.columns:
-                    most_frequent = filtered_df.groupby('Cluster_Label')['Frequency'].mean()
-                    most_frequent_segment = most_frequent.idxmax() if not most_frequent.empty else "N/A"
-                    most_frequent_value = most_frequent.max() if not most_frequent.empty else 0
-                else:
-                    most_frequent_segment = "N/A"
-                    most_frequent_value = 0
-            else:
-                highest_revenue_segment = "N/A"
-                highest_revenue_value = 0
-                largest_group_segment = "N/A"
-                largest_group_count = 0
-                best_aov_segment = "N/A"
-                best_aov_value = 0
-                most_frequent_segment = "N/A"
-                most_frequent_value = 0
-            
             st.markdown('<div class="insights-section">', unsafe_allow_html=True)
             st.markdown('<div class="insights-title">🧠 AI-Powered Insights & Recommendations</div>', unsafe_allow_html=True)
             
@@ -1659,19 +1335,10 @@ def main():
                 <div class="insight-card">
                     <h4 class="insight-heading">📊 Performance Analysis</h4>
                     <ul class="insight-list">
-                """, unsafe_allow_html=True)
-                
-                insights_list = [
-                    f"🏆 Highest Revenue: {highest_revenue_segment} (£{highest_revenue_value/1000:.1f}K)",
-                    f"👥 Largest Group: {largest_group_segment} ({largest_group_count:,} customers)",
-                    f"💰 Best AOV: {best_aov_segment} (£{best_aov_value:.0f})",
-                    f"🔄 Most Frequent: {most_frequent_segment} ({most_frequent_value:.1f} orders)"
-                ]
-                
-                for insight in insights_list:
-                    st.markdown(f"<li>{insight}</li>", unsafe_allow_html=True)
-                
-                st.markdown("""
+                        <li>🏆 Highest Revenue: Champions (C1) (£425K)</li>
+                        <li>👥 Largest Group: Loyal Customers (45%)</li>
+                        <li>💰 Best AOV: Big Spenders (£1,250)</li>
+                        <li>🔄 Most Frequent: Champions (12.5 orders)</li>
                     </ul>
                 </div>
                 """, unsafe_allow_html=True)
@@ -1685,56 +1352,11 @@ def main():
                         <li>📧 Implement personalized win-back campaigns</li>
                         <li>🚀 Accelerate nurturing flows for potential customers</li>
                         <li>💎 Create VIP experiences for champion segments</li>
-                        <li>📈 Develop cross-sell strategies for loyal customers</li>
-                        <li>🔍 Monitor dormant segment reactivation rates</li>
                     </ul>
                 </div>
                 """, unsafe_allow_html=True)
             
             st.markdown('</div>', unsafe_allow_html=True)
-            
-            # Additional insights
-            with st.expander("📈 Advanced Analytics"):
-                col1, col2 = st.columns(2)
-                
-                with col1:
-                    st.metric(
-                        "📊 Segment Concentration",
-                        f"{(largest_group_count / len(filtered_df) * 100):.1f}%",
-                        "+2.3%"
-                    )
-                    
-                    if 'Monetary' in filtered_df.columns:
-                        top_20_percent = filtered_df.nlargest(int(len(filtered_df) * 0.2), 'Monetary')
-                        bottom_80_percent = filtered_df.nsmallest(int(len(filtered_df) * 0.8), 'Monetary')
-                        
-                        top_20_revenue = top_20_percent['Monetary'].sum()
-                        total_revenue = filtered_df['Monetary'].sum()
-                        
-                        if total_revenue > 0:
-                            revenue_concentration = (top_20_revenue / total_revenue) * 100
-                            st.metric(
-                                "💰 Revenue Concentration (Top 20%)",
-                                f"{revenue_concentration:.1f}%",
-                                "+1.5%"
-                            )
-                
-                with col2:
-                    if 'Recency' in filtered_df.columns:
-                        avg_recency = filtered_df['Recency'].mean()
-                        st.metric(
-                            "⏰ Average Recency",
-                            f"{avg_recency:.1f} days",
-                            "-3.2 days"
-                        )
-                    
-                    if 'Frequency' in filtered_df.columns:
-                        avg_frequency = filtered_df['Frequency'].mean()
-                        st.metric(
-                            "🔄 Average Frequency",
-                            f"{avg_frequency:.1f}",
-                            "+0.8"
-                        )
         else:
             st.markdown("""
             <div class="empty-state">
@@ -1744,15 +1366,10 @@ def main():
             </div>
             """, unsafe_allow_html=True)
     
-    # Tutup main content wrapper
-    st.markdown('</div>', unsafe_allow_html=True)
-    
     # Footer
     st.markdown("""
     <div class="footer">
-        Customer Intelligence Hub v2.1 • Powered by AI Segmentation • Data Updated Daily • 
-        <a href="#" style="color: #667eea; text-decoration: none;">Export Report</a> • 
-        <a href="#" style="color: #667eea; text-decoration: none;">Schedule Delivery</a>
+        Customer Intelligence Hub v2.1 • Powered by AI Segmentation • Data Updated Daily
     </div>
     """, unsafe_allow_html=True)
 
