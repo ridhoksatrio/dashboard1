@@ -175,9 +175,11 @@ st.markdown("""
     
     /* CHARTS CONTAINER */
     .chart-container {background: rgba(30, 41, 59, 0.8); border-radius: 16px; padding: 1.5rem; 
-                     border: 1px solid rgba(255, 255, 255, 0.05); margin-bottom: 1.5rem}
-    .chart-title {font-size: 1.125rem; font-weight: 700; color: #fff; margin-bottom: 1rem; 
-                 display: flex; align-items: center; gap: 0.5rem}
+                     border: 1px solid rgba(255, 255, 255, 0.05); margin-bottom: 1.5rem;
+                     position: relative;}
+    .chart-title-wrapper {margin-bottom: 1rem; padding: 0.5rem 0;}
+    .chart-title {font-size: 1.125rem; font-weight: 700; color: #fff; 
+                  display: flex; align-items: center; gap: 0.5rem; margin: 0}
     .charts-grid {display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; margin-bottom: 1.5rem}
     @media (max-width: 1200px) {.charts-grid {grid-template-columns: 1fr}}
     .chart-full {grid-column: 1 / -1}
@@ -256,10 +258,13 @@ st.markdown("""
     div[data-testid="stSelectbox"] > div {background: rgba(30, 41, 59, 0.8); border-color: rgba(255, 255, 255, 0.1)}
     div[data-testid="stSlider"] > div {background: rgba(30, 41, 59, 0.8)}
     .stSlider > div > div > div {background: linear-gradient(90deg, #667eea, #764ba2)}
+    
+    /* FIX untuk Plotly chart titles */
+    .js-plotly-plot .plotly .main-svg {overflow: visible !important;}
 </style>
 """, unsafe_allow_html=True)
 
-# Fungsi untuk membuat chart yang lebih modern
+# Fungsi untuk membuat chart yang lebih modern dengan perbaikan judul
 def create_charts(df):
     # Chart 1: Customer Distribution Donut
     cc = df['Cluster_Label'].value_counts()
@@ -281,7 +286,11 @@ def create_charts(df):
         title=dict(
             text="🎯 Customer Distribution",
             font=dict(color='white', size=16),
-            x=0.5
+            x=0.5,
+            y=0.95,
+            xanchor='center',
+            yanchor='top',
+            pad=dict(t=10, b=20)
         ),
         height=400,
         showlegend=True,
@@ -294,7 +303,8 @@ def create_charts(df):
             y=-0.2,
             xanchor='center',
             x=0.5
-        )
+        ),
+        margin=dict(t=60, b=80, l=20, r=20)  # Increased top margin for title
     )
     
     # Chart 2: Revenue by Segment
@@ -318,7 +328,11 @@ def create_charts(df):
             title=dict(
                 text="💰 Revenue by Segment",
                 font=dict(color='white', size=16),
-                x=0.5
+                x=0.5,
+                y=0.95,
+                xanchor='center',
+                yanchor='top',
+                pad=dict(t=10, b=20)
             ),
             xaxis=dict(
                 title=dict(text="Revenue (£)", font=dict(color='white')),
@@ -330,15 +344,23 @@ def create_charts(df):
             ),
             height=400,
             plot_bgcolor='rgba(0,0,0,0)',
-            paper_bgcolor='rgba(0,0,0,0)'
+            paper_bgcolor='rgba(0,0,0,0)',
+            margin=dict(t=60, b=80, l=20, r=20)
         )
     else:
         fig2 = go.Figure()
         fig2.update_layout(
-            title=dict(text="💰 Revenue by Segment", font=dict(color='white', size=16)),
+            title=dict(
+                text="💰 Revenue by Segment",
+                font=dict(color='white', size=16),
+                x=0.5,
+                y=0.95,
+                pad=dict(t=10, b=20)
+            ),
             height=400,
             plot_bgcolor='rgba(0,0,0,0)',
             paper_bgcolor='rgba(0,0,0,0)',
+            margin=dict(t=60, b=80, l=20, r=20),
             annotations=[dict(
                 text='No revenue data',
                 x=0.5, y=0.5,
@@ -372,7 +394,11 @@ def create_charts(df):
             title=dict(
                 text="📈 3D RFM Analysis",
                 font=dict(color='white', size=16),
-                x=0.5
+                x=0.5,
+                y=0.95,
+                xanchor='center',
+                yanchor='top',
+                pad=dict(t=10, b=20)
             ),
             height=600,
             scene=dict(
@@ -394,15 +420,23 @@ def create_charts(df):
                 bgcolor='rgba(0,0,0,0)'
             ),
             paper_bgcolor='rgba(0,0,0,0)',
-            plot_bgcolor='rgba(0,0,0,0)'
+            plot_bgcolor='rgba(0,0,0,0)',
+            margin=dict(t=60, b=80, l=20, r=20)
         )
     else:
         fig3 = go.Figure()
         fig3.update_layout(
-            title=dict(text="📈 3D RFM Analysis", font=dict(color='white', size=16)),
+            title=dict(
+                text="📈 3D RFM Analysis",
+                font=dict(color='white', size=16),
+                x=0.5,
+                y=0.95,
+                pad=dict(t=10, b=20)
+            ),
             height=600,
             plot_bgcolor='rgba(0,0,0,0)',
-            paper_bgcolor='rgba(0,0,0,0)'
+            paper_bgcolor='rgba(0,0,0,0)',
+            margin=dict(t=60, b=80, l=20, r=20)
         )
     
     # Chart 4-6: Histograms dengan tema gelap
@@ -410,10 +444,17 @@ def create_charts(df):
         if column not in df.columns:
             fig = go.Figure()
             fig.update_layout(
-                title=dict(text=title, font=dict(color='white', size=14)),
+                title=dict(
+                    text=title, 
+                    font=dict(color='white', size=14),
+                    x=0.5,
+                    y=0.95,
+                    pad=dict(t=10, b=20)
+                ),
                 height=300,
                 plot_bgcolor='rgba(0,0,0,0)',
-                paper_bgcolor='rgba(0,0,0,0)'
+                paper_bgcolor='rgba(0,0,0,0)',
+                margin=dict(t=50, b=60, l=20, r=20)
             )
             return fig
         
@@ -426,7 +467,15 @@ def create_charts(df):
             marker_line_width=1
         ))
         fig.update_layout(
-            title=dict(text=title, font=dict(color='white', size=14)),
+            title=dict(
+                text=title, 
+                font=dict(color='white', size=14),
+                x=0.5,
+                y=0.95,
+                xanchor='center',
+                yanchor='top',
+                pad=dict(t=10, b=20)
+            ),
             height=300,
             bargap=0.1,
             xaxis=dict(
@@ -438,7 +487,8 @@ def create_charts(df):
                 tickfont=dict(color='white')
             ),
             plot_bgcolor='rgba(0,0,0,0)',
-            paper_bgcolor='rgba(0,0,0,0)'
+            paper_bgcolor='rgba(0,0,0,0)',
+            margin=dict(t=50, b=60, l=20, r=20)
         )
         return fig
     
@@ -446,7 +496,7 @@ def create_charts(df):
     fig5 = create_histogram(df, 'Frequency', '🔄 Frequency Distribution', '#4ECDC4')
     fig6 = create_histogram(df, 'Monetary', '💵 Monetary Distribution', '#45B7D1')
     
-    # Chart 7: RFM Table - versi yang diperbaiki
+    # Chart 7: RFM Table - versi yang diperbaiki dengan margin yang lebih baik
     try:
         segment_counts = df.groupby('Cluster_Label').size().reset_index(name='Count')
         
@@ -524,10 +574,14 @@ def create_charts(df):
             title=dict(
                 text="📊 Segment Summary",
                 font=dict(color='white', size=16),
-                x=0.5
+                x=0.5,
+                y=0.95,
+                xanchor='center',
+                yanchor='top',
+                pad=dict(t=10, b=20)
             ),
             height=400,
-            margin=dict(t=50, b=20, l=20, r=20),
+            margin=dict(t=80, b=40, l=20, r=20),  # Increased top margin significantly
             plot_bgcolor='rgba(0,0,0,0)',
             paper_bgcolor='rgba(0,0,0,0)'
         )
@@ -535,10 +589,17 @@ def create_charts(df):
     except Exception as e:
         fig7 = go.Figure()
         fig7.update_layout(
-            title=dict(text="📊 Segment Summary", font=dict(color='white', size=16)),
+            title=dict(
+                text="📊 Segment Summary",
+                font=dict(color='white', size=16),
+                x=0.5,
+                y=0.95,
+                pad=dict(t=10, b=20)
+            ),
             height=400,
             plot_bgcolor='rgba(0,0,0,0)',
             paper_bgcolor='rgba(0,0,0,0)',
+            margin=dict(t=80, b=40, l=20, r=20),
             annotations=[dict(
                 text=f'Error: {str(e)[:100]}',
                 x=0.5, y=0.5,
@@ -831,38 +892,47 @@ def main():
             col1, col2 = st.columns(2)
             with col1:
                 st.markdown('<div class="chart-container">', unsafe_allow_html=True)
+                st.markdown('<div class="chart-title-wrapper"><h3 class="chart-title">🎯 Customer Distribution</h3></div>', unsafe_allow_html=True)
                 st.plotly_chart(fig1, use_container_width=True, config={'displayModeBar': True})
                 st.markdown('</div>', unsafe_allow_html=True)
             
             with col2:
                 st.markdown('<div class="chart-container">', unsafe_allow_html=True)
+                st.markdown('<div class="chart-title-wrapper"><h3 class="chart-title">💰 Revenue by Segment</h3></div>', unsafe_allow_html=True)
                 st.plotly_chart(fig2, use_container_width=True, config={'displayModeBar': True})
                 st.markdown('</div>', unsafe_allow_html=True)
             
             # Row 2: Full width 3D chart
             st.markdown('<div class="chart-container chart-full">', unsafe_allow_html=True)
+            st.markdown('<div class="chart-title-wrapper"><h3 class="chart-title">📈 3D RFM Analysis</h3></div>', unsafe_allow_html=True)
             st.plotly_chart(fig3, use_container_width=True, config={'displayModeBar': True})
             st.markdown('</div>', unsafe_allow_html=True)
             
             # Row 3: Three histograms
+            st.markdown('<div class="charts-grid">', unsafe_allow_html=True)
             col1, col2, col3 = st.columns(3)
             with col1:
                 st.markdown('<div class="chart-container">', unsafe_allow_html=True)
+                st.markdown('<div class="chart-title-wrapper"><h3 class="chart-title">⏰ Recency Distribution</h3></div>', unsafe_allow_html=True)
                 st.plotly_chart(fig4, use_container_width=True, config={'displayModeBar': False})
                 st.markdown('</div>', unsafe_allow_html=True)
             
             with col2:
                 st.markdown('<div class="chart-container">', unsafe_allow_html=True)
+                st.markdown('<div class="chart-title-wrapper"><h3 class="chart-title">🔄 Frequency Distribution</h3></div>', unsafe_allow_html=True)
                 st.plotly_chart(fig5, use_container_width=True, config={'displayModeBar': False})
                 st.markdown('</div>', unsafe_allow_html=True)
             
             with col3:
                 st.markdown('<div class="chart-container">', unsafe_allow_html=True)
+                st.markdown('<div class="chart-title-wrapper"><h3 class="chart-title">💵 Monetary Distribution</h3></div>', unsafe_allow_html=True)
                 st.plotly_chart(fig6, use_container_width=True, config={'displayModeBar': False})
                 st.markdown('</div>', unsafe_allow_html=True)
+            st.markdown('</div>', unsafe_allow_html=True)
             
             # Row 4: Full width table
             st.markdown('<div class="chart-container chart-full">', unsafe_allow_html=True)
+            st.markdown('<div class="chart-title-wrapper"><h3 class="chart-title">📊 Segment Summary</h3></div>', unsafe_allow_html=True)
             st.plotly_chart(fig7, use_container_width=True, config={'displayModeBar': False})
             st.markdown('</div>', unsafe_allow_html=True)
             
