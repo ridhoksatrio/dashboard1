@@ -1,15 +1,12 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-import plotly.express as px
 import plotly.graph_objects as go
 import warnings
 
 warnings.filterwarnings('ignore')
 
-# -----------------------------------------------------
-# PAGE CONFIGURATION
-# -----------------------------------------------------
+# Konfigurasi halaman Streamlit
 st.set_page_config(
     page_title="Customer Intelligence Hub",
     page_icon="🎯",
@@ -17,111 +14,197 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# -----------------------------------------------------
-# DATA LOADING
-# -----------------------------------------------------
+# Load & Prepare Data
 @st.cache_data
 def load_data():
     try:
-        df = pd.read_csv('final_customer_segments (1).csv', index_col=0)
+        rfm = pd.read_csv('final_customer_segments (1).csv', index_col=0)
     except:
         try:
-            df = pd.read_csv('final_customer_segments.csv', index_col=0)
+            rfm = pd.read_csv('final_customer_segments.csv', index_col=0)
         except:
-            st.error("Data tidak ditemukan, menggunakan data sample.")
+            st.error("Data file tidak ditemukan. Menggunakan sample data.")
             np.random.seed(42)
-            n = 800
-            df = pd.DataFrame({
+            n = 1000
+            rfm = pd.DataFrame({
                 'Recency': np.random.randint(1, 365, n),
                 'Frequency': np.random.randint(1, 50, n),
                 'Monetary': np.random.uniform(100, 50000, n),
-                'AvgOrderValue': np.random.uniform(50, 600, n),
+                'AvgOrderValue': np.random.uniform(50, 500, n),
                 'RFM_Score': np.random.randint(100, 600, n),
                 'Cluster_KMeans': np.random.choice([0,1,2,3,4,5], n)
             })
-            df.index = [f'CUST_{i:04d}' for i in range(n)]
-    return df
+            rfm.index = [f"CUST_{i:04d}" for i in range(n)]
+
+    required_cols = ['Recency','Frequency','Monetary','AvgOrderValue','RFM_Score','Cluster_KMeans']
+    for col in required_cols:
+        if col not in rfm.columns:
+            rfm[col] = 0
+
+    return rfm
 
 rfm = load_data()
 
-# -----------------------------------------------------
-# HEADER
-# -----------------------------------------------------
+# Cluster Strategies
+strats = {
+    'champions': {'name':'🏆 Champions','grad':'linear-gradient(135deg,#FFD700,#FFA500)',
+                  'color':'#FFD700','priority':'CRITICAL','strategy':'VIP Platinum',
+                  'tactics':['💎 Exclusive Early Access','🎁 Premium Gifts','📞 24/7 Manager','🌟 VIP Events','✨ Celebrations'],
+                  'kpis':['Retention>95%','Upsell>40%','Referral>30%'],'budget':'30%','roi':'500%'},
+    'loyal': {'name':'💎 Loyal','grad':'linear-gradient(135deg,#667eea,#764ba2)',
+              'color':'#667eea','priority':'HIGH','strategy':'Loyalty Boost',
+              'tactics':['🎯 Tiered Rewards','📱 App Benefits','🎉 Birthday Offers','💝 Referral Bonus','🔔 Flash Access'],
+              'kpis':['Retention>85%','Frequency+20%','NPS>8'],'budget':'25%','roi':'380%'},
+    'big': {'name':'💰 Big Spenders','grad':'linear-gradient(135deg,#f093fb,#f5576c)',
+            'color':'#f093fb','priority':'CRITICAL','strategy':'Value Max',
+            'tactics':['💳 Flex Terms','🎁 Luxury Gifts','🚚 Free Express','📦 Custom Bundles','🌟 Concierge'],
+            'kpis':['AOV+15%','Retention>90%','Sat>4.8/5'],'budget':'20%','roi':'420%'},
+    'dormant': {'name':'😴 Dormant','grad':'linear-gradient(135deg,#ff6b6b,#ee5a6f)',
+                'color':'#ff6b6b','priority':'URGENT','strategy':'Win-Back',
+                'tactics':['🎁 25-30% Off','📧 Multi-Channel','🎯 Retargeting','💬 Personal Call','⏰ Urgency'],
+                'kpis':['Winback>25%','Response>15%','ROI>200%'],'budget':'15%','roi':'250%'},
+    'potential': {'name':'🌱 Potential','grad':'linear-gradient(135deg,#11998e,#38ef7d)',
+                  'color':'#11998e','priority':'MEDIUM','strategy':'Fast Convert',
+                  'tactics':['🎓 Education','🎁 15% 2nd Buy','💌 Welcome Flow','📚 Tutorials','🎯 Cross-Sell'],
+                  'kpis':['Convert>35%','2nd<30d','LTV+25%'],'budget':'5%','roi':'180%'},
+    'standard': {'name':'📊 Standard','grad':'linear-gradient(135deg,#89f7fe,#66a6ff)',
+                 'color':'#89f7fe','priority':'MEDIUM','strategy':'Steady Engage',
+                 'tactics':['📧 Newsletters','🎯 Seasonal','💌 AI Recs','🎁 Surprises','📱 Community'],
+                 'kpis':['Engage>40%','Stable','Sat>3.5/5'],'budget':'5%','roi':'150%'}
+}
+
+def get_strat(cid, data):
+    cd = data[data['Cluster_KMeans'] == cid]
+    if len(cd) == 0:
+        return {**strats['standard'], 'cluster_id': cid}
+
+    r, f, m = cd['Recency'].mean(), cd['Frequency'].mean(), cd['Monetary'].mean()
+
+    if r < 50 and f > 10 and m > 1000: s = 'champions'
+    elif r < 50 and f > 5: s = 'loyal'
+    elif m > 1500: s = 'big'
+    elif r > 100: s = 'dormant'
+    elif r < 50 and f < 5: s = 'potential'
+    else: s = 'standard'
+    return {**strats[s], 'cluster_id': cid}
+
+@st.cache_data
+def init_data(rfm):
+    profs = {}
+    for c in rfm['Cluster_KMeans'].unique():
+        p = get_strat(c, rfm)
+        profs[c] = p
+        rfm.loc[rfm['Cluster_KMeans']==c,'Cluster_Label'] = f"{p['name']} (C{c})"
+        rfm.loc[rfm['Cluster_KMeans']==c,'Priority'] = p['priority']
+
+    colors = {f"{p['name']} (C{c})": p['color'] for c,p in profs.items()}
+    return profs, colors, rfm
+
+profs, colors, rfm = init_data(rfm)
+
+# CSS
 st.markdown("""
-<div style='text-align:center; padding:30px; background:linear-gradient(135deg,#667eea,#764ba2); border-radius:20px; color:white;'>
-    <h1 style='font-size:48px; font-weight:900;'>Customer Intelligence Hub</h1>
-    <p style='font-size:20px; opacity:0.9;'>Advanced RFM Segmentation Dashboard</p>
-</div>
+<style>
+* {margin:0;padding:0;box-sizing:border-box}
+body {font-family:'Inter',sans-serif;background:#f3f5f8}
+.stApp {background:transparent}
+
+.title {font-size:3rem;font-weight:900;text-align:center;margin-bottom:10px}
+.sub {color:#555;text-align:center;font-size:1.2rem;margin-bottom:40px}
+
+.metrics {display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin:30px 0}
+.met {background:white;padding:25px;border-radius:15px;text-align:center;
+      box-shadow:0 4px 12px rgba(0,0,0,0.08)}
+.met-val {font-size:2.4rem;font-weight:800;margin:10px 0}
+.met-lbl {text-transform:uppercase;font-size:.9rem;color:#777}
+
+.chart-box {background:white;padding:30px;border-radius:18px;
+            box-shadow:0 6px 22px rgba(0,0,0,0.08);margin-bottom:30px}
+
+.strat-card {padding:25px;border-radius:18px;color:white;margin-bottom:25px}
+.strat-hdr {display:flex;justify-content:space-between;font-size:1.5rem;font-weight:800;margin-bottom:14px}
+.tact {padding:10px 14px;margin:6px 0;background:rgba(255,255,255,.15);border-radius:10px}
+</style>
 """, unsafe_allow_html=True)
 
-# -----------------------------------------------------
+# HEADER
+st.markdown("<h1 class='title'>Customer Intelligence Hub</h1>", unsafe_allow_html=True)
+st.markdown("<p class='sub'>Advanced RFM + Cluster Analysis Dashboard</p>", unsafe_allow_html=True)
+
 # TOP METRICS
-# -----------------------------------------------------
-st.subheader("📊 Customer Summary Metrics")
-col1, col2, col3, col4 = st.columns(4)
+total_customers = len(rfm)
+avg_recency = rfm['Recency'].mean()
+avg_frequency = rfm['Frequency'].mean()
+avg_monetary = rfm['Monetary'].mean()
 
-col1.metric("Total Customers", f"{len(rfm):,}")
-col2.metric("Avg Recency", f"{rfm['Recency'].mean():.1f} days")
-col3.metric("Avg Frequency", f"{rfm['Frequency'].mean():.1f}")
-col4.metric("Avg Monetary", f"${rfm['Monetary'].mean():.2f}")
+st.markdown("<div class='metrics'>", unsafe_allow_html=True)
+st.markdown(f"""
+<div class='met'>
+    <div class='met-lbl'>Total Customers</div>
+    <div class='met-val'>{total_customers:,}</div>
+</div>
+<div class='met'>
+    <div class='met-lbl'>Avg Recency</div>
+    <div class='met-val'>{avg_recency:.1f} days</div>
+</div>
+<div class='met'>
+    <div class='met-lbl'>Avg Frequency</div>
+    <div class='met-val'>{avg_frequency:.1f}</div>
+</div>
+<div class='met'>
+    <div class='met-lbl'>Avg Monetary</div>
+    <div class='met-val'>${avg_monetary:,.2f}</div>
+</div>
+""", unsafe_allow_html=True)
+st.markdown("</div>", unsafe_allow_html=True)
 
-# -----------------------------------------------------
-# DISTRIBUTION CHARTS
-# -----------------------------------------------------
-st.subheader("📈 Customer Value Distributions")
-colA, colB = st.columns(2)
-colC, colD = st.columns(2)
+# TABS
+tab1, tab2, tab3 = st.tabs(["📊 RFM Distribution", "👥 Cluster Explorer", "🎯 Strategy"])
 
-# Recency distribution
-with colA:
-    fig_r = px.histogram(rfm, x='Recency', nbins=40, title='Recency Distribution')
-    st.plotly_chart(fig_r, use_container_width=True)
+# TAB 1 — RFM DISTRIBUTIONS
+with tab1:
+    col1, col2 = st.columns(2)
+    with col1:
+        fig_r = go.Figure(data=[go.Histogram(x=rfm['Recency'])])
+        fig_r.update_layout(title="Recency Distribution", bargap=0.1)
+        st.plotly_chart(fig_r, use_container_width=True)
 
-# Frequency distribution
-with colB:
-    fig_f = px.histogram(rfm, x='Frequency', nbins=40, title='Frequency Distribution')
-    st.plotly_chart(fig_f, use_container_width=True)
+    with col2:
+        fig_f = go.Figure(data=[go.Histogram(x=rfm['Frequency'])])
+        fig_f.update_layout(title="Frequency Distribution", bargap=0.1)
+        st.plotly_chart(fig_f, use_container_width=True)
 
-# Monetary distribution
-with colC:
-    fig_m = px.histogram(rfm, x='Monetary', nbins=40, title='Monetary Distribution')
+    fig_m = go.Figure(data=[go.Histogram(x=rfm['Monetary'])])
+    fig_m.update_layout(title="Monetary Distribution", bargap=0.1)
     st.plotly_chart(fig_m, use_container_width=True)
 
-# RFM Score distribution
-with colD:
-    fig_s = px.histogram(rfm, x='RFM_Score', nbins=40, title='RFM Score Distribution')
-    st.plotly_chart(fig_s, use_container_width=True)
+    st.dataframe(rfm.head(50))
 
-# -----------------------------------------------------
-# CLUSTER DISTRIBUTION
-# -----------------------------------------------------
-st.subheader("🎯 Cluster Distribution")
-fig_cluster = px.pie(
-    rfm,
-    names='Cluster_KMeans',
-    title='Cluster Proportion',
-    hole=0.4,
-)
-st.plotly_chart(fig_cluster, use_container_width=True)
+# TAB 2 — CLUSTER EXPLORATION
+with tab2:
+    selected_cluster = st.selectbox(
+        "Select Cluster",
+        sorted(rfm['Cluster_KMeans'].unique())
+    )
+    dfc = rfm[rfm['Cluster_KMeans'] == selected_cluster]
 
-# -----------------------------------------------------
-# CLUSTER DETAIL TABLE
-# -----------------------------------------------------
-st.subheader("📋 Cluster Summary Table")
-cluster_table = rfm.groupby('Cluster_KMeans').agg({
-    'Recency': 'mean',
-    'Frequency': 'mean',
-    'Monetary': 'mean',
-    'AvgOrderValue': 'mean',
-    'RFM_Score': 'mean',
-    'Cluster_KMeans': 'count'
-}).rename(columns={'Cluster_KMeans': 'Count'}).round(2)
-st.dataframe(cluster_table, use_container_width=True)
+    st.write(f"### Cluster {selected_cluster} Summary")
+    st.dataframe(dfc)
 
-# -----------------------------------------------------
-# RAW DATA TABLE
-# -----------------------------------------------------
-st.subheader("🧾 Full Customer Data")
-st.dataframe(rfm, use_container_width=True)
+# TAB 3 — STRATEGY
+with tab3:
+    for cid, p in profs.items():
+        st.markdown(f"""
+        <div class='strat-card' style='background:{p["grad"]};'>
+            <div class='strat-hdr'>
+                <div>{p['name']} (C{cid})</div>
+                <div>{p['priority']}</div>
+            </div>
+            <h4>{p['strategy']}</h4>
+            <b>Tactics:</b>
+        """, unsafe_allow_html=True)
 
-"}]}
+        for t in p['tactics']:
+            st.markdown(f"<div class='tact'>{t}</div>", unsafe_allow_html=True)
+
+        st.markdown("</div>", unsafe_allow_html=True)
