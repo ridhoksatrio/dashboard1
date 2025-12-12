@@ -112,7 +112,7 @@ def init_data(rfm):
 
 profs, colors, rfm = init_data(rfm)
 
-# CSS Custom untuk Streamlit (sama seperti sebelumnya)
+# CSS Custom untuk Streamlit - DIPERBAIKI UNTUK KONTRAST
 st.markdown("""
 <style>
 * {margin: 0; padding: 0; box-sizing: border-box}
@@ -145,26 +145,26 @@ body {font-family: 'Inter', 'Poppins', sans-serif; background: linear-gradient(1
            filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.2))}
 @keyframes float {0%,100% {transform: translateY(0)} 50% {transform: translateY(-8px)}}
 .met-val {font-size: 3.2rem; font-weight: 900; margin: 12px 0; text-shadow: 3px 3px 6px rgba(0,0,0,.25); 
-          letter-spacing: -1px}
-.met-lbl {font-size: 1rem; text-transform: uppercase; letter-spacing: 2.5px; font-weight: 700; margin-bottom: 6px}
-.met-sub {font-size: .88rem; margin-top: 8px; opacity: .9; font-weight: 500}
+          letter-spacing: -1px; color: #ffffff !important}
+.met-lbl {font-size: 1rem; text-transform: uppercase; letter-spacing: 2.5px; font-weight: 700; margin-bottom: 6px; color: #ffffff !important}
+.met-sub {font-size: .88rem; margin-top: 8px; opacity: .9; font-weight: 500; color: rgba(255,255,255,0.9) !important}
 
 /* FILTERS */
 .filt {background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); border-radius: 22px; 
        padding: 32px; margin-bottom: 32px; box-shadow: 0 10px 30px rgba(0,0,0,.12)}
-.filt-t {font-size: 1.6rem; font-weight: 800; color: #2c3e50; margin-bottom: 22px; 
+.filt-t {font-size: 1.6rem; font-weight: 800; color: #2c3e50 !important; margin-bottom: 22px; 
          display: flex; align-items: center; gap: 12px}
 .filt-g {display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px}
-.filt-g label {display: block; font-weight: 700; color: #34495e; margin-bottom: 8px; 
+.filt-g label {display: block; font-weight: 700; color: #34495e !important; margin-bottom: 8px; 
                font-size: 1rem; letter-spacing: 0.3px}
 
 /* TABS */
 .stTabs [data-baseweb="tab-list"] {gap: 12px; margin-bottom: 28px}
 .stTabs [data-baseweb="tab"] {border: none; border-radius: 16px; padding: 14px 32px; 
-                              font-weight: 700; font-size: 1.1rem; color: #667eea; 
+                              font-weight: 700; font-size: 1.1rem; color: #667eea !important; 
                               background: #f8f9fa; transition: all .3s; letter-spacing: 0.5px}
 .stTabs [data-baseweb="tab"]:hover {background: linear-gradient(135deg, #667eea, #764ba2); 
-                                    color: #fff; transform: translateY(-3px); 
+                                    color: #fff !important; transform: translateY(-3px); 
                                     box-shadow: 0 8px 20px rgba(102,126,234,.35)}
 .stTabs [aria-selected="true"] {background: linear-gradient(135deg, #667eea, #764ba2) !important; 
                                 color: #fff !important; 
@@ -190,40 +190,40 @@ body {font-family: 'Inter', 'Poppins', sans-serif; background: linear-gradient(1
 .strat-hdr {display: flex; justify-content: space-between; align-items: center; 
             margin-bottom: 24px; flex-wrap: wrap; gap: 12px}
 .strat-name {font-size: 2.2rem; font-weight: 900; text-shadow: 3px 3px 6px rgba(0,0,0,.25); 
-             letter-spacing: -0.5px}
+             letter-spacing: -0.5px; color: #ffffff !important}
 .pri-badge {padding: 10px 22px; border-radius: 24px; font-weight: 800; font-size: .95rem; 
             letter-spacing: 1.5px; background: rgba(255,255,255,.25); 
             backdrop-filter: blur(10px); animation: glow 2.5s ease-in-out infinite; 
-            box-shadow: 0 4px 15px rgba(0,0,0,.15)}
+            box-shadow: 0 4px 15px rgba(0,0,0,.15); color: #ffffff !important}
 @keyframes glow {0%,100% {box-shadow: 0 0 15px rgba(255,255,255,.3)} 
                  50% {box-shadow: 0 0 28px rgba(255,255,255,.6)}}
-.strat-sub {font-size: 1.3rem; font-weight: 700; margin-bottom: 20px; opacity: .95; letter-spacing: 0.3px}
+.strat-sub {font-size: 1.3rem; font-weight: 700; margin-bottom: 20px; opacity: .95; letter-spacing: 0.3px; color: #ffffff !important}
 .tactics {background: rgba(255,255,255,.12); border-radius: 16px; padding: 22px; 
           margin: 20px 0; backdrop-filter: blur(12px); 
           box-shadow: inset 0 2px 8px rgba(0,0,0,.1)}
-.tact-t {font-size: 1.2rem; font-weight: 800; margin-bottom: 14px; letter-spacing: 0.5px}
+.tact-t {font-size: 1.2rem; font-weight: 800; margin-bottom: 14px; letter-spacing: 0.5px; color: #ffffff !important}
 .tact {padding: 14px 18px; margin: 10px 0; background: rgba(255,255,255,.18); 
        border-radius: 12px; transition: all .3s ease; border-left: 4px solid rgba(255,255,255,.45); 
-       font-weight: 600; font-size: 1.02rem}
+       font-weight: 600; font-size: 1.02rem; color: #ffffff !important}
 .tact:hover {background: rgba(255,255,255,.28); transform: translateX(8px); 
              border-left-width: 6px; box-shadow: 0 4px 12px rgba(0,0,0,.1)}
 .kpi-g {display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin: 20px 0}
 .kpi {background: rgba(255,255,255,.16); padding: 12px; border-radius: 10px; 
       font-weight: 700; text-align: center; backdrop-filter: blur(8px); 
-      font-size: 1.02rem; letter-spacing: 0.3px}
+      font-size: 1.02rem; letter-spacing: 0.3px; color: #ffffff !important}
 .budget {display: flex; justify-content: space-between; margin-top: 20px; 
          padding: 18px; background: rgba(255,255,255,.16); 
          border-radius: 12px; backdrop-filter: blur(10px); gap: 12px}
 .budget div {text-align: center; flex: 1}
-.budget-l {font-size: .92rem; opacity: .92; margin-bottom: 6px; font-weight: 600; letter-spacing: 0.5px}
-.budget-v {font-size: 1.8rem; font-weight: 900; letter-spacing: -0.5px}
+.budget-l {font-size: .92rem; opacity: .92; margin-bottom: 6px; font-weight: 600; letter-spacing: 0.5px; color: #ffffff !important}
+.budget-v {font-size: 1.8rem; font-weight: 900; letter-spacing: -0.5px; color: #ffffff !important}
 
 /* CHAMPION BREAKDOWN */
 .champ-break {background: linear-gradient(135deg, #FFD700, #FFA500); border-radius: 24px; 
               padding: 36px; color: #fff; margin: 26px 0; 
               box-shadow: 0 15px 40px rgba(255,215,0,.4)}
 .champ-break-t {font-size: 2rem; font-weight: 900; margin-bottom: 26px; 
-                letter-spacing: -0.5px; text-align: center}
+                letter-spacing: -0.5px; text-align: center; color: #ffffff !important}
 .champ-grid {display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px}
 .champ-card {background: rgba(255,255,255,.16); border-radius: 16px; padding: 24px; 
              backdrop-filter: blur(10px); transition: all .35s ease; 
@@ -231,32 +231,32 @@ body {font-family: 'Inter', 'Poppins', sans-serif; background: linear-gradient(1
 .champ-card:hover {background: rgba(255,255,255,.26); transform: translateY(-4px) translateX(4px); 
                    box-shadow: 0 8px 25px rgba(0,0,0,.15); border-left-width: 8px}
 .champ-num {font-size: 2.5rem; font-weight: 900; margin-bottom: 8px; 
-            text-shadow: 2px 2px 4px rgba(0,0,0,.2)}
-.champ-tier {font-size: 1.3rem; font-weight: 800; margin-bottom: 12px; letter-spacing: 0.3px}
-.champ-desc {font-size: 1.05rem; margin-bottom: 12px; opacity: .95; line-height: 1.5}
+            text-shadow: 2px 2px 4px rgba(0,0,0,.2); color: #ffffff !important}
+.champ-tier {font-size: 1.3rem; font-weight: 800; margin-bottom: 12px; letter-spacing: 0.3px; color: #ffffff !important}
+.champ-desc {font-size: 1.05rem; margin-bottom: 12px; opacity: .95; line-height: 1.5; color: #ffffff !important}
 .champ-char {font-size: .95rem; background: rgba(255,255,255,.2); padding: 10px; 
-             border-radius: 8px; font-weight: 600; margin-top: 8px}
+             border-radius: 8px; font-weight: 600; margin-top: 8px; color: #ffffff !important}
 
 /* INSIGHTS */
 .ins {background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); border-radius: 24px; 
       padding: 36px; color: #fff; margin: 26px 0; 
       box-shadow: 0 15px 40px rgba(79,172,254,.4)}
-.ins-t {font-size: 2rem; font-weight: 900; margin-bottom: 26px; letter-spacing: -0.5px}
+.ins-t {font-size: 2rem; font-weight: 900; margin-bottom: 26px; letter-spacing: -0.5px; color: #ffffff !important}
 .ins-g {display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px}
 .ins-card {background: rgba(255,255,255,.16); border-radius: 16px; padding: 24px; 
            backdrop-filter: blur(10px); transition: all .35s ease; 
            box-shadow: 0 4px 15px rgba(0,0,0,.1)}
 .ins-card:hover {background: rgba(255,255,255,.26); transform: translateY(-4px); 
                  box-shadow: 0 8px 25px rgba(0,0,0,.15)}
-.ins-h {font-size: 1.35rem; font-weight: 800; margin-bottom: 16px; letter-spacing: 0.3px}
+.ins-h {font-size: 1.35rem; font-weight: 800; margin-bottom: 16px; letter-spacing: 0.3px; color: #ffffff !important}
 .ins-list {list-style: none; padding: 0}
 .ins-list li {padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,.25); 
-              font-size: 1.02rem; font-weight: 500; letter-spacing: 0.2px}
+              font-size: 1.02rem; font-weight: 500; letter-spacing: 0.2px; color: #ffffff !important}
 .ins-list li:last-child {border-bottom: none}
 
 /* FOOTER */
 .foot {text-align: center; margin-top: 50px; padding: 26px; 
-       border-top: 4px solid #667eea; color: #7f8c8d; 
+       border-top: 4px solid #667eea; color: #2c3e50 !important; 
        font-size: 1.05rem; font-weight: 600; letter-spacing: 0.5px}
 
 /* RESPONSIVE */
@@ -283,7 +283,15 @@ div[data-testid="stSelectbox"] div {border-radius: 12px}
 div[data-testid="stSlider"] div {border-radius: 12px}
 
 /* Additional styles for empty data handling */
-.empty-message {text-align: center; padding: 40px; font-size: 1.2rem; color: #666; background: #f8f9fa; border-radius: 12px}
+.empty-message {text-align: center; padding: 40px; font-size: 1.2rem; color: #666 !important; background: #f8f9fa; border-radius: 12px}
+
+/* Streamlit specific overrides */
+.stSelectbox label, .stSlider label {color: #2c3e50 !important; font-weight: 600 !important}
+.stSelectbox div[data-baseweb="select"] {color: #2c3e50 !important}
+.stSlider div {color: #2c3e50 !important}
+
+/* Plotly chart text fixes */
+.js-plotly-plot .plotly .main-svg {color: #2c3e50 !important}
 </style>
 """, unsafe_allow_html=True)
 
@@ -304,12 +312,16 @@ def create_charts(df):
             colors=[colors.get(l, '#95A5A6') for l in cc.index]
         ),
         textinfo='label+percent',
-        hoverinfo='label+value'
+        hoverinfo='label+value',
+        textfont=dict(color='#2c3e50', size=14)
     ))
     f1.update_layout(
-        title={'text': "🎯 Customer Distribution", 'x': 0.5},
+        title={'text': "🎯 Customer Distribution", 'x': 0.5, 'font': {'color': '#2c3e50', 'size': 20}},
         height=400,
-        showlegend=True
+        showlegend=True,
+        paper_bgcolor='white',
+        plot_bgcolor='white',
+        font=dict(color='#2c3e50')
     )
     
     # Chart 2: Revenue by Segment
@@ -325,22 +337,31 @@ def create_charts(df):
                 colorscale='Viridis'
             ),
             text=[f'£{v/1000:.1f}K' for v in rv.values],
-            textposition='outside'
+            textposition='outside',
+            textfont=dict(color='#2c3e50', size=12)
         ))
         f2.update_layout(
-            title={'text': "💰 Revenue by Segment", 'x': 0.5},
+            title={'text': "💰 Revenue by Segment", 'x': 0.5, 'font': {'color': '#2c3e50', 'size': 20}},
             xaxis_title="Revenue (£)",
-            height=400
+            height=400,
+            paper_bgcolor='white',
+            plot_bgcolor='white',
+            font=dict(color='#2c3e50'),
+            xaxis=dict(tickfont=dict(color='#2c3e50'), titlefont=dict(color='#2c3e50')),
+            yaxis=dict(tickfont=dict(color='#2c3e50'), titlefont=dict(color='#2c3e50'))
         )
     else:
         f2 = go.Figure()
         f2.update_layout(
-            title={'text': "💰 Revenue by Segment", 'x': 0.5},
+            title={'text': "💰 Revenue by Segment", 'x': 0.5, 'font': {'color': '#2c3e50', 'size': 20}},
             height=400,
+            paper_bgcolor='white',
+            plot_bgcolor='white',
             annotations=[dict(
                 text='No revenue data',
                 x=0.5, y=0.5,
-                showarrow=False
+                showarrow=False,
+                font=dict(color='#2c3e50', size=16)
             )]
         )
     
@@ -360,19 +381,25 @@ def create_charts(df):
             text=df['Cluster_Label']
         ))
         f3.update_layout(
-            title={'text': "📈 3D RFM Analysis", 'x': 0.5},
+            title={'text': "📈 3D RFM Analysis", 'x': 0.5, 'font': {'color': '#2c3e50', 'size': 20}},
             height=600,
             scene=dict(
                 xaxis_title='Recency (days)',
                 yaxis_title='Frequency',
-                zaxis_title='Monetary (£)'
-            )
+                zaxis_title='Monetary (£)',
+                xaxis=dict(titlefont=dict(color='#2c3e50'), tickfont=dict(color='#2c3e50')),
+                yaxis=dict(titlefont=dict(color='#2c3e50'), tickfont=dict(color='#2c3e50')),
+                zaxis=dict(titlefont=dict(color='#2c3e50'), tickfont=dict(color='#2c3e50'))
+            ),
+            paper_bgcolor='white',
+            font=dict(color='#2c3e50')
         )
     else:
         f3 = go.Figure()
         f3.update_layout(
-            title={'text': "📈 3D RFM Analysis", 'x': 0.5},
-            height=600
+            title={'text': "📈 3D RFM Analysis", 'x': 0.5, 'font': {'color': '#2c3e50', 'size': 20}},
+            height=600,
+            paper_bgcolor='white'
         )
     
     # Chart 4-6: Histograms
@@ -380,8 +407,10 @@ def create_charts(df):
         if column not in df.columns:
             fig = go.Figure()
             fig.update_layout(
-                title={'text': title, 'x': 0.5},
-                height=300
+                title={'text': title, 'x': 0.5, 'font': {'color': '#2c3e50', 'size': 18}},
+                height=300,
+                paper_bgcolor='white',
+                plot_bgcolor='white'
             )
             return fig
         
@@ -389,12 +418,18 @@ def create_charts(df):
             x=df[column],
             nbinsx=30,
             marker_color=color,
-            opacity=0.8
+            opacity=0.8,
+            textfont=dict(color='#2c3e50')
         ))
         fig.update_layout(
-            title={'text': title, 'x': 0.5},
+            title={'text': title, 'x': 0.5, 'font': {'color': '#2c3e50', 'size': 18}},
             height=300,
-            bargap=0.1
+            bargap=0.1,
+            paper_bgcolor='white',
+            plot_bgcolor='white',
+            font=dict(color='#2c3e50'),
+            xaxis=dict(tickfont=dict(color='#2c3e50'), titlefont=dict(color='#2c3e50')),
+            yaxis=dict(tickfont=dict(color='#2c3e50'), titlefont=dict(color='#2c3e50'))
         )
         return fig
     
@@ -432,14 +467,15 @@ def create_charts(df):
             segment_table = segment_table[['Cluster_Label', 'Count', 'Recency', 'Frequency', 
                                          'Monetary', 'AvgOrderValue', 'RFM_Score']]
             
-            # Buat tabel
+            # Buat tabel dengan kontras yang baik
             f7 = go.Figure(data=[go.Table(
                 header=dict(
                     values=['<b>Segment</b>', '<b>Count</b>', '<b>Recency</b>', '<b>Frequency</b>',
                             '<b>Monetary</b>', '<b>Avg Order</b>', '<b>RFM Score</b>'],
                     fill_color='#667eea',
                     align='center',
-                    font=dict(color='white', size=12)
+                    font=dict(color='white', size=12, family='Arial, sans-serif'),
+                    height=40
                 ),
                 cells=dict(
                     values=[
@@ -451,9 +487,10 @@ def create_charts(df):
                         segment_table['AvgOrderValue'],
                         segment_table['RFM_Score']
                     ],
-                    fill_color='white',
+                    fill_color=['white', '#f8f9fa'],
                     align='center',
-                    font=dict(size=11)
+                    font=dict(size=11, color='#2c3e50', family='Arial, sans-serif'),
+                    height=35
                 )
             )])
         else:
@@ -466,32 +503,36 @@ def create_charts(df):
                     values=['<b>Segment</b>', '<b>Count</b>'],
                     fill_color='#667eea',
                     align='center',
-                    font=dict(color='white', size=12)
+                    font=dict(color='white', size=12, family='Arial, sans-serif'),
+                    height=40
                 ),
                 cells=dict(
                     values=[segment_table['Segment'], segment_table['Count']],
-                    fill_color='white',
+                    fill_color=['white', '#f8f9fa'],
                     align='center',
-                    font=dict(size=11)
+                    font=dict(size=11, color='#2c3e50', family='Arial, sans-serif'),
+                    height=35
                 )
             )])
         
         f7.update_layout(
-            title={'text': "📊 RFM Segment Summary", 'x': 0.5},
+            title={'text': "📊 RFM Segment Summary", 'x': 0.5, 'font': {'color': '#2c3e50', 'size': 20}},
             height=400,
-            margin=dict(t=50, b=20, l=20, r=20)
+            margin=dict(t=50, b=20, l=20, r=20),
+            paper_bgcolor='white'
         )
         
     except Exception as e:
         f7 = go.Figure()
         f7.update_layout(
-            title={'text': "📊 Segment Summary", 'x': 0.5},
+            title={'text': "📊 Segment Summary", 'x': 0.5, 'font': {'color': '#2c3e50', 'size': 20}},
             height=400,
+            paper_bgcolor='white',
             annotations=[dict(
                 text=f'Error: {str(e)[:100]}',
                 x=0.5, y=0.5,
                 showarrow=False,
-                font=dict(size=12)
+                font=dict(color='#2c3e50', size=12)
             )]
         )
     
@@ -502,7 +543,7 @@ def main():
     # Container utama
     st.markdown('<div class="main-container">', unsafe_allow_html=True)
     
-    # Header
+    # Header dengan kontras yang jelas
     st.markdown("""
     <div class="hdr">
         <h1 class="title">🎯 Customer Intelligence Hub</h1>
@@ -510,14 +551,14 @@ def main():
     </div>
     """, unsafe_allow_html=True)
     
-    # Metrics
+    # Metrics dengan warna teks yang jelas
     col1, col2, col3, col4 = st.columns(4)
     with col1:
         st.markdown(f"""
         <div class="met">
             <div class="met-icon">👥</div>
             <div class="met-val">{len(rfm):,}</div>
-            <div class="met-lbl">Customers</div>
+            <div class="met-lbl">CUSTOMERS</div>
             <div class="met-sub">Active Database</div>
         </div>
         """, unsafe_allow_html=True)
@@ -527,7 +568,7 @@ def main():
         <div class="met">
             <div class="met-icon">🎯</div>
             <div class="met-val">{rfm['Cluster_KMeans'].nunique()}</div>
-            <div class="met-lbl">Segments</div>
+            <div class="met-lbl">SEGMENTS</div>
             <div class="met-sub">AI-Classified</div>
         </div>
         """, unsafe_allow_html=True)
@@ -539,7 +580,7 @@ def main():
         <div class="met">
             <div class="met-icon">💰</div>
             <div class="met-val">£{total_rev/1e6:.1f}M</div>
-            <div class="met-lbl">Revenue</div>
+            <div class="met-lbl">REVENUE</div>
             <div class="met-sub">Avg £{avg_rev:.0f}</div>
         </div>
         """, unsafe_allow_html=True)
@@ -551,19 +592,19 @@ def main():
         <div class="met">
             <div class="met-icon">📈</div>
             <div class="met-val">£{avg_order:.0f}</div>
-            <div class="met-lbl">Avg Order</div>
+            <div class="met-lbl">AVG ORDER</div>
             <div class="met-sub">Peak £{max_order:.0f}</div>
         </div>
         """, unsafe_allow_html=True)
     
-    # Filters
+    # Filters dengan label yang jelas
     st.markdown('<div class="filt">', unsafe_allow_html=True)
-    st.markdown('<div class="filt-t">🎛️ Smart Filters</div>', unsafe_allow_html=True)
+    st.markdown('<div class="filt-t">🎛️ SMART FILTERS</div>', unsafe_allow_html=True)
     
     col1, col2, col3 = st.columns(3)
     with col1:
         # Segment Filter
-        segment_options = [{'label': '🌐 All Segments', 'value': 'all'}]
+        segment_options = [{'label': '🌐 ALL SEGMENTS', 'value': 'all'}]
         for c, p in profs.items():
             if p['name'] == '🏆 Champions' and c in champion_details:
                 label = f"{p['name']} - {champion_details[c]['tier']}"
@@ -572,7 +613,7 @@ def main():
             segment_options.append({'label': label, 'value': c})
         
         segment_filter = st.selectbox(
-            "🎨 Segment Filter",
+            "🎨 SEGMENT FILTER",
             options=[opt['value'] for opt in segment_options],
             format_func=lambda x: next((opt['label'] for opt in segment_options if opt['value'] == x), x),
             index=0,
@@ -585,7 +626,7 @@ def main():
             rfm_min = int(rfm['RFM_Score'].min())
             rfm_max = int(rfm['RFM_Score'].max())
             rfm_filter = st.slider(
-                "📊 RFM Score Range",
+                "📊 RFM SCORE RANGE",
                 min_value=rfm_min,
                 max_value=rfm_max,
                 value=[rfm_min, rfm_max],
@@ -596,7 +637,7 @@ def main():
             rfm_max = 100
             rfm_filter = [0, 100]
             st.slider(
-                "📊 RFM Score Range",
+                "📊 RFM SCORE RANGE",
                 min_value=0,
                 max_value=100,
                 value=[0, 100],
@@ -606,14 +647,14 @@ def main():
     with col3:
         # Priority Level
         priority_options = [
-            {'label': '🌐 All Priorities', 'value': 'all'},
+            {'label': '🌐 ALL PRIORITIES', 'value': 'all'},
             {'label': '🔴 CRITICAL', 'value': 'CRITICAL'},
             {'label': '🔥 URGENT', 'value': 'URGENT'},
             {'label': '⚡ HIGH', 'value': 'HIGH'},
             {'label': '📊 MEDIUM', 'value': 'MEDIUM'}
         ]
         priority_filter = st.selectbox(
-            "🔥 Priority Level",
+            "🔥 PRIORITY LEVEL",
             options=[opt['value'] for opt in priority_options],
             format_func=lambda x: next((opt['label'] for opt in priority_options if opt['value'] == x), x),
             index=0,
@@ -637,8 +678,8 @@ def main():
     if priority_filter != 'all' and 'Priority' in filtered_df.columns:
         filtered_df = filtered_df[filtered_df['Priority'] == priority_filter]
     
-    # Tabs
-    tab1, tab2, tab3 = st.tabs(["📊 Analytics Dashboard", "🎯 Growth Strategies", "💡 AI Insights"])
+    # Tabs dengan label yang jelas
+    tab1, tab2, tab3 = st.tabs(["📊 ANALYTICS DASHBOARD", "🎯 GROWTH STRATEGIES", "💡 AI INSIGHTS"])
     
     with tab1:
         if len(filtered_df) > 0:
@@ -649,17 +690,17 @@ def main():
             col1, col2 = st.columns(2)
             with col1:
                 st.markdown('<div class="chart">', unsafe_allow_html=True)
-                st.plotly_chart(f1, use_container_width=True, config={'displayModeBar': False})
+                st.plotly_chart(f1, use_container_width=True, config={'displayModeBar': True})
                 st.markdown('</div>', unsafe_allow_html=True)
             
             with col2:
                 st.markdown('<div class="chart">', unsafe_allow_html=True)
-                st.plotly_chart(f2, use_container_width=True, config={'displayModeBar': False})
+                st.plotly_chart(f2, use_container_width=True, config={'displayModeBar': True})
                 st.markdown('</div>', unsafe_allow_html=True)
             
             # Row 2: Full width 3D chart
             st.markdown('<div class="chart chart-full">', unsafe_allow_html=True)
-            st.plotly_chart(f3, use_container_width=True, config={'displayModeBar': False})
+            st.plotly_chart(f3, use_container_width=True, config={'displayModeBar': True})
             st.markdown('</div>', unsafe_allow_html=True)
             
             # Row 3: Three histograms
@@ -667,23 +708,23 @@ def main():
             col1, col2, col3 = st.columns(3)
             with col1:
                 st.markdown('<div class="chart">', unsafe_allow_html=True)
-                st.plotly_chart(f4, use_container_width=True, config={'displayModeBar': False})
+                st.plotly_chart(f4, use_container_width=True, config={'displayModeBar': True})
                 st.markdown('</div>', unsafe_allow_html=True)
             
             with col2:
                 st.markdown('<div class="chart">', unsafe_allow_html=True)
-                st.plotly_chart(f5, use_container_width=True, config={'displayModeBar': False})
+                st.plotly_chart(f5, use_container_width=True, config={'displayModeBar': True})
                 st.markdown('</div>', unsafe_allow_html=True)
             
             with col3:
                 st.markdown('<div class="chart">', unsafe_allow_html=True)
-                st.plotly_chart(f6, use_container_width=True, config={'displayModeBar': False})
+                st.plotly_chart(f6, use_container_width=True, config={'displayModeBar': True})
                 st.markdown('</div>', unsafe_allow_html=True)
             st.markdown('</div>', unsafe_allow_html=True)
             
             # Row 4: Full width table
             st.markdown('<div class="chart chart-full">', unsafe_allow_html=True)
-            st.plotly_chart(f7, use_container_width=True, config={'displayModeBar': False})
+            st.plotly_chart(f7, use_container_width=True, config={'displayModeBar': True})
             st.markdown('</div>', unsafe_allow_html=True)
         else:
             st.markdown('<div class="empty-message">No data available for the selected filters.</div>', unsafe_allow_html=True)
@@ -700,17 +741,17 @@ def main():
                     det = champion_details[cid]
                     champ_cards_html += f"""
                     <div class="champ-card">
-                        <div class="champ-num">Champion C{cid}</div>
+                        <div class="champ-num">CHAMPION C{cid}</div>
                         <div class="champ-tier">🏅 {det['tier']}</div>
                         <div class="champ-desc">{det['desc']}</div>
-                        <div class="champ-char">📊 Characteristics: {det['char']}</div>
+                        <div class="champ-char">📊 CHARACTERISTICS: {det['char']}</div>
                     </div>
                     """
             
             if champ_cards_html:
                 st.markdown(f"""
                 <div class="champ-break">
-                    <div class="champ-break-t">🏆 Champion Segments Breakdown</div>
+                    <div class="champ-break-t">🏆 CHAMPION SEGMENTS BREAKDOWN</div>
                     <div style="text-align:center; font-size:1.1rem; margin-bottom:24px; opacity:0.95">
                         Understanding the 4 Different Champion Tiers
                     </div>
@@ -720,7 +761,7 @@ def main():
                 </div>
                 """, unsafe_allow_html=True)
         
-        # Strategy Cards
+        # Strategy Cards dengan teks yang jelas
         st_cards_html = ""
         for cid, p in profs.items():
             if segment_filter == 'all' or segment_filter == cid:
@@ -740,24 +781,24 @@ def main():
                         <div class="strat-name">{p['name']}</div>
                         <div class="pri-badge">{p['priority']}</div>
                     </div>
-                    <div class="strat-sub">📋 {p['strategy']} Strategy</div>
+                    <div class="strat-sub">📋 {p['strategy']} STRATEGY</div>
                     <div class="tactics">
-                        <div class="tact-t">🎯 Key Tactics</div>
+                        <div class="tact-t">🎯 KEY TACTICS</div>
                         {tactics_html}
                     </div>
                     <div class="tactics">
-                        <div class="tact-t">📊 Target KPIs</div>
+                        <div class="tact-t">📊 TARGET KPIS</div>
                         <div class="kpi-g">
                             {kpis_html}
                         </div>
                     </div>
                     <div class="budget">
                         <div>
-                            <div class="budget-l">Budget Allocation</div>
+                            <div class="budget-l">BUDGET ALLOCATION</div>
                             <div class="budget-v">{p['budget']}</div>
                         </div>
                         <div>
-                            <div class="budget-l">ROI Target</div>
+                            <div class="budget-l">ROI TARGET</div>
                             <div class="budget-v">{p['roi']}</div>
                         </div>
                     </div>
@@ -809,25 +850,25 @@ def main():
             
             insights_html = f"""
             <div class="ins">
-                <div class="ins-t">🧠 AI-Powered Insights & Recommendations</div>
+                <div class="ins-t">🧠 AI-POWERED INSIGHTS & RECOMMENDATIONS</div>
                 <div class="ins-g">
                     <div class="ins-card">
-                        <div class="ins-h">📊 Top Performers</div>
+                        <div class="ins-h">📊 TOP PERFORMERS</div>
                         <ul class="ins-list">
-                            <li>🏆 Highest Revenue: {highest_revenue_segment}</li>
-                            <li>👥 Largest Group: {largest_group_segment} ({largest_group_count:,} customers)</li>
-                            <li>💰 Best AOV: {best_aov_segment} (£{best_aov_value:.0f})</li>
-                            <li>🔄 Most Frequent: {most_frequent_segment} ({most_frequent_value:.1f} orders)</li>
+                            <li>🏆 HIGHEST REVENUE: {highest_revenue_segment}</li>
+                            <li>👥 LARGEST GROUP: {largest_group_segment} ({largest_group_count:,} CUSTOMERS)</li>
+                            <li>💰 BEST AOV: {best_aov_segment} (£{best_aov_value:.0f})</li>
+                            <li>🔄 MOST FREQUENT: {most_frequent_segment} ({most_frequent_value:.1f} ORDERS)</li>
                         </ul>
                     </div>
                     <div class="ins-card">
-                        <div class="ins-h">💡 Smart Recommendations</div>
+                        <div class="ins-h">💡 SMART RECOMMENDATIONS</div>
                         <ul class="ins-list">
-                            <li>🎯 Prioritize high-value segment retention programs</li>
-                            <li>📧 Launch win-back campaigns for dormant customers</li>
-                            <li>🚀 Accelerate potential customer nurturing flows</li>
-                            <li>💎 Create exclusive VIP experiences for champions</li>
-                            <li>📈 Implement cross-sell strategies for loyal segments</li>
+                            <li>🎯 PRIORITIZE HIGH-VALUE SEGMENT RETENTION PROGRAMS</li>
+                            <li>📧 LAUNCH WIN-BACK CAMPAIGNS FOR DORMANT CUSTOMERS</li>
+                            <li>🚀 ACCELERATE POTENTIAL CUSTOMER NURTURING FLOWS</li>
+                            <li>💎 CREATE EXCLUSIVE VIP EXPERIENCES FOR CHAMPIONS</li>
+                            <li>📈 IMPLEMENT CROSS-SELL STRATEGIES FOR LOYAL SEGMENTS</li>
                         </ul>
                     </div>
                 </div>
@@ -837,10 +878,10 @@ def main():
         else:
             st.markdown('<div class="empty-message">No insights available for the selected filters.</div>', unsafe_allow_html=True)
     
-    # Footer
+    # Footer dengan teks yang jelas
     st.markdown("""
     <div class="foot">
-        Customer Intelligence Hub v2.0 • Powered by AI Segmentation • Data Updated Daily
+        CUSTOMER INTELLIGENCE HUB V2.0 • POWERED BY AI SEGMENTATION • DATA UPDATED DAILY
     </div>
     """, unsafe_allow_html=True)
     
