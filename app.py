@@ -623,59 +623,77 @@ def main():
     # Container utama
     st.markdown('<div class="main-container">', unsafe_allow_html=True)
     
-    # Header
-    st.markdown("""
+   # Header
+st.markdown(
+    """
     <div class="hdr">
         <h1 class="title">🎯 Customer Intelligence Hub</h1>
         <p class="sub">Customer Segmentation for Personalized Retail Marketing</p>
     </div>
-    """, unsafe_allow_html=True)
-    
-    # Metrics
-    col1, col2, col3, col4 = st.columns(4)
-    with col1:
-        st.markdown(f"""
+    """,
+    unsafe_allow_html=True
+)
+
+# Metrics
+col1, col2, col3, col4 = st.columns(4)
+
+with col1:
+    st.markdown(
+        f"""
         <div class="met">
             <div class="met-icon">👥</div>
             <div class="met-val">{len(rfm):,}</div>
             <div class="met-lbl">Customers</div>
             <div class="met-sub">Active Database</div>
         </div>
-        """, unsafe_allow_html=True)
-    
-    with col2:
-        st.markdown(f"""
+        """,
+        unsafe_allow_html=True
+    )
+
+with col2:
+    st.markdown(
+        f"""
         <div class="met">
             <div class="met-icon">🎯</div>
             <div class="met-val">{rfm['Cluster_KMeans'].nunique()}</div>
             <div class="met-lbl">Segments</div>
             <div class="met-sub">AI-Classified</div>
         </div>
-        """, unsafe_allow_html=True)
-    
-    with col3:
-        total_rev = rfm['Monetary'].sum() if 'Monetary' in rfm.columns else 0
-        avg_rev = rfm['Monetary'].mean() if 'Monetary' in rfm.columns else 0
-        st.markdown(f"""
+        """,
+        unsafe_allow_html=True
+    )
+
+with col3:
+    total_rev = rfm['Monetary'].sum() if 'Monetary' in rfm.columns else 0
+    avg_rev = rfm['Monetary'].mean() if 'Monetary' in rfm.columns else 0
+
+    st.markdown(
+        f"""
         <div class="met">
             <div class="met-icon">💰</div>
             <div class="met-val">£{total_rev/1e6:.1f}M</div>
             <div class="met-lbl">Revenue</div>
             <div class="met-sub">Avg £{avg_rev:.0f}</div>
         </div>
-        """, unsafe_allow_html=True)
-    
-    with col4:
-        avg_order = rfm['AvgOrderValue'].mean() if 'AvgOrderValue' in rfm.columns else 0
-        max_order = rfm['AvgOrderValue'].max() if 'AvgOrderValue' in rfm.columns else 0
-        st.markdown(f"""
+        """,
+        unsafe_allow_html=True
+    )
+
+with col4:
+    avg_order = rfm['AvgOrderValue'].mean() if 'AvgOrderValue' in rfm.columns else 0
+    max_order = rfm['AvgOrderValue'].max() if 'AvgOrderValue' in rfm.columns else 0
+
+    st.markdown(
+        f"""
         <div class="met">
             <div class="met-icon">📈</div>
             <div class="met-val">£{avg_order:.0f}</div>
             <div class="met-lbl">Avg Order</div>
             <div class="met-sub">Peak £{max_order:.0f}</div>
         </div>
-        """, unsafe_allow_html=True)
+        """,
+        unsafe_allow_html=True
+    )
     
     # Filters
     st.markdown('<div class="filt">', unsafe_allow_html=True)
