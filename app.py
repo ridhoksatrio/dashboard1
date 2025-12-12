@@ -175,22 +175,38 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# Load & Prepare Data
+# Ganti bagian load_data() dengan ini:
 @st.cache_data
 def load_data():
-    try:
-        rfm = pd.read_csv('final_customer_segments (1).csv', index_col=0)
-    except:
+    # Coba beberapa kemungkinan nama file
+    possible_files = [
+        'final_customer_segments (1).csv',
+        'final_customer_segments.csv',
+        'data/final_customer_segments.csv',
+        'dataset/final_customer_segments.csv'
+    ]
+    
+    for file_path in possible_files:
         try:
-            rfm = pd.read_csv('final_customer_segments.csv', index_col=0)
+            rfm = pd.read_csv(file_path, index_col=0)
+            st.success(f"Berhasil load data dari: {file_path}")
+            return rfm
         except:
-            st.error("File data tidak ditemukan. Pastikan 'final_customer_segments.csv' ada di direktori yang sama.")
-            return None
-    return rfm
-
-rfm = load_data()
-if rfm is None:
-    st.stop()
+            continue
+    
+    # Jika semua gagal, buat data dummy untuk testing
+    st.warning("File tidak ditemukan, menggunakan data dummy untuk demo...")
+    np.random.seed(42)
+    n_samples = 1000
+    data = {
+        'Recency': np.random.randint(1, 365, n_samples),
+        'Frequency': np.random.randint(1, 50, n_samples),
+        'Monetary': np.random.uniform(100, 50000, n_samples),
+        'AvgOrderValue': np.random.uniform(50, 500, n_samples),
+        'RFM_Score': np.random.randint(1, 100, n_samples),
+        'Cluster_KMeans': np.random.choice([0, 1, 2, 3, 4, 5, 6], n_samples)
+    }
+    return pd.DataFrame(data)
 
 # Cluster Strategies
 strats = {
