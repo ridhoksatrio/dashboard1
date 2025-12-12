@@ -117,156 +117,674 @@ st.markdown("""
 <style>
     * {margin: 0; padding: 0; box-sizing: border-box}
     body {font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0f172a; min-height: 100vh}
-    .stApp {background: transparent !important; padding: 0 !important; max-width: 100% !important}
+    .stApp {background: transparent !important; padding: 0 !important; max-width: 100% !important; overflow-x: hidden !important}
+    
+    /* MAIN CONTENT WRAPPER - PERBAIKAN UTAMA */
+    .main-content-wrapper {
+        max-width: 100% !important;
+        padding: 0 2rem !important;
+        box-sizing: border-box !important;
+        overflow-x: hidden !important;
+    }
     
     /* SIDEBAR */
     .st-emotion-cache-1cypcdb {background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%) !important; border-right: 1px solid #334155}
     .st-emotion-cache-16txtl3 {padding: 2rem 1.5rem !important}
     
     /* HEADER dengan glassmorphism */
-    .header-container {background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); 
-                      border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding: 1.5rem 2rem; position: sticky; top: 0; z-index: 1000}
-    .main-header {display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem}
-    .header-title {font-size: 2rem; font-weight: 800; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
-                  -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0}
-    .header-subtitle {color: #94a3b8; font-size: 1rem; margin-top: 0.25rem; font-weight: 400}
-    .header-stats {display: flex; gap: 1.5rem; flex-wrap: wrap}
-    .stat-item {display: flex; flex-direction: column; align-items: center; padding: 0.75rem 1.25rem; 
-                background: rgba(30, 41, 59, 0.7); border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.05)}
-    .stat-value {font-size: 1.25rem; font-weight: 700; color: #fff; margin-bottom: 0.25rem}
-    .stat-label {font-size: 0.75rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em}
+    .header-container {
+        background: rgba(15, 23, 42, 0.85); 
+        backdrop-filter: blur(20px); 
+        -webkit-backdrop-filter: blur(20px); 
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1); 
+        padding: 1.5rem 2rem; 
+        position: sticky; 
+        top: 0; 
+        z-index: 1000;
+        max-width: 100vw !important;
+        box-sizing: border-box !important;
+        overflow: hidden !important;
+    }
+    .main-header {
+        display: flex; 
+        justify-content: space-between; 
+        align-items: center; 
+        flex-wrap: wrap; 
+        gap: 1rem;
+        max-width: 100% !important;
+        overflow: hidden !important;
+    }
+    .header-title {
+        font-size: 2rem; 
+        font-weight: 800; 
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+        -webkit-background-clip: text; 
+        -webkit-text-fill-color: transparent; 
+        margin: 0;
+        word-wrap: break-word;
+        max-width: 100% !important;
+    }
+    .header-subtitle {
+        color: #94a3b8; 
+        font-size: 1rem; 
+        margin-top: 0.25rem; 
+        font-weight: 400;
+        max-width: 100% !important;
+        word-wrap: break-word;
+    }
+    .header-stats {
+        display: flex; 
+        gap: 1.5rem; 
+        flex-wrap: wrap;
+        max-width: 100% !important;
+        overflow: hidden !important;
+    }
+    .stat-item {
+        display: flex; 
+        flex-direction: column; 
+        align-items: center; 
+        padding: 0.75rem 1.25rem; 
+        background: rgba(30, 41, 59, 0.7); 
+        border-radius: 12px; 
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        min-width: 120px;
+        box-sizing: border-box !important;
+    }
+    .stat-value {
+        font-size: 1.25rem; 
+        font-weight: 700; 
+        color: #fff; 
+        margin-bottom: 0.25rem
+    }
+    .stat-label {
+        font-size: 0.75rem; 
+        color: #94a3b8; 
+        text-transform: uppercase; 
+        letter-spacing: 0.05em
+    }
     
     /* METRICS GRID dengan neumorphism */
-    .metrics-grid {display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin: 1.5rem 0}
-    @media (max-width: 1200px) {.metrics-grid {grid-template-columns: repeat(2, 1fr)}}
-    @media (max-width: 768px) {.metrics-grid {grid-template-columns: 1fr}}
-    .metric-card {background: rgba(30, 41, 59, 0.8); border-radius: 16px; padding: 1.5rem; 
-                  border: 1px solid rgba(255, 255, 255, 0.05); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-                  position: relative; overflow: hidden}
-    .metric-card:hover {transform: translateY(-4px); border-color: rgba(102, 126, 234, 0.3); 
-                       box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3)}
-    .metric-card::before {content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; 
-                         background: linear-gradient(90deg, #667eea, #764ba2)}
-    .metric-icon {font-size: 2rem; margin-bottom: 1rem; display: inline-block}
-    .metric-value {font-size: 2rem; font-weight: 800; color: #fff; margin: 0.5rem 0; line-height: 1}
-    .metric-label {font-size: 0.875rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600}
-    .metric-change {font-size: 0.75rem; display: flex; align-items: center; gap: 0.25rem; margin-top: 0.5rem}
+    .metrics-grid {
+        display: grid; 
+        grid-template-columns: repeat(4, 1fr); 
+        gap: 1rem; 
+        margin: 1.5rem 0;
+        max-width: 100% !important;
+        overflow: hidden !important;
+        box-sizing: border-box !important;
+    }
+    @media (max-width: 1200px) {
+        .metrics-grid {grid-template-columns: repeat(2, 1fr)}
+    }
+    @media (max-width: 768px) {
+        .metrics-grid {grid-template-columns: 1fr}
+    }
+    .metric-card {
+        background: rgba(30, 41, 59, 0.8); 
+        border-radius: 16px; 
+        padding: 1.5rem; 
+        border: 1px solid rgba(255, 255, 255, 0.05); 
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative; 
+        overflow: hidden;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+    }
+    .metric-card:hover {
+        transform: translateY(-4px); 
+        border-color: rgba(102, 126, 234, 0.3); 
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3)
+    }
+    .metric-card::before {
+        content: ''; 
+        position: absolute; 
+        top: 0; 
+        left: 0; 
+        right: 0; 
+        height: 3px; 
+        background: linear-gradient(90deg, #667eea, #764ba2)
+    }
+    .metric-icon {
+        font-size: 2rem; 
+        margin-bottom: 1rem; 
+        display: inline-block
+    }
+    .metric-value {
+        font-size: 2rem; 
+        font-weight: 800; 
+        color: #fff; 
+        margin: 0.5rem 0; 
+        line-height: 1
+    }
+    .metric-label {
+        font-size: 0.875rem; 
+        color: #94a3b8; 
+        text-transform: uppercase; 
+        letter-spacing: 0.05em; 
+        font-weight: 600
+    }
+    .metric-change {
+        font-size: 0.75rem; 
+        display: flex; 
+        align-items: center; 
+        gap: 0.25rem; 
+        margin-top: 0.5rem
+    }
     .change-positive {color: #10b981}
     .change-negative {color: #ef4444}
     
     /* FILTER SECTION */
-    .filter-section {background: rgba(30, 41, 59, 0.8); border-radius: 16px; padding: 1.5rem; 
-                    margin: 1.5rem 0; border: 1px solid rgba(255, 255, 255, 0.05)}
-    .filter-title {font-size: 1.25rem; font-weight: 700; color: #fff; margin-bottom: 1rem; 
-                  display: flex; align-items: center; gap: 0.5rem}
-    .filter-grid {display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem}
-    @media (max-width: 768px) {.filter-grid {grid-template-columns: 1fr}}
+    .filter-section {
+        background: rgba(30, 41, 59, 0.8); 
+        border-radius: 16px; 
+        padding: 1.5rem; 
+        margin: 1.5rem 0; 
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        max-width: 100% !important;
+        overflow: hidden !important;
+        box-sizing: border-box !important;
+    }
+    .filter-title {
+        font-size: 1.25rem; 
+        font-weight: 700; 
+        color: #fff; 
+        margin-bottom: 1rem; 
+        display: flex; 
+        align-items: center; 
+        gap: 0.5rem
+    }
+    .filter-grid {
+        display: grid; 
+        grid-template-columns: repeat(3, 1fr); 
+        gap: 1rem;
+        max-width: 100% !important;
+        overflow: hidden !important;
+    }
+    @media (max-width: 768px) {
+        .filter-grid {grid-template-columns: 1fr}
+    }
     
     /* TABS STYLING */
-    .stTabs [data-baseweb="tab-list"] {gap: 0.5rem; margin-bottom: 1.5rem}
-    .stTabs [data-baseweb="tab"] {background: rgba(30, 41, 59, 0.5) !important; border: 1px solid rgba(255, 255, 255, 0.05) !important;
-                                  border-radius: 12px !important; padding: 0.75rem 1.5rem !important; 
-                                  color: #94a3b8 !important; font-weight: 600 !important; transition: all 0.3s ease}
-    .stTabs [data-baseweb="tab"]:hover {background: rgba(30, 41, 59, 0.8) !important; color: #fff !important; 
-                                       border-color: rgba(102, 126, 234, 0.3) !important}
-    .stTabs [aria-selected="true"] {background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important; 
-                                   color: #fff !important; border-color: transparent !important;
-                                   box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3) !important}
+    .stTabs {
+        max-width: 100% !important;
+        overflow: hidden !important;
+    }
+    .stTabs [data-baseweb="tab-list"] {
+        gap: 0.5rem; 
+        margin-bottom: 1.5rem;
+        max-width: 100% !important;
+        overflow-x: auto !important;
+        flex-wrap: wrap !important;
+    }
+    .stTabs [data-baseweb="tab"] {
+        background: rgba(30, 41, 59, 0.5) !important; 
+        border: 1px solid rgba(255, 255, 255, 0.05) !important;
+        border-radius: 12px !important; 
+        padding: 0.75rem 1.5rem !important; 
+        color: #94a3b8 !important; 
+        font-weight: 600 !important; 
+        transition: all 0.3s ease;
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
+    .stTabs [data-baseweb="tab"]:hover {
+        background: rgba(30, 41, 59, 0.8) !important; 
+        color: #fff !important; 
+        border-color: rgba(102, 126, 234, 0.3) !important
+    }
+    .stTabs [aria-selected="true"] {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important; 
+        color: #fff !important; 
+        border-color: transparent !important;
+        box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3) !important
+    }
+    .stTabs [data-baseweb="tab-panel"] {
+        max-width: 100% !important;
+        overflow: hidden !important;
+        padding: 0 !important;
+    }
     
     /* CHARTS CONTAINER - PERBAIKAN UTAMA */
-    .chart-container {background: rgba(30, 41, 59, 0.8); border-radius: 16px; 
-                     border: 1px solid rgba(255, 255, 255, 0.05); margin-bottom: 1.5rem;
-                     position: relative; overflow: hidden;}
-    .chart-inner {padding: 1.5rem; height: 100%;}
-    .chart-title-wrapper {margin-bottom: 1rem; padding: 0; border-bottom: 1px solid rgba(255, 255, 255, 0.1);}
-    .chart-title {font-size: 1.125rem; font-weight: 700; color: #fff; 
-                  display: flex; align-items: center; gap: 0.5rem; margin: 0; padding: 0.5rem 0;}
-    .chart-content {height: calc(100% - 60px); min-height: 300px;}
-    .charts-grid {display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; margin-bottom: 1.5rem}
-    @media (max-width: 1200px) {.charts-grid {grid-template-columns: 1fr}}
-    .chart-full {grid-column: 1 / -1}
+    .chart-container {
+        background: rgba(30, 41, 59, 0.8); 
+        border-radius: 16px; 
+        border: 1px solid rgba(255, 255, 255, 0.05); 
+        margin-bottom: 1.5rem;
+        position: relative; 
+        overflow: hidden !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+    }
+    .chart-inner {
+        padding: 1.5rem; 
+        height: 100%;
+        max-width: 100% !important;
+        overflow: hidden !important;
+        box-sizing: border-box !important;
+    }
+    .chart-title-wrapper {
+        margin-bottom: 1rem; 
+        padding: 0; 
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        max-width: 100% !important;
+        overflow: hidden !important;
+    }
+    .chart-title {
+        font-size: 1.125rem; 
+        font-weight: 700; 
+        color: #fff; 
+        display: flex; 
+        align-items: center; 
+        gap: 0.5rem; 
+        margin: 0; 
+        padding: 0.5rem 0;
+        word-wrap: break-word;
+        max-width: 100% !important;
+    }
+    .chart-content {
+        height: calc(100% - 60px); 
+        min-height: 300px;
+        max-width: 100% !important;
+        overflow: hidden !important;
+    }
+    .charts-grid {
+        display: grid; 
+        grid-template-columns: repeat(2, 1fr); 
+        gap: 1.5rem; 
+        margin-bottom: 1.5rem;
+        max-width: 100% !important;
+        overflow: hidden !important;
+        box-sizing: border-box !important;
+    }
+    @media (max-width: 1200px) {
+        .charts-grid {grid-template-columns: 1fr}
+    }
+    .chart-full {
+        grid-column: 1 / -1;
+        max-width: 100% !important;
+        overflow: hidden !important;
+    }
     
     /* STRATEGY CARDS */
-    .strategy-grid {display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; margin-bottom: 1.5rem}
-    @media (max-width: 1200px) {.strategy-grid {grid-template-columns: 1fr}}
-    .strategy-card {border-radius: 16px; padding: 1.5rem; color: #fff; 
-                   border: 1px solid rgba(255, 255, 255, 0.1); position: relative; overflow: hidden;
-                   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1)}
-    .strategy-card:hover {transform: translateY(-6px); box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3)}
-    .strategy-header {display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem}
-    .strategy-name {font-size: 1.5rem; font-weight: 800; margin: 0; line-height: 1.2}
-    .priority-badge {padding: 0.375rem 0.75rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700;
-                    text-transform: uppercase; letter-spacing: 0.05em; background: rgba(255, 255, 255, 0.2);
-                    backdrop-filter: blur(10px)}
-    .strategy-subtitle {font-size: 1rem; color: rgba(255, 255, 255, 0.9); margin-bottom: 1rem; font-weight: 500}
-    .tactics-section {background: rgba(255, 255, 255, 0.1); border-radius: 12px; padding: 1rem; margin: 1rem 0;
-                     backdrop-filter: blur(10px)}
-    .tactics-title {font-size: 0.875rem; font-weight: 700; color: rgba(255, 255, 255, 0.9); margin-bottom: 0.75rem;
-                   text-transform: uppercase; letter-spacing: 0.05em}
-    .tactics-grid {display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5rem}
-    @media (max-width: 768px) {.tactics-grid {grid-template-columns: 1fr}}
-    .tactic-item {background: rgba(255, 255, 255, 0.15); border-radius: 8px; padding: 0.75rem; font-size: 0.875rem;
-                 transition: all 0.2s ease; border-left: 3px solid transparent}
-    .tactic-item:hover {background: rgba(255, 255, 255, 0.2); transform: translateX(4px); 
-                       border-left-color: rgba(255, 255, 255, 0.5)}
-    .kpis-grid {display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; margin: 1rem 0}
-    .kpi-item {background: rgba(255, 255, 255, 0.1); border-radius: 8px; padding: 0.75rem; text-align: center;
-              font-size: 0.875rem; font-weight: 600}
-    .strategy-footer {display: flex; justify-content: space-between; margin-top: 1.5rem; padding-top: 1rem;
-                     border-top: 1px solid rgba(255, 255, 255, 0.1)}
-    .budget-item {text-align: center}
-    .budget-label {font-size: 0.75rem; color: rgba(255, 255, 255, 0.7); margin-bottom: 0.25rem}
-    .budget-value {font-size: 1.5rem; font-weight: 800}
+    .strategy-grid {
+        display: grid; 
+        grid-template-columns: repeat(2, 1fr); 
+        gap: 1.5rem; 
+        margin-bottom: 1.5rem;
+        max-width: 100% !important;
+        overflow: hidden !important;
+        box-sizing: border-box !important;
+    }
+    @media (max-width: 1200px) {
+        .strategy-grid {grid-template-columns: 1fr}
+    }
+    .strategy-card {
+        border-radius: 16px; 
+        padding: 1.5rem; 
+        color: #fff; 
+        border: 1px solid rgba(255, 255, 255, 0.1); 
+        position: relative; 
+        overflow: hidden;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+    }
+    .strategy-card:hover {
+        transform: translateY(-6px); 
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3)
+    }
+    .strategy-header {
+        display: flex; 
+        justify-content: space-between; 
+        align-items: start; 
+        margin-bottom: 1rem;
+        max-width: 100% !important;
+        overflow: hidden !important;
+    }
+    .strategy-name {
+        font-size: 1.5rem; 
+        font-weight: 800; 
+        margin: 0; 
+        line-height: 1.2;
+        word-wrap: break-word;
+        max-width: 70% !important;
+    }
+    .priority-badge {
+        padding: 0.375rem 0.75rem; 
+        border-radius: 20px; 
+        font-size: 0.75rem; 
+        font-weight: 700;
+        text-transform: uppercase; 
+        letter-spacing: 0.05em; 
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+        white-space: nowrap;
+    }
+    .strategy-subtitle {
+        font-size: 1rem; 
+        color: rgba(255, 255, 255, 0.9); 
+        margin-bottom: 1rem; 
+        font-weight: 500;
+        word-wrap: break-word;
+        max-width: 100% !important;
+    }
+    .tactics-section {
+        background: rgba(255, 255, 255, 0.1); 
+        border-radius: 12px; 
+        padding: 1rem; 
+        margin: 1rem 0;
+        backdrop-filter: blur(10px);
+        max-width: 100% !important;
+        overflow: hidden !important;
+        box-sizing: border-box !important;
+    }
+    .tactics-title {
+        font-size: 0.875rem; 
+        font-weight: 700; 
+        color: rgba(255, 255, 255, 0.9); 
+        margin-bottom: 0.75rem;
+        text-transform: uppercase; 
+        letter-spacing: 0.05em;
+        max-width: 100% !important;
+        word-wrap: break-word;
+    }
+    .tactics-grid {
+        display: grid; 
+        grid-template-columns: repeat(2, 1fr); 
+        gap: 0.5rem;
+        max-width: 100% !important;
+        overflow: hidden !important;
+    }
+    @media (max-width: 768px) {
+        .tactics-grid {grid-template-columns: 1fr}
+    }
+    .tactic-item {
+        background: rgba(255, 255, 255, 0.15); 
+        border-radius: 8px; 
+        padding: 0.75rem; 
+        font-size: 0.875rem;
+        transition: all 0.2s ease; 
+        border-left: 3px solid transparent;
+        word-wrap: break-word;
+        max-width: 100% !important;
+        overflow: hidden !important;
+    }
+    .tactic-item:hover {
+        background: rgba(255, 255, 255, 0.2); 
+        transform: translateX(4px); 
+        border-left-color: rgba(255, 255, 255, 0.5)
+    }
+    .kpis-grid {
+        display: grid; 
+        grid-template-columns: repeat(3, 1fr); 
+        gap: 0.5rem; 
+        margin: 1rem 0;
+        max-width: 100% !important;
+        overflow: hidden !important;
+    }
+    .kpi-item {
+        background: rgba(255, 255, 255, 0.1); 
+        border-radius: 8px; 
+        padding: 0.75rem; 
+        text-align: center;
+        font-size: 0.875rem; 
+        font-weight: 600;
+        word-wrap: break-word;
+        max-width: 100% !important;
+        overflow: hidden !important;
+    }
+    .strategy-footer {
+        display: flex; 
+        justify-content: space-between; 
+        margin-top: 1.5rem; 
+        padding-top: 1rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        max-width: 100% !important;
+        overflow: hidden !important;
+    }
+    .budget-item {
+        text-align: center;
+        max-width: 48% !important;
+        overflow: hidden !important;
+    }
+    .budget-label {
+        font-size: 0.75rem; 
+        color: rgba(255, 255, 255, 0.7); 
+        margin-bottom: 0.25rem;
+        word-wrap: break-word;
+        max-width: 100% !important;
+    }
+    .budget-value {
+        font-size: 1.5rem; 
+        font-weight: 800;
+        word-wrap: break-word;
+        max-width: 100% !important;
+    }
     
     /* CHAMPION BREAKDOWN */
-    .champion-section {background: linear-gradient(135deg, rgba(255, 215, 0, 0.1) 0%, rgba(255, 140, 0, 0.1) 100%); 
-                      border: 1px solid rgba(255, 215, 0, 0.2); border-radius: 16px; padding: 1.5rem; margin: 1.5rem 0}
-    .champion-title {font-size: 1.5rem; font-weight: 800; color: #FFD700; margin-bottom: 1rem; 
-                    display: flex; align-items: center; gap: 0.5rem}
-    .champion-grid {display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem}
-    @media (max-width: 768px) {.champion-grid {grid-template-columns: 1fr}}
-    .champion-card {background: rgba(255, 215, 0, 0.1); border: 1px solid rgba(255, 215, 0, 0.2); 
-                   border-radius: 12px; padding: 1rem; transition: all 0.3s ease}
-    .champion-card:hover {background: rgba(255, 215, 0, 0.15); transform: translateY(-2px)}
-    .champion-number {font-size: 1.25rem; font-weight: 800; color: #FFD700; margin-bottom: 0.5rem}
-    .champion-tier {font-size: 1rem; font-weight: 700; color: #fff; margin-bottom: 0.5rem}
-    .champion-desc {font-size: 0.875rem; color: rgba(255, 255, 255, 0.8); margin-bottom: 0.5rem}
-    .champion-chars {font-size: 0.75rem; color: rgba(255, 215, 0, 0.9); background: rgba(255, 215, 0, 0.1);
-                    padding: 0.5rem; border-radius: 6px}
+    .champion-section {
+        background: linear-gradient(135deg, rgba(255, 215, 0, 0.1) 0%, rgba(255, 140, 0, 0.1) 100%); 
+        border: 1px solid rgba(255, 215, 0, 0.2); 
+        border-radius: 16px; 
+        padding: 1.5rem; 
+        margin: 1.5rem 0;
+        max-width: 100% !important;
+        overflow: hidden !important;
+        box-sizing: border-box !important;
+    }
+    .champion-title {
+        font-size: 1.5rem; 
+        font-weight: 800; 
+        color: #FFD700; 
+        margin-bottom: 1rem; 
+        display: flex; 
+        align-items: center; 
+        gap: 0.5rem;
+        word-wrap: break-word;
+        max-width: 100% !important;
+    }
+    .champion-grid {
+        display: grid; 
+        grid-template-columns: repeat(2, 1fr); 
+        gap: 1rem;
+        max-width: 100% !important;
+        overflow: hidden !important;
+        box-sizing: border-box !important;
+    }
+    @media (max-width: 768px) {
+        .champion-grid {grid-template-columns: 1fr}
+    }
+    .champion-card {
+        background: rgba(255, 215, 0, 0.1); 
+        border: 1px solid rgba(255, 215, 0, 0.2); 
+        border-radius: 12px; 
+        padding: 1rem; 
+        transition: all 0.3s ease;
+        max-width: 100% !important;
+        overflow: hidden !important;
+        box-sizing: border-box !important;
+    }
+    .champion-card:hover {
+        background: rgba(255, 215, 0, 0.15); 
+        transform: translateY(-2px)
+    }
+    .champion-number {
+        font-size: 1.25rem; 
+        font-weight: 800; 
+        color: #FFD700; 
+        margin-bottom: 0.5rem;
+        word-wrap: break-word;
+        max-width: 100% !important;
+    }
+    .champion-tier {
+        font-size: 1rem; 
+        font-weight: 700; 
+        color: #fff; 
+        margin-bottom: 0.5rem;
+        word-wrap: break-word;
+        max-width: 100% !important;
+    }
+    .champion-desc {
+        font-size: 0.875rem; 
+        color: rgba(255, 255, 255, 0.8); 
+        margin-bottom: 0.5rem;
+        word-wrap: break-word;
+        max-width: 100% !important;
+    }
+    .champion-chars {
+        font-size: 0.75rem; 
+        color: rgba(255, 215, 0, 0.9); 
+        background: rgba(255, 215, 0, 0.1);
+        padding: 0.5rem; 
+        border-radius: 6px;
+        word-wrap: break-word;
+        max-width: 100% !important;
+        overflow: hidden !important;
+    }
     
     /* INSIGHTS SECTION */
-    .insights-section {background: linear-gradient(135deg, rgba(79, 172, 254, 0.1) 0%, rgba(0, 242, 254, 0.1) 100%);
-                      border: 1px solid rgba(79, 172, 254, 0.2); border-radius: 16px; padding: 1.5rem; margin: 1.5rem 0}
-    .insights-title {font-size: 1.5rem; font-weight: 800; color: #4facfe; margin-bottom: 1rem;
-                    display: flex; align-items: center; gap: 0.5rem}
-    .insights-grid {display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem}
-    @media (max-width: 768px) {.insights-grid {grid-template-columns: 1fr}}
-    .insight-card {background: rgba(79, 172, 254, 0.1); border: 1px solid rgba(79, 172, 254, 0.2); 
-                  border-radius: 12px; padding: 1rem}
-    .insight-heading {font-size: 1.125rem; font-weight: 700; color: #4facfe; margin-bottom: 0.75rem}
-    .insight-list {list-style: none; padding: 0}
-    .insight-list li {padding: 0.5rem 0; border-bottom: 1px solid rgba(79, 172, 254, 0.2); color: rgba(255, 255, 255, 0.9)}
-    .insight-list li:last-child {border-bottom: none}
+    .insights-section {
+        background: linear-gradient(135deg, rgba(79, 172, 254, 0.1) 0%, rgba(0, 242, 254, 0.1) 100%);
+        border: 1px solid rgba(79, 172, 254, 0.2); 
+        border-radius: 16px; 
+        padding: 1.5rem; 
+        margin: 1.5rem 0;
+        max-width: 100% !important;
+        overflow: hidden !important;
+        box-sizing: border-box !important;
+    }
+    .insights-title {
+        font-size: 1.5rem; 
+        font-weight: 800; 
+        color: #4facfe; 
+        margin-bottom: 1rem;
+        display: flex; 
+        align-items: center; 
+        gap: 0.5rem;
+        word-wrap: break-word;
+        max-width: 100% !important;
+    }
+    .insights-grid {
+        display: grid; 
+        grid-template-columns: repeat(2, 1fr); 
+        gap: 1rem;
+        max-width: 100% !important;
+        overflow: hidden !important;
+        box-sizing: border-box !important;
+    }
+    @media (max-width: 768px) {
+        .insights-grid {grid-template-columns: 1fr}
+    }
+    .insight-card {
+        background: rgba(79, 172, 254, 0.1); 
+        border: 1px solid rgba(79, 172, 254, 0.2); 
+        border-radius: 12px; 
+        padding: 1rem;
+        max-width: 100% !important;
+        overflow: hidden !important;
+        box-sizing: border-box !important;
+    }
+    .insight-heading {
+        font-size: 1.125rem; 
+        font-weight: 700; 
+        color: #4facfe; 
+        margin-bottom: 0.75rem;
+        word-wrap: break-word;
+        max-width: 100% !important;
+    }
+    .insight-list {
+        list-style: none; 
+        padding: 0;
+        max-width: 100% !important;
+        overflow: hidden !important;
+    }
+    .insight-list li {
+        padding: 0.5rem 0; 
+        border-bottom: 1px solid rgba(79, 172, 254, 0.2); 
+        color: rgba(255, 255, 255, 0.9);
+        word-wrap: break-word;
+        max-width: 100% !important;
+    }
+    .insight-list li:last-child {
+        border-bottom: none
+    }
     
     /* FOOTER */
-    .footer {text-align: center; padding: 1.5rem; margin-top: 2rem; color: #94a3b8; font-size: 0.875rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.05)}
+    .footer {
+        text-align: center; 
+        padding: 1.5rem; 
+        margin-top: 2rem; 
+        color: #94a3b8; 
+        font-size: 0.875rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+        max-width: 100% !important;
+        overflow: hidden !important;
+        box-sizing: border-box !important;
+    }
     
     /* UTILITY CLASSES */
-    .empty-state {text-align: center; padding: 3rem; color: #94a3b8}
-    .empty-icon {font-size: 3rem; margin-bottom: 1rem; opacity: 0.5}
+    .empty-state {
+        text-align: center; 
+        padding: 3rem; 
+        color: #94a3b8;
+        max-width: 100% !important;
+        overflow: hidden !important;
+    }
+    .empty-icon {
+        font-size: 3rem; 
+        margin-bottom: 1rem; 
+        opacity: 0.5
+    }
     
     /* STREAMLIT WIDGET OVERRIDES */
-    div[data-testid="stSelectbox"] > div {background: rgba(30, 41, 59, 0.8); border-color: rgba(255, 255, 255, 0.1)}
-    div[data-testid="stSlider"] > div {background: rgba(30, 41, 59, 0.8)}
-    .stSlider > div > div > div {background: linear-gradient(90deg, #667eea, #764ba2)}
+    div[data-testid="stSelectbox"] > div {
+        background: rgba(30, 41, 59, 0.8); 
+        border-color: rgba(255, 255, 255, 0.1);
+        max-width: 100% !important;
+    }
+    div[data-testid="stSlider"] > div {
+        background: rgba(30, 41, 59, 0.8);
+        max-width: 100% !important;
+    }
+    .stSlider > div > div > div {
+        background: linear-gradient(90deg, #667eea, #764ba2)
+    }
     
     /* FIX untuk Plotly chart overflow */
-    .js-plotly-plot .plotly, .js-plotly-plot .plotly div {overflow: visible !important;}
+    .js-plotly-plot, 
+    .js-plotly-plot .plotly, 
+    .js-plotly-plot .plotly div,
+    .plotly,
+    .plotly-container,
+    .plot-container.plotly {
+        max-width: 100% !important;
+        width: 100% !important;
+        overflow: hidden !important;
+        box-sizing: border-box !important;
+    }
     
     /* Table khusus untuk chart tabel */
-    .table-chart-container {max-height: 400px; overflow-y: auto;}
-    .plotly-table-wrapper {margin-top: 1rem;}
+    .table-chart-container {
+        max-height: 400px; 
+        overflow-y: auto;
+        overflow-x: hidden !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+    }
+    
+    /* Grid column fixes untuk streamlit */
+    div[data-testid="column"] {
+        max-width: 100% !important;
+        overflow: hidden !important;
+        box-sizing: border-box !important;
+    }
+    
+    /* Modebar plotly positioning */
+    .modebar {
+        right: 5px !important;
+        left: auto !important;
+        max-width: 100% !important;
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -290,6 +808,8 @@ def create_charts(df):
     ))
     fig1.update_layout(
         height=350,
+        width=None,
+        autosize=True,
         showlegend=True,
         plot_bgcolor='rgba(0,0,0,0)',
         paper_bgcolor='rgba(0,0,0,0)',
@@ -301,7 +821,7 @@ def create_charts(df):
             xanchor='center',
             x=0.5
         ),
-        margin=dict(t=10, b=20, l=20, r=20)  # Margin minimal
+        margin=dict(t=10, b=20, l=20, r=20)
     )
     
     # Chart 2: Revenue by Segment
@@ -331,6 +851,8 @@ def create_charts(df):
                 tickfont=dict(color='white')
             ),
             height=350,
+            width=None,
+            autosize=True,
             plot_bgcolor='rgba(0,0,0,0)',
             paper_bgcolor='rgba(0,0,0,0)',
             margin=dict(t=10, b=20, l=20, r=20)
@@ -339,6 +861,8 @@ def create_charts(df):
         fig2 = go.Figure()
         fig2.update_layout(
             height=350,
+            width=None,
+            autosize=True,
             plot_bgcolor='rgba(0,0,0,0)',
             paper_bgcolor='rgba(0,0,0,0)',
             margin=dict(t=10, b=20, l=20, r=20),
@@ -373,6 +897,8 @@ def create_charts(df):
         ))
         fig3.update_layout(
             height=550,
+            width=None,
+            autosize=True,
             scene=dict(
                 xaxis=dict(
                     title='Recency (days)',
@@ -399,6 +925,8 @@ def create_charts(df):
         fig3 = go.Figure()
         fig3.update_layout(
             height=550,
+            width=None,
+            autosize=True,
             plot_bgcolor='rgba(0,0,0,0)',
             paper_bgcolor='rgba(0,0,0,0)',
             margin=dict(t=10, b=20, l=20, r=20)
@@ -410,6 +938,8 @@ def create_charts(df):
             fig = go.Figure()
             fig.update_layout(
                 height=250,
+                width=None,
+                autosize=True,
                 plot_bgcolor='rgba(0,0,0,0)',
                 paper_bgcolor='rgba(0,0,0,0)',
                 margin=dict(t=10, b=20, l=20, r=20)
@@ -426,6 +956,8 @@ def create_charts(df):
         ))
         fig.update_layout(
             height=250,
+            width=None,
+            autosize=True,
             bargap=0.1,
             xaxis=dict(
                 gridcolor='rgba(255,255,255,0.1)',
@@ -521,6 +1053,8 @@ def create_charts(df):
         
         fig7.update_layout(
             height=350,
+            width=None,
+            autosize=True,
             margin=dict(t=10, b=20, l=20, r=20),
             plot_bgcolor='rgba(0,0,0,0)',
             paper_bgcolor='rgba(0,0,0,0)'
@@ -530,6 +1064,8 @@ def create_charts(df):
         fig7 = go.Figure()
         fig7.update_layout(
             height=350,
+            width=None,
+            autosize=True,
             plot_bgcolor='rgba(0,0,0,0)',
             paper_bgcolor='rgba(0,0,0,0)',
             margin=dict(t=10, b=20, l=20, r=20),
@@ -612,6 +1148,9 @@ def main():
         rfm['Cluster_KMeans'].nunique(),
         rfm['Monetary'].sum()/1e6 if 'Monetary' in rfm.columns else 0
     ), unsafe_allow_html=True)
+    
+    # Main Content Wrapper - PERBAIKAN UTAMA
+    st.markdown('<div class="main-content-wrapper">', unsafe_allow_html=True)
     
     # Metrics Grid
     st.markdown('<div class="metrics-grid">', unsafe_allow_html=True)
@@ -832,7 +1371,11 @@ def main():
                         </div>
                         <div class="chart-content">
                 """, unsafe_allow_html=True)
-                st.plotly_chart(fig1, use_container_width=True, config={'displayModeBar': True})
+                st.plotly_chart(fig1, use_container_width=True, config={
+                    'displayModeBar': True,
+                    'responsive': True,
+                    'autosizable': True
+                })
                 st.markdown("""
                         </div>
                     </div>
@@ -848,7 +1391,11 @@ def main():
                         </div>
                         <div class="chart-content">
                 """, unsafe_allow_html=True)
-                st.plotly_chart(fig2, use_container_width=True, config={'displayModeBar': True})
+                st.plotly_chart(fig2, use_container_width=True, config={
+                    'displayModeBar': True,
+                    'responsive': True,
+                    'autosizable': True
+                })
                 st.markdown("""
                         </div>
                     </div>
@@ -864,7 +1411,11 @@ def main():
                     </div>
                     <div class="chart-content">
             """, unsafe_allow_html=True)
-            st.plotly_chart(fig3, use_container_width=True, config={'displayModeBar': True})
+            st.plotly_chart(fig3, use_container_width=True, config={
+                'displayModeBar': True,
+                'responsive': True,
+                'autosizable': True
+            })
             st.markdown("""
                     </div>
                 </div>
@@ -883,7 +1434,11 @@ def main():
                         </div>
                         <div class="chart-content">
                 """, unsafe_allow_html=True)
-                st.plotly_chart(fig4, use_container_width=True, config={'displayModeBar': False})
+                st.plotly_chart(fig4, use_container_width=True, config={
+                    'displayModeBar': False,
+                    'responsive': True,
+                    'autosizable': True
+                })
                 st.markdown("""
                         </div>
                     </div>
@@ -899,7 +1454,11 @@ def main():
                         </div>
                         <div class="chart-content">
                 """, unsafe_allow_html=True)
-                st.plotly_chart(fig5, use_container_width=True, config={'displayModeBar': False})
+                st.plotly_chart(fig5, use_container_width=True, config={
+                    'displayModeBar': False,
+                    'responsive': True,
+                    'autosizable': True
+                })
                 st.markdown("""
                         </div>
                     </div>
@@ -915,7 +1474,11 @@ def main():
                         </div>
                         <div class="chart-content">
                 """, unsafe_allow_html=True)
-                st.plotly_chart(fig6, use_container_width=True, config={'displayModeBar': False})
+                st.plotly_chart(fig6, use_container_width=True, config={
+                    'displayModeBar': False,
+                    'responsive': True,
+                    'autosizable': True
+                })
                 st.markdown("""
                         </div>
                     </div>
@@ -932,7 +1495,11 @@ def main():
                     </div>
                     <div class="chart-content table-chart-container">
             """, unsafe_allow_html=True)
-            st.plotly_chart(fig7, use_container_width=True, config={'displayModeBar': False})
+            st.plotly_chart(fig7, use_container_width=True, config={
+                'displayModeBar': False,
+                'responsive': True,
+                'autosizable': True
+            })
             st.markdown("""
                     </div>
                 </div>
@@ -1176,6 +1743,9 @@ def main():
                 <p>Try adjusting your filters to see insights</p>
             </div>
             """, unsafe_allow_html=True)
+    
+    # Tutup main content wrapper
+    st.markdown('</div>', unsafe_allow_html=True)
     
     # Footer
     st.markdown("""
