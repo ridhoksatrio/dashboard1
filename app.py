@@ -289,10 +289,11 @@ div[data-testid="stSlider"] div {border-radius: 12px}
 
 # Fungsi untuk membuat chart yang lebih sederhana dan efektif
 def create_charts(df):
-    # Chart 1: Customer Distribution Pie
+    # Pastikan Cluster_Label ada
     if 'Cluster_Label' not in df.columns:
         df['Cluster_Label'] = df['Cluster_KMeans'].apply(lambda x: f"Cluster {x}")
     
+    # Chart 1: Customer Distribution Pie
     cc = df['Cluster_Label'].value_counts()
     
     f1 = go.Figure(go.Pie(
@@ -401,43 +402,65 @@ def create_charts(df):
     f5 = create_histogram(df, 'Frequency', '🔄 Frequency Distribution', '#4ECDC4')
     f6 = create_histogram(df, 'Monetary', '💵 Monetary Distribution', '#45B7D1')
     
-    # Chart 7: RFM Table
+    # Chart 7: RFM Table - FIXED VERSION
     try:
-        if all(col in df.columns for col in ['Recency', 'Frequency', 'Monetary', 'AvgOrderValue', 'RFM_Score', 'Cluster_Label']):
-            tb = df.groupby('Cluster_Label').agg({
-                'Recency': 'mean', 
+        # Pertama, hitung jumlah data per segment
+        segment_counts = df.groupby('Cluster_Label').size().reset_index(name='Count')
+        
+        # Lalu hitung statistik RFM per segment
+        if all(col in df.columns for col in ['Recency', 'Frequency', 'Monetary', 'AvgOrderValue', 'RFM_Score']):
+            # Hitung rata-rata untuk setiap segment
+            rfm_stats = df.groupby('Cluster_Label').agg({
+                'Recency': 'mean',
                 'Frequency': 'mean', 
-                'Monetary': 'mean', 
-                'AvgOrderValue': 'mean', 
-                'RFM_Score': 'mean',
-                'Cluster_Label': 'count'
+                'Monetary': 'mean',
+                'AvgOrderValue': 'mean',
+                'RFM_Score': 'mean'
             }).round(1).reset_index()
-            tb.columns = ['Segment', 'Recency', 'Frequency', 'Monetary', 'AvgOrderValue', 'RFM_Score', 'Count']
             
-            # Reorder columns
-            tb = tb[['Segment', 'Count', 'Recency', 'Frequency', 'Monetary', 'AvgOrderValue', 'RFM_Score']]
+            # Gabungkan dengan counts
+            segment_table = pd.merge(segment_counts, rfm_stats, on='Cluster_Label')
             
+            # Format nilai
+            segment_table['Recency'] = segment_table['Recency'].apply(lambda x: f"{x:.0f}d")
+            segment_table['Frequency'] = segment_table['Frequency'].apply(lambda x: f"{x:.1f}")
+            segment_table['Monetary'] = segment_table['Monetary'].apply(lambda x: f"£{x:,.0f}")
+            segment_table['AvgOrderValue'] = segment_table['AvgOrderValue'].apply(lambda x: f"£{x:.0f}")
+            segment_table['RFM_Score'] = segment_table['RFM_Score'].apply(lambda x: f"{x:.1f}")
+            
+            # Urutkan kolom
+            segment_table = segment_table[['Cluster_Label', 'Count', 'Recency', 'Frequency', 
+                                         'Monetary', 'AvgOrderValue', 'RFM_Score']]
+            
+            # Buat tabel
             f7 = go.Figure(data=[go.Table(
                 header=dict(
-                    values=['<b>' + col + '</b>' for col in tb.columns],
+                    values=['<b>Segment</b>', '<b>Count</b>', '<b>Recency</b>', '<b>Frequency</b>',
+                            '<b>Monetary</b>', '<b>Avg Order</b>', '<b>RFM Score</b>'],
                     fill_color='#667eea',
                     align='center',
                     font=dict(color='white', size=12)
                 ),
                 cells=dict(
-                    values=[tb[col] for col in tb.columns],
+                    values=[
+                        segment_table['Cluster_Label'],
+                        segment_table['Count'],
+                        segment_table['Recency'],
+                        segment_table['Frequency'],
+                        segment_table['Monetary'],
+                        segment_table['AvgOrderValue'],
+                        segment_table['RFM_Score']
+                    ],
                     fill_color='white',
                     align='center',
                     font=dict(size=11)
                 )
             )])
-            f7.update_layout(
-                title={'text': "📊 RFM Segment Summary", 'x': 0.5},
-                height=400
-            )
         else:
-            # Create simpler table if some columns are missing
-            tb = df.groupby('Cluster_Label').size().reset_index(name='Count')
+            # Jika tidak semua kolom RFM tersedia, buat tabel sederhana
+            segment_table = segment_counts.copy()
+            segment_table = segment_table.rename(columns={'Cluster_Label': 'Segment'})
+            
             f7 = go.Figure(data=[go.Table(
                 header=dict(
                     values=['<b>Segment</b>', '<b>Count</b>'],
@@ -446,25 +469,29 @@ def create_charts(df):
                     font=dict(color='white', size=12)
                 ),
                 cells=dict(
-                    values=[tb['Cluster_Label'], tb['Count']],
+                    values=[segment_table['Segment'], segment_table['Count']],
                     fill_color='white',
                     align='center',
                     font=dict(size=11)
                 )
             )])
-            f7.update_layout(
-                title={'text': "📊 Customer Count by Segment", 'x': 0.5},
-                height=400
-            )
+        
+        f7.update_layout(
+            title={'text': "📊 RFM Segment Summary", 'x': 0.5},
+            height=400,
+            margin=dict(t=50, b=20, l=20, r=20)
+        )
+        
     except Exception as e:
         f7 = go.Figure()
         f7.update_layout(
             title={'text': "📊 Segment Summary", 'x': 0.5},
             height=400,
             annotations=[dict(
-                text=f'Error creating table: {str(e)[:100]}',
+                text=f'Error: {str(e)[:100]}',
                 x=0.5, y=0.5,
-                showarrow=False
+                showarrow=False,
+                font=dict(size=12)
             )]
         )
     
