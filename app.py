@@ -851,7 +851,7 @@ def create_charts(df):
         fig7.update_layout(
             title=dict(
                 text="📊 Segment Summary",
-                font=dict(color='white', size=20),  # Font size disamakan 20
+                font=dict(color='white', size=30),  # Font size disamakan 20
                 x=0.5,
                 xanchor='center'
             ),
@@ -866,7 +866,7 @@ def create_charts(df):
         fig7.update_layout(
             title=dict(
                 text="📊 Segment Summary", 
-                font=dict(color='white', size=20),  # Font size disamakan 20
+                font=dict(color='white', size=30),  # Font size disamakan 20
                 x=0.5,
                 xanchor='center'
             ),
