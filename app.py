@@ -172,14 +172,6 @@ st.markdown("""
                                    color: #fff !important; border-color: transparent !important;
                                    box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3) !important}
     
-    /* CHARTS CONTAINER */
-    .chart-container {background: rgba(30, 41, 59, 0.8); border-radius: 16px; padding: 1.5rem; 
-                     border: 1px solid rgba(255, 255, 255, 0.05); margin-bottom: 1.5rem}
-    .chart-title {font-size: 1.125rem; font-weight: 700; color: #fff; margin-bottom: 1rem; 
-                 display: flex; align-items: center; gap: 0.5rem}
-    .charts-grid {display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; margin-bottom: 1.5rem}
-    @media (max-width: 1200px) {.charts-grid {grid-template-columns: 1fr}}
-    .chart-full {grid-column: 1 / -1}
     
     /* STRATEGY CARDS */
     .strategy-grid {display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; margin-bottom: 1.5rem}
@@ -262,8 +254,6 @@ st.markdown("""
     div[data-testid="stExpander"] > details > summary:hover {color: #fff !important}
     div[data-testid="stExpander"] > details > div {padding: 1rem; background: transparent !important}
     
-    /* FILTER CONTENT CONTAINER */
-    .filter-content {padding: 0.5rem 0}
     
     /* CUSTOM LABELS untuk filter */
     .custom-label {display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; color: #94a3b8; font-size: 0.875rem; font-weight: 600}
