@@ -128,7 +128,6 @@ st.markdown("""
         background: rgba(15, 23, 42, 0.95); 
         backdrop-filter: blur(20px); 
         -webkit-backdrop-filter: blur(20px); 
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1); 
         padding: 2rem 2.5rem; 
         position: sticky; 
         top: 0; 
