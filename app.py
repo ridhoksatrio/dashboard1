@@ -120,12 +120,6 @@ st.markdown("""
     body {font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0f172a; min-height: 100vh}
     .stApp {background: transparent !important; padding: 0 !important; max-width: 100% !important}
     
-    /* SIDEBAR */
-    .st-emotion-cache-1cypcdb {background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%) !important; border-right: 1px solid #334155}
-    .st-emotion-cache-16txtl3 {padding: 2rem 1.5rem !important}
-    
-
-    
     /* METRICS GRID dengan neumorphism */
     .metrics-grid {display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin: 1.5rem 0}
     @media (max-width: 1200px) {.metrics-grid {grid-template-columns: repeat(2, 1fr)}}
