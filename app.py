@@ -1323,7 +1323,7 @@ def main():
     
     with tab2:
     # Champion Breakdown Section
-    champion_clusters = [c for c in filtered_df['Cluster_KMeans'].unique() 
+        champion_clusters = [c for c in filtered_df['Cluster_KMeans'].unique() 
                         if c in profs and profs[c]['name'] == '🏆 Champions']
     
     if len(champion_clusters) > 0:
