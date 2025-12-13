@@ -278,23 +278,23 @@ def create_charts(df):
         textfont=dict(color='white'),
         insidetextorientation='radial'
     ))
-   fig1.update_layout(
-    title=dict(
+       fig1.update_layout(
+        title=dict(
         text="🎯 Customer Distribution",
         font=dict(color='white', size=24), # Font Size Diperbesar menjadi 24
         x=0.0                            # Posisi Horizontal diatur ke Paling Kiri
-    ),
-    height=400,
-    showlegend=True,
-    plot_bgcolor='rgba(0,0,0,0)',
-    paper_bgcolor='rgba(0,0,0,0)',
-    legend=dict(
-        font=dict(color='white'),
-        orientation='h',
-        yanchor='bottom',
-        y=-0.2,
-        xanchor='center',
-        x=0.5
+        ),
+        height=400,
+        showlegend=True,
+        plot_bgcolor='rgba(0,0,0,0)',
+        paper_bgcolor='rgba(0,0,0,0)',
+        legend=dict(
+            font=dict(color='white'),
+            orientation='h',
+            yanchor='bottom',
+            y=-0.2,
+            xanchor='center',
+            x=0.5
     )
 )
     
