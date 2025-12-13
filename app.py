@@ -112,19 +112,36 @@ def init_data(rfm):
 
 profs, colors, rfm = init_data(rfm)
 
-# CSS Custom untuk Streamlit yang lebih modern dengan perbaikan judul
+# CSS Custom untuk Streamlit yang sudah DIPERBAIKI
 st.markdown("""
 <style>
     * {margin: 0; padding: 0; box-sizing: border-box}
     body {font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0f172a; min-height: 100vh}
-    .stApp {background: transparent !important; padding: 0 !important; max-width: 100% !important; overflow-x: hidden !important}
+    
+    /* PREVENT HORIZONTAL SCROLL - PERBAIKAN UTAMA */
+    html, body {
+        max-width: 100% !important;
+        overflow-x: hidden !important;
+    }
+    
+    .stApp {
+        background: transparent !important; 
+        padding: 0 !important; 
+        max-width: 100% !important;
+        width: 100% !important;
+        overflow-x: hidden !important;
+        box-sizing: border-box !important;
+    }
     
     /* MAIN CONTENT WRAPPER - PERBAIKAN UTAMA */
     .main-content-wrapper {
         max-width: 100% !important;
-        padding: 0 2rem !important;
+        width: 100% !important;
+        padding: 0 1rem !important;
+        margin: 0 auto !important;
         box-sizing: border-box !important;
         overflow-x: hidden !important;
+        position: relative !important;
     }
     
     /* SIDEBAR */
@@ -137,11 +154,12 @@ st.markdown("""
         backdrop-filter: blur(20px); 
         -webkit-backdrop-filter: blur(20px); 
         border-bottom: 1px solid rgba(255, 255, 255, 0.1); 
-        padding: 1.5rem 2rem; 
+        padding: 1.5rem 1rem; 
         position: sticky; 
         top: 0; 
         z-index: 1000;
-        max-width: 100vw !important;
+        max-width: 100% !important;
+        width: 100% !important;
         box-sizing: border-box !important;
         overflow: hidden !important;
     }
@@ -152,6 +170,7 @@ st.markdown("""
         flex-wrap: wrap; 
         gap: 1rem;
         max-width: 100% !important;
+        width: 100% !important;
         overflow: hidden !important;
     }
     .header-title {
@@ -163,6 +182,7 @@ st.markdown("""
         margin: 0;
         word-wrap: break-word;
         max-width: 100% !important;
+        width: 100% !important;
     }
     .header-subtitle {
         color: #94a3b8; 
@@ -170,25 +190,28 @@ st.markdown("""
         margin-top: 0.25rem; 
         font-weight: 400;
         max-width: 100% !important;
+        width: 100% !important;
         word-wrap: break-word;
     }
     .header-stats {
         display: flex; 
-        gap: 1.5rem; 
+        gap: 1rem; 
         flex-wrap: wrap;
         max-width: 100% !important;
+        width: 100% !important;
         overflow: hidden !important;
     }
     .stat-item {
         display: flex; 
         flex-direction: column; 
         align-items: center; 
-        padding: 0.75rem 1.25rem; 
+        padding: 0.75rem 1rem; 
         background: rgba(30, 41, 59, 0.7); 
         border-radius: 12px; 
         border: 1px solid rgba(255, 255, 255, 0.05);
-        min-width: 120px;
+        min-width: 100px;
         box-sizing: border-box !important;
+        flex: 1;
     }
     .stat-value {
         font-size: 1.25rem; 
@@ -203,13 +226,14 @@ st.markdown("""
         letter-spacing: 0.05em
     }
     
-    /* METRICS GRID dengan neumorphism */
+    /* METRICS GRID dengan neumorphism - PERBAIKAN */
     .metrics-grid {
         display: grid; 
         grid-template-columns: repeat(4, 1fr); 
         gap: 1rem; 
         margin: 1.5rem 0;
         max-width: 100% !important;
+        width: 100% !important;
         overflow: hidden !important;
         box-sizing: border-box !important;
     }
@@ -226,8 +250,9 @@ st.markdown("""
         border: 1px solid rgba(255, 255, 255, 0.05); 
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         position: relative; 
-        overflow: hidden;
+        overflow: hidden !important;
         max-width: 100% !important;
+        width: 100% !important;
         box-sizing: border-box !important;
     }
     .metric-card:hover {
@@ -281,6 +306,7 @@ st.markdown("""
         margin: 1.5rem 0; 
         border: 1px solid rgba(255, 255, 255, 0.05);
         max-width: 100% !important;
+        width: 100% !important;
         overflow: hidden !important;
         box-sizing: border-box !important;
     }
@@ -298,6 +324,7 @@ st.markdown("""
         grid-template-columns: repeat(3, 1fr); 
         gap: 1rem;
         max-width: 100% !important;
+        width: 100% !important;
         overflow: hidden !important;
     }
     @media (max-width: 768px) {
@@ -307,12 +334,14 @@ st.markdown("""
     /* TABS STYLING */
     .stTabs {
         max-width: 100% !important;
+        width: 100% !important;
         overflow: hidden !important;
     }
     .stTabs [data-baseweb="tab-list"] {
         gap: 0.5rem; 
         margin-bottom: 1.5rem;
         max-width: 100% !important;
+        width: 100% !important;
         overflow-x: auto !important;
         flex-wrap: wrap !important;
     }
@@ -340,8 +369,10 @@ st.markdown("""
     }
     .stTabs [data-baseweb="tab-panel"] {
         max-width: 100% !important;
+        width: 100% !important;
         overflow: hidden !important;
         padding: 0 !important;
+        box-sizing: border-box !important;
     }
     
     /* CHARTS CONTAINER - PERBAIKAN UTAMA */
@@ -353,12 +384,14 @@ st.markdown("""
         position: relative; 
         overflow: hidden !important;
         max-width: 100% !important;
+        width: 100% !important;
         box-sizing: border-box !important;
     }
     .chart-inner {
         padding: 1.5rem; 
         height: 100%;
         max-width: 100% !important;
+        width: 100% !important;
         overflow: hidden !important;
         box-sizing: border-box !important;
     }
@@ -367,6 +400,7 @@ st.markdown("""
         padding: 0; 
         border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         max-width: 100% !important;
+        width: 100% !important;
         overflow: hidden !important;
     }
     .chart-title {
@@ -380,11 +414,13 @@ st.markdown("""
         padding: 0.5rem 0;
         word-wrap: break-word;
         max-width: 100% !important;
+        width: 100% !important;
     }
     .chart-content {
         height: calc(100% - 60px); 
         min-height: 300px;
         max-width: 100% !important;
+        width: 100% !important;
         overflow: hidden !important;
     }
     .charts-grid {
@@ -393,6 +429,7 @@ st.markdown("""
         gap: 1.5rem; 
         margin-bottom: 1.5rem;
         max-width: 100% !important;
+        width: 100% !important;
         overflow: hidden !important;
         box-sizing: border-box !important;
     }
@@ -402,16 +439,18 @@ st.markdown("""
     .chart-full {
         grid-column: 1 / -1;
         max-width: 100% !important;
+        width: 100% !important;
         overflow: hidden !important;
     }
     
-    /* STRATEGY CARDS */
+    /* STRATEGY CARDS - PERBAIKAN */
     .strategy-grid {
         display: grid; 
         grid-template-columns: repeat(2, 1fr); 
         gap: 1.5rem; 
         margin-bottom: 1.5rem;
         max-width: 100% !important;
+        width: 100% !important;
         overflow: hidden !important;
         box-sizing: border-box !important;
     }
@@ -424,9 +463,10 @@ st.markdown("""
         color: #fff; 
         border: 1px solid rgba(255, 255, 255, 0.1); 
         position: relative; 
-        overflow: hidden;
+        overflow: hidden !important;
         transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         max-width: 100% !important;
+        width: 100% !important;
         box-sizing: border-box !important;
     }
     .strategy-card:hover {
@@ -439,6 +479,7 @@ st.markdown("""
         align-items: start; 
         margin-bottom: 1rem;
         max-width: 100% !important;
+        width: 100% !important;
         overflow: hidden !important;
     }
     .strategy-name {
@@ -448,6 +489,7 @@ st.markdown("""
         line-height: 1.2;
         word-wrap: break-word;
         max-width: 70% !important;
+        width: 70% !important;
     }
     .priority-badge {
         padding: 0.375rem 0.75rem; 
@@ -467,6 +509,7 @@ st.markdown("""
         font-weight: 500;
         word-wrap: break-word;
         max-width: 100% !important;
+        width: 100% !important;
     }
     .tactics-section {
         background: rgba(255, 255, 255, 0.1); 
@@ -475,6 +518,7 @@ st.markdown("""
         margin: 1rem 0;
         backdrop-filter: blur(10px);
         max-width: 100% !important;
+        width: 100% !important;
         overflow: hidden !important;
         box-sizing: border-box !important;
     }
@@ -486,6 +530,7 @@ st.markdown("""
         text-transform: uppercase; 
         letter-spacing: 0.05em;
         max-width: 100% !important;
+        width: 100% !important;
         word-wrap: break-word;
     }
     .tactics-grid {
@@ -493,6 +538,7 @@ st.markdown("""
         grid-template-columns: repeat(2, 1fr); 
         gap: 0.5rem;
         max-width: 100% !important;
+        width: 100% !important;
         overflow: hidden !important;
     }
     @media (max-width: 768px) {
@@ -507,7 +553,9 @@ st.markdown("""
         border-left: 3px solid transparent;
         word-wrap: break-word;
         max-width: 100% !important;
+        width: 100% !important;
         overflow: hidden !important;
+        box-sizing: border-box !important;
     }
     .tactic-item:hover {
         background: rgba(255, 255, 255, 0.2); 
@@ -520,6 +568,7 @@ st.markdown("""
         gap: 0.5rem; 
         margin: 1rem 0;
         max-width: 100% !important;
+        width: 100% !important;
         overflow: hidden !important;
     }
     .kpi-item {
@@ -531,7 +580,9 @@ st.markdown("""
         font-weight: 600;
         word-wrap: break-word;
         max-width: 100% !important;
+        width: 100% !important;
         overflow: hidden !important;
+        box-sizing: border-box !important;
     }
     .strategy-footer {
         display: flex; 
@@ -540,11 +591,13 @@ st.markdown("""
         padding-top: 1rem;
         border-top: 1px solid rgba(255, 255, 255, 0.1);
         max-width: 100% !important;
+        width: 100% !important;
         overflow: hidden !important;
     }
     .budget-item {
         text-align: center;
         max-width: 48% !important;
+        width: 48% !important;
         overflow: hidden !important;
     }
     .budget-label {
@@ -553,12 +606,14 @@ st.markdown("""
         margin-bottom: 0.25rem;
         word-wrap: break-word;
         max-width: 100% !important;
+        width: 100% !important;
     }
     .budget-value {
         font-size: 1.5rem; 
         font-weight: 800;
         word-wrap: break-word;
         max-width: 100% !important;
+        width: 100% !important;
     }
     
     /* CHAMPION BREAKDOWN */
@@ -569,6 +624,7 @@ st.markdown("""
         padding: 1.5rem; 
         margin: 1.5rem 0;
         max-width: 100% !important;
+        width: 100% !important;
         overflow: hidden !important;
         box-sizing: border-box !important;
     }
@@ -582,12 +638,14 @@ st.markdown("""
         gap: 0.5rem;
         word-wrap: break-word;
         max-width: 100% !important;
+        width: 100% !important;
     }
     .champion-grid {
         display: grid; 
         grid-template-columns: repeat(2, 1fr); 
         gap: 1rem;
         max-width: 100% !important;
+        width: 100% !important;
         overflow: hidden !important;
         box-sizing: border-box !important;
     }
@@ -601,6 +659,7 @@ st.markdown("""
         padding: 1rem; 
         transition: all 0.3s ease;
         max-width: 100% !important;
+        width: 100% !important;
         overflow: hidden !important;
         box-sizing: border-box !important;
     }
@@ -615,6 +674,7 @@ st.markdown("""
         margin-bottom: 0.5rem;
         word-wrap: break-word;
         max-width: 100% !important;
+        width: 100% !important;
     }
     .champion-tier {
         font-size: 1rem; 
@@ -623,6 +683,7 @@ st.markdown("""
         margin-bottom: 0.5rem;
         word-wrap: break-word;
         max-width: 100% !important;
+        width: 100% !important;
     }
     .champion-desc {
         font-size: 0.875rem; 
@@ -630,6 +691,7 @@ st.markdown("""
         margin-bottom: 0.5rem;
         word-wrap: break-word;
         max-width: 100% !important;
+        width: 100% !important;
     }
     .champion-chars {
         font-size: 0.75rem; 
@@ -639,7 +701,9 @@ st.markdown("""
         border-radius: 6px;
         word-wrap: break-word;
         max-width: 100% !important;
+        width: 100% !important;
         overflow: hidden !important;
+        box-sizing: border-box !important;
     }
     
     /* INSIGHTS SECTION */
@@ -650,6 +714,7 @@ st.markdown("""
         padding: 1.5rem; 
         margin: 1.5rem 0;
         max-width: 100% !important;
+        width: 100% !important;
         overflow: hidden !important;
         box-sizing: border-box !important;
     }
@@ -663,12 +728,14 @@ st.markdown("""
         gap: 0.5rem;
         word-wrap: break-word;
         max-width: 100% !important;
+        width: 100% !important;
     }
     .insights-grid {
         display: grid; 
         grid-template-columns: repeat(2, 1fr); 
         gap: 1rem;
         max-width: 100% !important;
+        width: 100% !important;
         overflow: hidden !important;
         box-sizing: border-box !important;
     }
@@ -681,6 +748,7 @@ st.markdown("""
         border-radius: 12px; 
         padding: 1rem;
         max-width: 100% !important;
+        width: 100% !important;
         overflow: hidden !important;
         box-sizing: border-box !important;
     }
@@ -691,11 +759,13 @@ st.markdown("""
         margin-bottom: 0.75rem;
         word-wrap: break-word;
         max-width: 100% !important;
+        width: 100% !important;
     }
     .insight-list {
         list-style: none; 
         padding: 0;
         max-width: 100% !important;
+        width: 100% !important;
         overflow: hidden !important;
     }
     .insight-list li {
@@ -704,6 +774,8 @@ st.markdown("""
         color: rgba(255, 255, 255, 0.9);
         word-wrap: break-word;
         max-width: 100% !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
     }
     .insight-list li:last-child {
         border-bottom: none
@@ -718,6 +790,7 @@ st.markdown("""
         font-size: 0.875rem;
         border-top: 1px solid rgba(255, 255, 255, 0.05);
         max-width: 100% !important;
+        width: 100% !important;
         overflow: hidden !important;
         box-sizing: border-box !important;
     }
@@ -728,6 +801,7 @@ st.markdown("""
         padding: 3rem; 
         color: #94a3b8;
         max-width: 100% !important;
+        width: 100% !important;
         overflow: hidden !important;
     }
     .empty-icon {
@@ -741,10 +815,12 @@ st.markdown("""
         background: rgba(30, 41, 59, 0.8); 
         border-color: rgba(255, 255, 255, 0.1);
         max-width: 100% !important;
+        width: 100% !important;
     }
     div[data-testid="stSlider"] > div {
         background: rgba(30, 41, 59, 0.8);
         max-width: 100% !important;
+        width: 100% !important;
     }
     .stSlider > div > div > div {
         background: linear-gradient(90deg, #667eea, #764ba2)
@@ -769,14 +845,19 @@ st.markdown("""
         overflow-y: auto;
         overflow-x: hidden !important;
         max-width: 100% !important;
+        width: 100% !important;
         box-sizing: border-box !important;
     }
     
-    /* Grid column fixes untuk streamlit */
-    div[data-testid="column"] {
+    /* PERBAIKAN KHUSUS untuk Streamlit columns */
+    .st-emotion-cache-1r6slb0, /* Streamlit main column */
+    div[data-testid="column"],
+    .stColumn {
         max-width: 100% !important;
+        width: 100% !important;
         overflow: hidden !important;
         box-sizing: border-box !important;
+        padding: 0 0.5rem !important;
     }
     
     /* Modebar plotly positioning */
@@ -784,6 +865,73 @@ st.markdown("""
         right: 5px !important;
         left: auto !important;
         max-width: 100% !important;
+        width: 100% !important;
+    }
+    
+    /* MEDIA QUERIES untuk responsivitas lebih baik */
+    @media (max-width: 992px) {
+        .main-content-wrapper {
+            padding: 0 0.5rem !important;
+        }
+        
+        .header-container {
+            padding: 1rem !important;
+        }
+        
+        .header-title {
+            font-size: 1.5rem !important;
+        }
+        
+        .strategy-grid,
+        .charts-grid,
+        .champion-grid,
+        .insights-grid {
+            grid-template-columns: 1fr !important;
+        }
+        
+        .tactics-grid {
+            grid-template-columns: 1fr !important;
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .metrics-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 0.75rem !important;
+        }
+        
+        .header-stats {
+            flex-wrap: wrap !important;
+            gap: 0.5rem !important;
+        }
+        
+        .stat-item {
+            min-width: 90px !important;
+            padding: 0.5rem 0.75rem !important;
+            flex: 0 0 calc(50% - 0.5rem) !important;
+        }
+        
+        .filter-grid {
+            grid-template-columns: 1fr !important;
+        }
+        
+        .kpis-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .metrics-grid {
+            grid-template-columns: 1fr !important;
+        }
+        
+        .stat-item {
+            flex: 0 0 100% !important;
+        }
+        
+        .kpis-grid {
+            grid-template-columns: 1fr !important;
+        }
     }
 </style>
 """, unsafe_allow_html=True)
