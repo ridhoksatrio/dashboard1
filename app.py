@@ -623,7 +623,7 @@ def create_charts(df):
         fig2.update_layout(
             title=dict(
                 text="💰 Revenue by Segment",
-                font=dict(color='white', size=20),  # Font size disamakan 20
+                font=dict(color='white', size=30),  # Font size disamakan 20
                 x=0.5,
                 xanchor='center'
             ),
@@ -644,7 +644,7 @@ def create_charts(df):
         fig2.update_layout(
             title=dict(
                 text="💰 Revenue by Segment", 
-                font=dict(color='white', size=20),  # Font size disamakan 20
+                font=dict(color='white', size=30),  # Font size disamakan 20
                 x=0.5,
                 xanchor='center'
             ),
@@ -683,7 +683,7 @@ def create_charts(df):
         fig3.update_layout(
             title=dict(
                 text="📈 3D RFM Analysis",
-                font=dict(color='white', size=20),  # Font size disamakan 20
+                font=dict(color='white', size=30),  # Font size disamakan 20
                 x=0.5,
                 xanchor='center'
             ),
@@ -714,7 +714,7 @@ def create_charts(df):
         fig3.update_layout(
             title=dict(
                 text="📈 3D RFM Analysis", 
-                font=dict(color='white', size=20),  # Font size disamakan 20
+                font=dict(color='white', size=30),  # Font size disamakan 20
                 x=0.5,
                 xanchor='center'
             ),
