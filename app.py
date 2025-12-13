@@ -112,7 +112,7 @@ def init_data(rfm):
 
 profs, colors, rfm = init_data(rfm)
 
-# CSS Custom untuk Streamlit yang lebih modern - DIPERBAIKI dengan tambahan untuk Strategy Cards
+# CSS Custom untuk Streamlit yang lebih modern - DIPERBAIKI
 st.markdown("""
 <style>
     * {margin: 0; padding: 0; box-sizing: border-box}
@@ -141,7 +141,7 @@ st.markdown("""
                   letter-spacing: -0.5px;}
     .header-subtitle {color: #94a3b8; font-size: 1.15rem; margin-top: 0.5rem; font-weight: 400; max-width: 800px; line-height: 1.5;}
     
-    /* SECTION DIVIDER - DITAMBAHKAN */
+    /* SECTION DIVIDER */
     .section-divider {
         height: 1px;
         background: linear-gradient(90deg, 
@@ -171,7 +171,7 @@ st.markdown("""
         border-radius: 3px;
     }
     
-    /* SECTION HEADERS - DITAMBAHKAN */
+    /* SECTION HEADERS */
     .section-header {
         display: flex;
         align-items: center;
@@ -261,8 +261,7 @@ st.markdown("""
     .change-positive {color: #10b981; background: rgba(16, 185, 129, 0.1); padding: 0.25rem 0.5rem; border-radius: 20px;}
     .change-negative {color: #ef4444; background: rgba(239, 68, 68, 0.1); padding: 0.25rem 0.5rem; border-radius: 20px;}
   
-    
-    /* FILTER ITEMS - DITAMBAHKAN */
+    /* FILTER ITEMS */
     .filter-column {padding: 0.5rem}
     .filter-label {font-size: 0.875rem; color: #94a3b8; margin-bottom: 0.75rem; font-weight: 600; display: block}
     
@@ -291,7 +290,6 @@ st.markdown("""
         box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3) !important;
         transform: translateY(-2px);
     }
-    
     
     /* STRATEGY CARDS - DIPERBAIKI */
     .strategy-grid {
@@ -327,8 +325,8 @@ st.markdown("""
     }
     
     .strategy-card:hover {
-        transform: translateY(-8px); 
-        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+        transform: translateY(-5px); 
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
         border-color: rgba(255, 255, 255, 0.3);
     }
     
@@ -433,7 +431,7 @@ st.markdown("""
         gap: 0.25rem;
     }
     
-    /* FOOTER dengan visualisasi mini */
+    /* FOOTER dengan visualisasi mini - DIPERBAIKI */
     .strategy-footer {
         display: flex; 
         justify-content: space-between; 
@@ -454,7 +452,7 @@ st.markdown("""
     .budget-label {
         font-size: 0.75rem; 
         color: rgba(255, 255, 255, 0.7); 
-        margin-bottom: 0.75rem; 
+        margin-bottom: 0.5rem; 
         text-transform: uppercase; 
         letter-spacing: 0.05em;
         display: flex;
@@ -468,14 +466,21 @@ st.markdown("""
         margin-bottom: 0.5rem;
     }
     
-    /* BUDGET PROGRESS BAR */
-    .budget-progress {
+    /* BUDGET PROGRESS BAR yang diperbaiki */
+    .budget-progress-container {
         width: 100%;
+        margin-top: 0.25rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .budget-progress {
+        flex: 1;
         height: 6px;
         background: rgba(255, 255, 255, 0.1);
         border-radius: 3px;
         overflow: hidden;
-        margin-top: 0.5rem;
     }
     
     .budget-progress-fill {
@@ -484,19 +489,35 @@ st.markdown("""
         transition: width 0.5s ease;
     }
     
-    /* ROI GAUGE */
+    .budget-percentage {
+        font-size: 0.8rem;
+        font-weight: 700;
+        color: #fff;
+        min-width: 40px;
+        text-align: right;
+    }
+    
+    /* ROI GAUGE yang diperbaiki */
+    .roi-gauge-container {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 0.5rem;
+    }
+    
     .roi-gauge {
-        width: 80px;
-        height: 40px;
+        width: 100px;
+        height: 50px;
         position: relative;
-        margin: 0.5rem auto;
+        margin-bottom: 0.5rem;
     }
     
     .roi-gauge-background {
         width: 100%;
         height: 100%;
         background: rgba(255, 255, 255, 0.1);
-        border-radius: 20px 20px 0 0;
+        border-radius: 50px 50px 0 0;
         overflow: hidden;
         position: relative;
     }
@@ -507,7 +528,7 @@ st.markdown("""
         left: 0;
         right: 0;
         height: 0%;
-        border-radius: 20px 20px 0 0;
+        border-radius: 50px 50px 0 0;
         transition: height 1s ease;
     }
     
@@ -522,7 +543,7 @@ st.markdown("""
         text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
     }
     
-    /* CHAMPION BREAKDOWN - DIPERBAIKI */
+    /* CHAMPION BREAKDOWN - DIPERBAIKI SESUAI SARAN */
     .champion-section {
         background: linear-gradient(135deg, rgba(255, 215, 0, 0.08) 0%, rgba(255, 140, 0, 0.08) 100%); 
         border: 1px solid rgba(255, 215, 0, 0.2); 
@@ -544,14 +565,15 @@ st.markdown("""
         border-bottom: 2px solid rgba(255, 215, 0, 0.3);
     }
     
+    /* PERBAIKAN PENTING: CSS Grid untuk layout yang benar */
     .champion-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 1.5rem;
-        margin-top: 1.5rem;
+        grid-template-columns: repeat(2, 1fr); 
+        gap: 20px;
+        padding: 10px 0;
     }
     
-    @media (max-width: 768px) {
+    @media (max-width: 992px) {
         .champion-grid {
             grid-template-columns: 1fr;
         }
@@ -564,6 +586,7 @@ st.markdown("""
         padding: 1.5rem; 
         transition: all 0.3s ease;
         cursor: pointer;
+        height: 100%;
     }
     
     .champion-card:hover {
@@ -626,7 +649,7 @@ st.markdown("""
         gap: 0.5rem;
     }
     
-    /* INSIGHTS SECTION - DIPERBAIKI */
+    /* INSIGHTS SECTION */
     .insights-section {
         background: linear-gradient(135deg, rgba(79, 172, 254, 0.08) 0%, rgba(0, 242, 254, 0.08) 100%);
         border: 1px solid rgba(79, 172, 254, 0.2); 
@@ -652,7 +675,7 @@ st.markdown("""
     .insights-grid-container {
         display: flex;
         gap: 2rem;
-        align-items: stretch; /* Ini yang membuat cards sama tinggi */
+        align-items: stretch;
         margin-bottom: 2rem;
     }
     
@@ -671,7 +694,7 @@ st.markdown("""
         flex: 1;
         display: flex;
         flex-direction: column;
-        height: 100%; /* Ini membuat card mengambil full height dari container */
+        height: 100%;
     }
     
     .insight-card-header {
@@ -755,10 +778,33 @@ st.markdown("""
     }
     
     /* UTILITY CLASSES */
-    .empty-state {text-align: center; padding: 4rem; color: #94a3b8}
-    .empty-icon {font-size: 3.5rem; margin-bottom: 1.5rem; opacity: 0.5}
+    .empty-state {
+        text-align: center; 
+        padding: 4rem; 
+        color: #94a3b8;
+        background: rgba(30, 41, 59, 0.5);
+        border-radius: 20px;
+        margin: 2rem 0;
+    }
     
-    /* STREAMLIT WIDGET OVERRIDES - DIPERBAIKI */
+    .empty-icon {
+        font-size: 3.5rem; 
+        margin-bottom: 1.5rem; 
+        opacity: 0.5;
+    }
+    
+    .empty-state h3 {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+        color: #fff;
+    }
+    
+    .empty-state p {
+        font-size: 1rem;
+        color: #94a3b8;
+    }
+    
+    /* STREAMLIT WIDGET OVERRIDES */
     div[data-testid="stSelectbox"] > div {
         background: rgba(30, 41, 59, 0.8); 
         border-color: rgba(255, 255, 255, 0.1) !important; 
@@ -1521,8 +1567,8 @@ def main():
                             if c in profs and profs[c]['name'] == '🏆 Champions']
         
         if len(champion_clusters) > 0:
-            champion_cards_html = '<div class="champion-grid">'
-            
+            # Bangun HTML untuk champion grid
+            champion_cards_html = ""
             for cid in champion_clusters:
                 if cid in champion_details:
                     det = champion_details[cid]
@@ -1543,11 +1589,10 @@ def main():
                     </div>
                     """
             
-            champion_cards_html += '</div>'
-            
+            # Tampilkan semua champion cards dalam grid yang benar
             st.markdown('<div class="champion-section">', unsafe_allow_html=True)
             st.markdown('<div class="champion-title">🏆 Champion Segments Breakdown</div>', unsafe_allow_html=True)
-            st.markdown(champion_cards_html, unsafe_allow_html=True)
+            st.markdown(f'<div class="champion-grid">{champion_cards_html}</div>', unsafe_allow_html=True)
             st.markdown('</div>', unsafe_allow_html=True)
         
         # Strategy Cards - DIPERBAIKI dengan visualisasi mini
@@ -1576,7 +1621,7 @@ def main():
                 roi_color = "#10b981" if roi_value >= 400 else "#f093fb" if roi_value >= 300 else "#667eea"
                 
                 strategy_cards_html += f"""
-                <div class="strategy-card" style="background: {p['grad']}" onclick="this.style.transform='translateY(-8px)'; setTimeout(() => {{this.style.transform='translateY(0)'}}, 300)">
+                <div class="strategy-card" style="background: {p['grad']}">
                     <div class="strategy-header">
                         <div>
                             <h3 class="strategy-name">{p['name']}</h3>
@@ -1603,17 +1648,22 @@ def main():
                         <div class="budget-item">
                             <div class="budget-label">💰 Budget Allocation</div>
                             <div class="budget-value">{p['budget']}</div>
-                            <div class="budget-progress">
-                                <div class="budget-progress-fill" style="width: {budget_percentage}%; background: {budget_color};"></div>
+                            <div class="budget-progress-container">
+                                <div class="budget-progress">
+                                    <div class="budget-progress-fill" style="width: {budget_percentage}%; background: {budget_color};"></div>
+                                </div>
+                                <div class="budget-percentage">{p['budget']}</div>
                             </div>
                         </div>
                         <div class="budget-item">
                             <div class="budget-label">🚀 Expected ROI</div>
-                            <div class="roi-gauge">
-                                <div class="roi-gauge-background">
-                                    <div class="roi-gauge-fill" style="height: {roi_fill_height}%; background: {roi_color};"></div>
+                            <div class="roi-gauge-container">
+                                <div class="roi-gauge">
+                                    <div class="roi-gauge-background">
+                                        <div class="roi-gauge-fill" style="height: {roi_fill_height}%; background: {roi_color};"></div>
+                                    </div>
+                                    <div class="roi-value">{p['roi']}</div>
                                 </div>
-                                <div class="roi-value">{p['roi']}</div>
                             </div>
                         </div>
                     </div>
