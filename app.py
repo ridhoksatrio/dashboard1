@@ -1009,7 +1009,7 @@ def main():
     st.markdown('</div>', unsafe_allow_html=True)
     
     # Divider 1
-    st.markdown('<div class="section-divider"></div>', unsafe_allow_html=True)
+
     
     # Section 2: Data Filters dengan section header
     st.markdown("""
