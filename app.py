@@ -394,7 +394,7 @@ st.markdown("""
         font-size: 1.75rem; 
         font-weight: 900; 
         color: #667eea; 
-        margin-bottom: 1.5rem; 
+        margin-bottom: 1rem; 
         display: flex; 
         align-items: center; 
         gap: 0.75rem;
@@ -647,6 +647,14 @@ st.markdown("""
     .spacer-sm {margin: 1rem 0}
     .spacer-md {margin: 2rem 0}
     .spacer-lg {margin: 3rem 0}
+    
+    /* NEW: Improved layout for strategy cards in overview */
+    .strategy-overview-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+        margin-top: 1.5rem;
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -1367,7 +1375,7 @@ def main():
             
             st.markdown('</div>', unsafe_allow_html=True)
         
-        # BAGIAN BARU: Segment Strategies Overview
+        # BAGIAN BARU: Segment Strategies Overview - DIPERBAIKI
         st.markdown('<div class="strategies-overview-section">', unsafe_allow_html=True)
         st.markdown('<div class="strategies-overview-title">📋 Segment Strategies Overview</div>', unsafe_allow_html=True)
         st.markdown('<p style="color: #94a3b8; margin-bottom: 2rem; font-size: 1.1rem;">Comprehensive view of all customer segments with detailed strategies, tactics, and KPIs</p>', unsafe_allow_html=True)
@@ -1381,24 +1389,24 @@ def main():
             # Hitung jumlah customer di segmen ini
             segment_customers = len(rfm[rfm['Cluster_KMeans'] == cluster_id])
             
-            # Format tactics sebagai HTML
+            # Format tactics sebagai HTML dengan class yang benar
             tactics_html = ""
             for tactic in strat['tactics']:
                 tactics_html += f'<div class="tactic-item">{tactic}</div>'
             
-            # Format KPIs sebagai HTML
+            # Format KPIs sebagai HTML dengan class yang benar
             kpis_html = ""
             for kpi in strat['kpis']:
                 kpis_html += f'<div class="kpi-item">{kpi}</div>'
             
-            # Buat card untuk setiap segmen
+            # Buat card untuk setiap segmen - DIPERBAIKI
             segment_card_html = f"""
-            <div class="strategy-card" style="background: {strat['grad']};">
+            <div class="strategy-card" style="background: {strat['grad']}; margin-bottom: 2rem;">
                 <div class="strategy-header">
-                    <div class="strategy-name">{strat['name']}</div>
+                    <div class="strategy-name">{strat['name']} (C{cluster_id})</div>
                     <div class="priority-badge" style="color: {strat['color']}; border: 1px solid {strat['color']};">{strat['priority']}</div>
                 </div>
-                <div class="strategy-subtitle">{strat['strategy']}</div>
+                <div class="strategy-subtitle"><strong>Strategy:</strong> {strat['strategy']}</div>
                 
                 <div class="tactics-section">
                     <div class="tactics-title">🎯 Tactics & Actions</div>
