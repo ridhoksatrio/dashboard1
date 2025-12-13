@@ -112,825 +112,128 @@ def init_data(rfm):
 
 profs, colors, rfm = init_data(rfm)
 
-# CSS Custom untuk Streamlit yang sudah DIPERBAIKI
+# CSS Custom yang SEDERHANA - tanpa wrapper kompleks
 st.markdown("""
 <style>
-    * {margin: 0; padding: 0; box-sizing: border-box}
-    body {font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0f172a; min-height: 100vh}
-    
-    /* PREVENT HORIZONTAL SCROLL - PERBAIKAN UTAMA */
+    /* RESET DASAR */
     html, body {
         max-width: 100% !important;
         overflow-x: hidden !important;
+        margin: 0 !important;
+        padding: 0 !important;
     }
     
     .stApp {
-        background: transparent !important; 
-        padding: 0 !important; 
+        background: #0f172a !important;
         max-width: 100% !important;
-        width: 100% !important;
         overflow-x: hidden !important;
-        box-sizing: border-box !important;
     }
     
-    /* MAIN CONTENT WRAPPER - PERBAIKAN UTAMA */
-    .main-content-wrapper {
-        max-width: 100% !important;
-        width: 100% !important;
-        padding: 0 1rem !important;
-        margin: 0 auto !important;
-        box-sizing: border-box !important;
-        overflow-x: hidden !important;
-        position: relative !important;
-    }
-    
-    /* SIDEBAR */
-    .st-emotion-cache-1cypcdb {background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%) !important; border-right: 1px solid #334155}
-    .st-emotion-cache-16txtl3 {padding: 2rem 1.5rem !important}
-    
-    /* HEADER dengan glassmorphism */
-    .header-container {
-        background: rgba(15, 23, 42, 0.85); 
-        backdrop-filter: blur(20px); 
-        -webkit-backdrop-filter: blur(20px); 
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1); 
-        padding: 1.5rem 1rem; 
-        position: sticky; 
-        top: 0; 
-        z-index: 1000;
-        max-width: 100% !important;
-        width: 100% !important;
-        box-sizing: border-box !important;
-        overflow: hidden !important;
-    }
-    .main-header {
-        display: flex; 
-        justify-content: space-between; 
-        align-items: center; 
-        flex-wrap: wrap; 
-        gap: 1rem;
-        max-width: 100% !important;
-        width: 100% !important;
-        overflow: hidden !important;
-    }
+    /* HEADER SEDERHANA */
     .header-title {
         font-size: 2rem; 
         font-weight: 800; 
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
         -webkit-background-clip: text; 
         -webkit-text-fill-color: transparent; 
-        margin: 0;
-        word-wrap: break-word;
-        max-width: 100% !important;
-        width: 100% !important;
+        margin-bottom: 0.5rem;
     }
+    
     .header-subtitle {
         color: #94a3b8; 
         font-size: 1rem; 
-        margin-top: 0.25rem; 
-        font-weight: 400;
-        max-width: 100% !important;
-        width: 100% !important;
-        word-wrap: break-word;
-    }
-    .header-stats {
-        display: flex; 
-        gap: 1rem; 
-        flex-wrap: wrap;
-        max-width: 100% !important;
-        width: 100% !important;
-        overflow: hidden !important;
-    }
-    .stat-item {
-        display: flex; 
-        flex-direction: column; 
-        align-items: center; 
-        padding: 0.75rem 1rem; 
-        background: rgba(30, 41, 59, 0.7); 
-        border-radius: 12px; 
-        border: 1px solid rgba(255, 255, 255, 0.05);
-        min-width: 100px;
-        box-sizing: border-box !important;
-        flex: 1;
-    }
-    .stat-value {
-        font-size: 1.25rem; 
-        font-weight: 700; 
-        color: #fff; 
-        margin-bottom: 0.25rem
-    }
-    .stat-label {
-        font-size: 0.75rem; 
-        color: #94a3b8; 
-        text-transform: uppercase; 
-        letter-spacing: 0.05em
+        margin-bottom: 1.5rem;
     }
     
-    /* METRICS GRID dengan neumorphism - PERBAIKAN */
-    .metrics-grid {
-        display: grid; 
-        grid-template-columns: repeat(4, 1fr); 
-        gap: 1rem; 
-        margin: 1.5rem 0;
-        max-width: 100% !important;
-        width: 100% !important;
-        overflow: hidden !important;
-        box-sizing: border-box !important;
-    }
-    @media (max-width: 1200px) {
-        .metrics-grid {grid-template-columns: repeat(2, 1fr)}
-    }
-    @media (max-width: 768px) {
-        .metrics-grid {grid-template-columns: 1fr}
-    }
+    /* KARTU METRIK SEDERHANA */
     .metric-card {
         background: rgba(30, 41, 59, 0.8); 
-        border-radius: 16px; 
-        padding: 1.5rem; 
+        border-radius: 12px; 
+        padding: 1rem; 
         border: 1px solid rgba(255, 255, 255, 0.05); 
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        position: relative; 
-        overflow: hidden !important;
-        max-width: 100% !important;
-        width: 100% !important;
-        box-sizing: border-box !important;
+        margin-bottom: 1rem;
     }
-    .metric-card:hover {
-        transform: translateY(-4px); 
-        border-color: rgba(102, 126, 234, 0.3); 
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3)
-    }
-    .metric-card::before {
-        content: ''; 
-        position: absolute; 
-        top: 0; 
-        left: 0; 
-        right: 0; 
-        height: 3px; 
-        background: linear-gradient(90deg, #667eea, #764ba2)
-    }
-    .metric-icon {
-        font-size: 2rem; 
-        margin-bottom: 1rem; 
-        display: inline-block
-    }
+    
     .metric-value {
-        font-size: 2rem; 
+        font-size: 1.5rem; 
         font-weight: 800; 
         color: #fff; 
-        margin: 0.5rem 0; 
-        line-height: 1
+        margin: 0.5rem 0;
     }
+    
     .metric-label {
-        font-size: 0.875rem; 
-        color: #94a3b8; 
-        text-transform: uppercase; 
-        letter-spacing: 0.05em; 
-        font-weight: 600
-    }
-    .metric-change {
         font-size: 0.75rem; 
-        display: flex; 
-        align-items: center; 
-        gap: 0.25rem; 
-        margin-top: 0.5rem
+        color: #94a3b8; 
+        text-transform: uppercase;
     }
-    .change-positive {color: #10b981}
-    .change-negative {color: #ef4444}
     
     /* FILTER SECTION */
     .filter-section {
         background: rgba(30, 41, 59, 0.8); 
-        border-radius: 16px; 
-        padding: 1.5rem; 
-        margin: 1.5rem 0; 
-        border: 1px solid rgba(255, 255, 255, 0.05);
-        max-width: 100% !important;
-        width: 100% !important;
-        overflow: hidden !important;
-        box-sizing: border-box !important;
-    }
-    .filter-title {
-        font-size: 1.25rem; 
-        font-weight: 700; 
-        color: #fff; 
-        margin-bottom: 1rem; 
-        display: flex; 
-        align-items: center; 
-        gap: 0.5rem
-    }
-    .filter-grid {
-        display: grid; 
-        grid-template-columns: repeat(3, 1fr); 
-        gap: 1rem;
-        max-width: 100% !important;
-        width: 100% !important;
-        overflow: hidden !important;
-    }
-    @media (max-width: 768px) {
-        .filter-grid {grid-template-columns: 1fr}
+        border-radius: 12px; 
+        padding: 1rem; 
+        margin: 1rem 0;
     }
     
-    /* TABS STYLING */
-    .stTabs {
-        max-width: 100% !important;
-        width: 100% !important;
-        overflow: hidden !important;
-    }
-    .stTabs [data-baseweb="tab-list"] {
-        gap: 0.5rem; 
-        margin-bottom: 1.5rem;
-        max-width: 100% !important;
-        width: 100% !important;
-        overflow-x: auto !important;
-        flex-wrap: wrap !important;
-    }
-    .stTabs [data-baseweb="tab"] {
-        background: rgba(30, 41, 59, 0.5) !important; 
-        border: 1px solid rgba(255, 255, 255, 0.05) !important;
-        border-radius: 12px !important; 
-        padding: 0.75rem 1.5rem !important; 
-        color: #94a3b8 !important; 
-        font-weight: 600 !important; 
-        transition: all 0.3s ease;
-        white-space: nowrap;
-        flex-shrink: 0;
-    }
-    .stTabs [data-baseweb="tab"]:hover {
-        background: rgba(30, 41, 59, 0.8) !important; 
-        color: #fff !important; 
-        border-color: rgba(102, 126, 234, 0.3) !important
-    }
-    .stTabs [aria-selected="true"] {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important; 
-        color: #fff !important; 
-        border-color: transparent !important;
-        box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3) !important
-    }
-    .stTabs [data-baseweb="tab-panel"] {
-        max-width: 100% !important;
-        width: 100% !important;
-        overflow: hidden !important;
-        padding: 0 !important;
-        box-sizing: border-box !important;
-    }
-    
-    /* CHARTS CONTAINER - PERBAIKAN UTAMA */
+    /* CHART CONTAINER SEDERHANA */
     .chart-container {
         background: rgba(30, 41, 59, 0.8); 
-        border-radius: 16px; 
-        border: 1px solid rgba(255, 255, 255, 0.05); 
-        margin-bottom: 1.5rem;
-        position: relative; 
-        overflow: hidden !important;
-        max-width: 100% !important;
-        width: 100% !important;
-        box-sizing: border-box !important;
+        border-radius: 12px; 
+        padding: 1rem; 
+        margin-bottom: 1rem;
     }
-    .chart-inner {
-        padding: 1.5rem; 
-        height: 100%;
-        max-width: 100% !important;
-        width: 100% !important;
-        overflow: hidden !important;
-        box-sizing: border-box !important;
-    }
-    .chart-title-wrapper {
-        margin-bottom: 1rem; 
-        padding: 0; 
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        max-width: 100% !important;
-        width: 100% !important;
-        overflow: hidden !important;
-    }
+    
     .chart-title {
-        font-size: 1.125rem; 
+        font-size: 1rem; 
         font-weight: 700; 
         color: #fff; 
-        display: flex; 
-        align-items: center; 
-        gap: 0.5rem; 
-        margin: 0; 
-        padding: 0.5rem 0;
-        word-wrap: break-word;
-        max-width: 100% !important;
-        width: 100% !important;
-    }
-    .chart-content {
-        height: calc(100% - 60px); 
-        min-height: 300px;
-        max-width: 100% !important;
-        width: 100% !important;
-        overflow: hidden !important;
-    }
-    .charts-grid {
-        display: grid; 
-        grid-template-columns: repeat(2, 1fr); 
-        gap: 1.5rem; 
-        margin-bottom: 1.5rem;
-        max-width: 100% !important;
-        width: 100% !important;
-        overflow: hidden !important;
-        box-sizing: border-box !important;
-    }
-    @media (max-width: 1200px) {
-        .charts-grid {grid-template-columns: 1fr}
-    }
-    .chart-full {
-        grid-column: 1 / -1;
-        max-width: 100% !important;
-        width: 100% !important;
-        overflow: hidden !important;
+        margin-bottom: 1rem;
     }
     
-    /* STRATEGY CARDS - PERBAIKAN */
-    .strategy-grid {
-        display: grid; 
-        grid-template-columns: repeat(2, 1fr); 
-        gap: 1.5rem; 
-        margin-bottom: 1.5rem;
-        max-width: 100% !important;
-        width: 100% !important;
-        overflow: hidden !important;
-        box-sizing: border-box !important;
-    }
-    @media (max-width: 1200px) {
-        .strategy-grid {grid-template-columns: 1fr}
-    }
+    /* STRATEGY CARD SEDERHANA */
     .strategy-card {
-        border-radius: 16px; 
-        padding: 1.5rem; 
-        color: #fff; 
-        border: 1px solid rgba(255, 255, 255, 0.1); 
-        position: relative; 
-        overflow: hidden !important;
-        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        max-width: 100% !important;
-        width: 100% !important;
-        box-sizing: border-box !important;
-    }
-    .strategy-card:hover {
-        transform: translateY(-6px); 
-        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3)
-    }
-    .strategy-header {
-        display: flex; 
-        justify-content: space-between; 
-        align-items: start; 
+        background: rgba(30, 41, 59, 0.8); 
+        border-radius: 12px; 
+        padding: 1rem; 
         margin-bottom: 1rem;
-        max-width: 100% !important;
-        width: 100% !important;
-        overflow: hidden !important;
+        border: 1px solid rgba(255, 255, 255, 0.1);
     }
+    
     .strategy-name {
-        font-size: 1.5rem; 
-        font-weight: 800; 
-        margin: 0; 
-        line-height: 1.2;
-        word-wrap: break-word;
-        max-width: 70% !important;
-        width: 70% !important;
-    }
-    .priority-badge {
-        padding: 0.375rem 0.75rem; 
-        border-radius: 20px; 
-        font-size: 0.75rem; 
-        font-weight: 700;
-        text-transform: uppercase; 
-        letter-spacing: 0.05em; 
-        background: rgba(255, 255, 255, 0.2);
-        backdrop-filter: blur(10px);
-        white-space: nowrap;
-    }
-    .strategy-subtitle {
-        font-size: 1rem; 
-        color: rgba(255, 255, 255, 0.9); 
-        margin-bottom: 1rem; 
-        font-weight: 500;
-        word-wrap: break-word;
-        max-width: 100% !important;
-        width: 100% !important;
-    }
-    .tactics-section {
-        background: rgba(255, 255, 255, 0.1); 
-        border-radius: 12px; 
-        padding: 1rem; 
-        margin: 1rem 0;
-        backdrop-filter: blur(10px);
-        max-width: 100% !important;
-        width: 100% !important;
-        overflow: hidden !important;
-        box-sizing: border-box !important;
-    }
-    .tactics-title {
-        font-size: 0.875rem; 
-        font-weight: 700; 
-        color: rgba(255, 255, 255, 0.9); 
-        margin-bottom: 0.75rem;
-        text-transform: uppercase; 
-        letter-spacing: 0.05em;
-        max-width: 100% !important;
-        width: 100% !important;
-        word-wrap: break-word;
-    }
-    .tactics-grid {
-        display: grid; 
-        grid-template-columns: repeat(2, 1fr); 
-        gap: 0.5rem;
-        max-width: 100% !important;
-        width: 100% !important;
-        overflow: hidden !important;
-    }
-    @media (max-width: 768px) {
-        .tactics-grid {grid-template-columns: 1fr}
-    }
-    .tactic-item {
-        background: rgba(255, 255, 255, 0.15); 
-        border-radius: 8px; 
-        padding: 0.75rem; 
-        font-size: 0.875rem;
-        transition: all 0.2s ease; 
-        border-left: 3px solid transparent;
-        word-wrap: break-word;
-        max-width: 100% !important;
-        width: 100% !important;
-        overflow: hidden !important;
-        box-sizing: border-box !important;
-    }
-    .tactic-item:hover {
-        background: rgba(255, 255, 255, 0.2); 
-        transform: translateX(4px); 
-        border-left-color: rgba(255, 255, 255, 0.5)
-    }
-    .kpis-grid {
-        display: grid; 
-        grid-template-columns: repeat(3, 1fr); 
-        gap: 0.5rem; 
-        margin: 1rem 0;
-        max-width: 100% !important;
-        width: 100% !important;
-        overflow: hidden !important;
-    }
-    .kpi-item {
-        background: rgba(255, 255, 255, 0.1); 
-        border-radius: 8px; 
-        padding: 0.75rem; 
-        text-align: center;
-        font-size: 0.875rem; 
-        font-weight: 600;
-        word-wrap: break-word;
-        max-width: 100% !important;
-        width: 100% !important;
-        overflow: hidden !important;
-        box-sizing: border-box !important;
-    }
-    .strategy-footer {
-        display: flex; 
-        justify-content: space-between; 
-        margin-top: 1.5rem; 
-        padding-top: 1rem;
-        border-top: 1px solid rgba(255, 255, 255, 0.1);
-        max-width: 100% !important;
-        width: 100% !important;
-        overflow: hidden !important;
-    }
-    .budget-item {
-        text-align: center;
-        max-width: 48% !important;
-        width: 48% !important;
-        overflow: hidden !important;
-    }
-    .budget-label {
-        font-size: 0.75rem; 
-        color: rgba(255, 255, 255, 0.7); 
-        margin-bottom: 0.25rem;
-        word-wrap: break-word;
-        max-width: 100% !important;
-        width: 100% !important;
-    }
-    .budget-value {
-        font-size: 1.5rem; 
-        font-weight: 800;
-        word-wrap: break-word;
-        max-width: 100% !important;
-        width: 100% !important;
-    }
-    
-    /* CHAMPION BREAKDOWN */
-    .champion-section {
-        background: linear-gradient(135deg, rgba(255, 215, 0, 0.1) 0%, rgba(255, 140, 0, 0.1) 100%); 
-        border: 1px solid rgba(255, 215, 0, 0.2); 
-        border-radius: 16px; 
-        padding: 1.5rem; 
-        margin: 1.5rem 0;
-        max-width: 100% !important;
-        width: 100% !important;
-        overflow: hidden !important;
-        box-sizing: border-box !important;
-    }
-    .champion-title {
-        font-size: 1.5rem; 
-        font-weight: 800; 
-        color: #FFD700; 
-        margin-bottom: 1rem; 
-        display: flex; 
-        align-items: center; 
-        gap: 0.5rem;
-        word-wrap: break-word;
-        max-width: 100% !important;
-        width: 100% !important;
-    }
-    .champion-grid {
-        display: grid; 
-        grid-template-columns: repeat(2, 1fr); 
-        gap: 1rem;
-        max-width: 100% !important;
-        width: 100% !important;
-        overflow: hidden !important;
-        box-sizing: border-box !important;
-    }
-    @media (max-width: 768px) {
-        .champion-grid {grid-template-columns: 1fr}
-    }
-    .champion-card {
-        background: rgba(255, 215, 0, 0.1); 
-        border: 1px solid rgba(255, 215, 0, 0.2); 
-        border-radius: 12px; 
-        padding: 1rem; 
-        transition: all 0.3s ease;
-        max-width: 100% !important;
-        width: 100% !important;
-        overflow: hidden !important;
-        box-sizing: border-box !important;
-    }
-    .champion-card:hover {
-        background: rgba(255, 215, 0, 0.15); 
-        transform: translateY(-2px)
-    }
-    .champion-number {
         font-size: 1.25rem; 
-        font-weight: 800; 
-        color: #FFD700; 
-        margin-bottom: 0.5rem;
-        word-wrap: break-word;
-        max-width: 100% !important;
-        width: 100% !important;
-    }
-    .champion-tier {
-        font-size: 1rem; 
         font-weight: 700; 
         color: #fff; 
         margin-bottom: 0.5rem;
-        word-wrap: break-word;
-        max-width: 100% !important;
-        width: 100% !important;
     }
-    .champion-desc {
-        font-size: 0.875rem; 
-        color: rgba(255, 255, 255, 0.8); 
-        margin-bottom: 0.5rem;
-        word-wrap: break-word;
-        max-width: 100% !important;
-        width: 100% !important;
-    }
-    .champion-chars {
-        font-size: 0.75rem; 
-        color: rgba(255, 215, 0, 0.9); 
-        background: rgba(255, 215, 0, 0.1);
+    
+    .tactic-item {
+        background: rgba(255, 255, 255, 0.1); 
+        border-radius: 6px; 
         padding: 0.5rem; 
-        border-radius: 6px;
-        word-wrap: break-word;
-        max-width: 100% !important;
-        width: 100% !important;
-        overflow: hidden !important;
-        box-sizing: border-box !important;
-    }
-    
-    /* INSIGHTS SECTION */
-    .insights-section {
-        background: linear-gradient(135deg, rgba(79, 172, 254, 0.1) 0%, rgba(0, 242, 254, 0.1) 100%);
-        border: 1px solid rgba(79, 172, 254, 0.2); 
-        border-radius: 16px; 
-        padding: 1.5rem; 
-        margin: 1.5rem 0;
-        max-width: 100% !important;
-        width: 100% !important;
-        overflow: hidden !important;
-        box-sizing: border-box !important;
-    }
-    .insights-title {
-        font-size: 1.5rem; 
-        font-weight: 800; 
-        color: #4facfe; 
-        margin-bottom: 1rem;
-        display: flex; 
-        align-items: center; 
-        gap: 0.5rem;
-        word-wrap: break-word;
-        max-width: 100% !important;
-        width: 100% !important;
-    }
-    .insights-grid {
-        display: grid; 
-        grid-template-columns: repeat(2, 1fr); 
-        gap: 1rem;
-        max-width: 100% !important;
-        width: 100% !important;
-        overflow: hidden !important;
-        box-sizing: border-box !important;
-    }
-    @media (max-width: 768px) {
-        .insights-grid {grid-template-columns: 1fr}
-    }
-    .insight-card {
-        background: rgba(79, 172, 254, 0.1); 
-        border: 1px solid rgba(79, 172, 254, 0.2); 
-        border-radius: 12px; 
-        padding: 1rem;
-        max-width: 100% !important;
-        width: 100% !important;
-        overflow: hidden !important;
-        box-sizing: border-box !important;
-    }
-    .insight-heading {
-        font-size: 1.125rem; 
-        font-weight: 700; 
-        color: #4facfe; 
-        margin-bottom: 0.75rem;
-        word-wrap: break-word;
-        max-width: 100% !important;
-        width: 100% !important;
-    }
-    .insight-list {
-        list-style: none; 
-        padding: 0;
-        max-width: 100% !important;
-        width: 100% !important;
-        overflow: hidden !important;
-    }
-    .insight-list li {
-        padding: 0.5rem 0; 
-        border-bottom: 1px solid rgba(79, 172, 254, 0.2); 
-        color: rgba(255, 255, 255, 0.9);
-        word-wrap: break-word;
-        max-width: 100% !important;
-        width: 100% !important;
-        box-sizing: border-box !important;
-    }
-    .insight-list li:last-child {
-        border-bottom: none
-    }
-    
-    /* FOOTER */
-    .footer {
-        text-align: center; 
-        padding: 1.5rem; 
-        margin-top: 2rem; 
-        color: #94a3b8; 
+        margin-bottom: 0.5rem;
         font-size: 0.875rem;
-        border-top: 1px solid rgba(255, 255, 255, 0.05);
-        max-width: 100% !important;
-        width: 100% !important;
-        overflow: hidden !important;
-        box-sizing: border-box !important;
     }
     
-    /* UTILITY CLASSES */
+    /* UTILITY */
     .empty-state {
         text-align: center; 
         padding: 3rem; 
         color: #94a3b8;
-        max-width: 100% !important;
-        width: 100% !important;
-        overflow: hidden !important;
-    }
-    .empty-icon {
-        font-size: 3rem; 
-        margin-bottom: 1rem; 
-        opacity: 0.5
     }
     
-    /* STREAMLIT WIDGET OVERRIDES */
+    /* FIX untuk elemen Streamlit */
+    .stTabs [data-baseweb="tab"] {
+        border-radius: 8px !important;
+    }
+    
     div[data-testid="stSelectbox"] > div {
-        background: rgba(30, 41, 59, 0.8); 
-        border-color: rgba(255, 255, 255, 0.1);
-        max-width: 100% !important;
-        width: 100% !important;
-    }
-    div[data-testid="stSlider"] > div {
-        background: rgba(30, 41, 59, 0.8);
-        max-width: 100% !important;
-        width: 100% !important;
-    }
-    .stSlider > div > div > div {
-        background: linear-gradient(90deg, #667eea, #764ba2)
+        background: rgba(30, 41, 59, 0.8) !important;
     }
     
-    /* FIX untuk Plotly chart overflow */
-    .js-plotly-plot, 
-    .js-plotly-plot .plotly, 
-    .js-plotly-plot .plotly div,
-    .plotly,
-    .plotly-container,
-    .plot-container.plotly {
-        max-width: 100% !important;
-        width: 100% !important;
-        overflow: hidden !important;
-        box-sizing: border-box !important;
-    }
-    
-    /* Table khusus untuk chart tabel */
-    .table-chart-container {
-        max-height: 400px; 
-        overflow-y: auto;
-        overflow-x: hidden !important;
-        max-width: 100% !important;
-        width: 100% !important;
-        box-sizing: border-box !important;
-    }
-    
-    /* PERBAIKAN KHUSUS untuk Streamlit columns */
-    .st-emotion-cache-1r6slb0, /* Streamlit main column */
-    div[data-testid="column"],
-    .stColumn {
-        max-width: 100% !important;
-        width: 100% !important;
-        overflow: hidden !important;
-        box-sizing: border-box !important;
-        padding: 0 0.5rem !important;
-    }
-    
-    /* Modebar plotly positioning */
-    .modebar {
-        right: 5px !important;
-        left: auto !important;
-        max-width: 100% !important;
-        width: 100% !important;
-    }
-    
-    /* MEDIA QUERIES untuk responsivitas lebih baik */
-    @media (max-width: 992px) {
-        .main-content-wrapper {
-            padding: 0 0.5rem !important;
-        }
-        
-        .header-container {
-            padding: 1rem !important;
-        }
-        
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
         .header-title {
             font-size: 1.5rem !important;
-        }
-        
-        .strategy-grid,
-        .charts-grid,
-        .champion-grid,
-        .insights-grid {
-            grid-template-columns: 1fr !important;
-        }
-        
-        .tactics-grid {
-            grid-template-columns: 1fr !important;
-        }
-    }
-    
-    @media (max-width: 768px) {
-        .metrics-grid {
-            grid-template-columns: repeat(2, 1fr) !important;
-            gap: 0.75rem !important;
-        }
-        
-        .header-stats {
-            flex-wrap: wrap !important;
-            gap: 0.5rem !important;
-        }
-        
-        .stat-item {
-            min-width: 90px !important;
-            padding: 0.5rem 0.75rem !important;
-            flex: 0 0 calc(50% - 0.5rem) !important;
-        }
-        
-        .filter-grid {
-            grid-template-columns: 1fr !important;
-        }
-        
-        .kpis-grid {
-            grid-template-columns: repeat(2, 1fr) !important;
-        }
-    }
-    
-    @media (max-width: 480px) {
-        .metrics-grid {
-            grid-template-columns: 1fr !important;
-        }
-        
-        .stat-item {
-            flex: 0 0 100% !important;
-        }
-        
-        .kpis-grid {
-            grid-template-columns: 1fr !important;
         }
     }
 </style>
@@ -1267,83 +570,37 @@ with st.sidebar:
 
 # Layout utama Streamlit
 def main():
-    # Header
-    st.markdown("""
-    <div class="header-container">
-        <div class="main-header">
-            <div>
-                <h1 class="header-title">Customer Intelligence Hub</h1>
-                <div class="header-subtitle">AI-Powered Customer Segmentation for Targeted Marketing</div>
-            </div>
-            <div class="header-stats">
-                <div class="stat-item">
-                    <div class="stat-value">{:,}</div>
-                    <div class="stat-label">Customers</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-value">{}</div>
-                    <div class="stat-label">Segments</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-value">£{:.1f}M</div>
-                    <div class="stat-label">Revenue</div>
-                </div>
-            </div>
-        </div>
-    </div>
-    """.format(
-        len(rfm),
-        rfm['Cluster_KMeans'].nunique(),
-        rfm['Monetary'].sum()/1e6 if 'Monetary' in rfm.columns else 0
-    ), unsafe_allow_html=True)
+    # Header SEDERHANA - tanpa wrapper
+    st.markdown('<h1 class="header-title">Customer Intelligence Hub</h1>', unsafe_allow_html=True)
+    st.markdown('<div class="header-subtitle">AI-Powered Customer Segmentation for Targeted Marketing</div>', unsafe_allow_html=True)
     
-    # Main Content Wrapper - PERBAIKAN UTAMA
-    st.markdown('<div class="main-content-wrapper">', unsafe_allow_html=True)
-    
-    # Metrics Grid
-    st.markdown('<div class="metrics-grid">', unsafe_allow_html=True)
-    
+    # Metrics Grid - SEDERHANA
     col1, col2, col3, col4 = st.columns(4)
     
     with col1:
         total_customers = len(rfm)
-        segment_count = rfm['Cluster_KMeans'].nunique()
         st.markdown(f"""
         <div class="metric-card">
-            <div class="metric-icon">👥</div>
             <div class="metric-value">{total_customers:,}</div>
             <div class="metric-label">Total Customers</div>
-            <div class="metric-change change-positive">
-                <span>↑ 12.5%</span>
-            </div>
         </div>
         """, unsafe_allow_html=True)
     
     with col2:
         total_rev = rfm['Monetary'].sum() if 'Monetary' in rfm.columns else 0
-        avg_rev = rfm['Monetary'].mean() if 'Monetary' in rfm.columns else 0
         st.markdown(f"""
         <div class="metric-card">
-            <div class="metric-icon">💰</div>
             <div class="metric-value">£{total_rev/1e6:.1f}M</div>
             <div class="metric-label">Total Revenue</div>
-            <div class="metric-change change-positive">
-                <span>↑ 8.2%</span>
-            </div>
         </div>
         """, unsafe_allow_html=True)
     
     with col3:
         avg_order = rfm['AvgOrderValue'].mean() if 'AvgOrderValue' in rfm.columns else 0
-        max_order = rfm['AvgOrderValue'].max() if 'AvgOrderValue' in rfm.columns else 0
         st.markdown(f"""
         <div class="metric-card">
-            <div class="metric-icon">📈</div>
             <div class="metric-value">£{avg_order:.0f}</div>
             <div class="metric-label">Avg Order Value</div>
-            <div class="metric-change change-positive">
-                <span>↑ 5.7%</span>
-            </div>
         </div>
         """, unsafe_allow_html=True)
     
@@ -1352,20 +609,14 @@ def main():
         champion_pct = (champion_count / len(rfm) * 100) if len(rfm) > 0 else 0
         st.markdown(f"""
         <div class="metric-card">
-            <div class="metric-icon">🏆</div>
             <div class="metric-value">{champion_pct:.1f}%</div>
             <div class="metric-label">Champion Ratio</div>
-            <div class="metric-change change-positive">
-                <span>↑ 3.4%</span>
-            </div>
         </div>
         """, unsafe_allow_html=True)
     
-    st.markdown('</div>', unsafe_allow_html=True)
-    
-    # Filters
+    # Filters - SEDERHANA
     st.markdown('<div class="filter-section">', unsafe_allow_html=True)
-    st.markdown('<div class="filter-title">🎛️ Smart Filters</div>', unsafe_allow_html=True)
+    st.markdown('### 🎛️ Smart Filters')
     
     col1, col2, col3 = st.columns(3)
     with col1:
@@ -1425,45 +676,6 @@ def main():
             key="priority_filter"
         )
     
-    # Additional Filters in expander
-    with st.expander("🔍 Advanced Filters"):
-        col1, col2, col3 = st.columns(3)
-        with col1:
-            if 'Monetary' in rfm.columns:
-                monetary_min = float(rfm['Monetary'].min())
-                monetary_max = float(rfm['Monetary'].max())
-                monetary_filter = st.slider(
-                    "💰 Monetary Value Range",
-                    min_value=monetary_min,
-                    max_value=monetary_max,
-                    value=[monetary_min, monetary_max],
-                    key="monetary_filter"
-                )
-        
-        with col2:
-            if 'Frequency' in rfm.columns:
-                freq_min = int(rfm['Frequency'].min())
-                freq_max = int(rfm['Frequency'].max())
-                frequency_filter = st.slider(
-                    "🔄 Frequency Range",
-                    min_value=freq_min,
-                    max_value=freq_max,
-                    value=[freq_min, freq_max],
-                    key="frequency_filter"
-                )
-        
-        with col3:
-            if 'Recency' in rfm.columns:
-                recency_min = int(rfm['Recency'].min())
-                recency_max = int(rfm['Recency'].max())
-                recency_filter = st.slider(
-                    "⏰ Recency Range (days)",
-                    min_value=recency_min,
-                    max_value=recency_max,
-                    value=[recency_min, recency_max],
-                    key="recency_filter"
-                )
-    
     st.markdown('</div>', unsafe_allow_html=True)
     
     # Apply filters
@@ -1481,25 +693,6 @@ def main():
     if priority_filter != 'all' and 'Priority' in filtered_df.columns:
         filtered_df = filtered_df[filtered_df['Priority'] == priority_filter]
     
-    # Apply advanced filters if they exist
-    if 'monetary_filter' in locals() and 'Monetary' in filtered_df.columns:
-        filtered_df = filtered_df[
-            (filtered_df['Monetary'] >= monetary_filter[0]) & 
-            (filtered_df['Monetary'] <= monetary_filter[1])
-        ]
-    
-    if 'frequency_filter' in locals() and 'Frequency' in filtered_df.columns:
-        filtered_df = filtered_df[
-            (filtered_df['Frequency'] >= frequency_filter[0]) & 
-            (filtered_df['Frequency'] <= frequency_filter[1])
-        ]
-    
-    if 'recency_filter' in locals() and 'Recency' in filtered_df.columns:
-        filtered_df = filtered_df[
-            (filtered_df['Recency'] >= recency_filter[0]) & 
-            (filtered_df['Recency'] <= recency_filter[1])
-        ]
-    
     # Tabs
     tab1, tab2, tab3 = st.tabs(["📊 Analytics Dashboard", "🎯 Growth Strategies", "💡 AI Insights"])
     
@@ -1511,148 +704,76 @@ def main():
             # Row 1: Two charts
             col1, col2 = st.columns(2)
             with col1:
-                st.markdown("""
-                <div class="chart-container">
-                    <div class="chart-inner">
-                        <div class="chart-title-wrapper">
-                            <h3 class="chart-title">🎯 Customer Distribution</h3>
-                        </div>
-                        <div class="chart-content">
-                """, unsafe_allow_html=True)
+                st.markdown('<div class="chart-container">', unsafe_allow_html=True)
+                st.markdown('<div class="chart-title">🎯 Customer Distribution</div>', unsafe_allow_html=True)
                 st.plotly_chart(fig1, use_container_width=True, config={
                     'displayModeBar': True,
                     'responsive': True,
                     'autosizable': True
                 })
-                st.markdown("""
-                        </div>
-                    </div>
-                </div>
-                """, unsafe_allow_html=True)
+                st.markdown('</div>', unsafe_allow_html=True)
             
             with col2:
-                st.markdown("""
-                <div class="chart-container">
-                    <div class="chart-inner">
-                        <div class="chart-title-wrapper">
-                            <h3 class="chart-title">💰 Revenue by Segment</h3>
-                        </div>
-                        <div class="chart-content">
-                """, unsafe_allow_html=True)
+                st.markdown('<div class="chart-container">', unsafe_allow_html=True)
+                st.markdown('<div class="chart-title">💰 Revenue by Segment</div>', unsafe_allow_html=True)
                 st.plotly_chart(fig2, use_container_width=True, config={
                     'displayModeBar': True,
                     'responsive': True,
                     'autosizable': True
                 })
-                st.markdown("""
-                        </div>
-                    </div>
-                </div>
-                """, unsafe_allow_html=True)
+                st.markdown('</div>', unsafe_allow_html=True)
             
             # Row 2: Full width 3D chart
-            st.markdown("""
-            <div class="chart-container chart-full">
-                <div class="chart-inner">
-                    <div class="chart-title-wrapper">
-                        <h3 class="chart-title">📈 3D RFM Analysis</h3>
-                    </div>
-                    <div class="chart-content">
-            """, unsafe_allow_html=True)
+            st.markdown('<div class="chart-container">', unsafe_allow_html=True)
+            st.markdown('<div class="chart-title">📈 3D RFM Analysis</div>', unsafe_allow_html=True)
             st.plotly_chart(fig3, use_container_width=True, config={
                 'displayModeBar': True,
                 'responsive': True,
                 'autosizable': True
             })
-            st.markdown("""
-                    </div>
-                </div>
-            </div>
-            """, unsafe_allow_html=True)
+            st.markdown('</div>', unsafe_allow_html=True)
             
             # Row 3: Three histograms
-            st.markdown('<div class="charts-grid">', unsafe_allow_html=True)
             col1, col2, col3 = st.columns(3)
             with col1:
-                st.markdown("""
-                <div class="chart-container">
-                    <div class="chart-inner">
-                        <div class="chart-title-wrapper">
-                            <h3 class="chart-title">⏰ Recency Distribution</h3>
-                        </div>
-                        <div class="chart-content">
-                """, unsafe_allow_html=True)
+                st.markdown('<div class="chart-container">', unsafe_allow_html=True)
+                st.markdown('<div class="chart-title">⏰ Recency Distribution</div>', unsafe_allow_html=True)
                 st.plotly_chart(fig4, use_container_width=True, config={
                     'displayModeBar': False,
                     'responsive': True,
                     'autosizable': True
                 })
-                st.markdown("""
-                        </div>
-                    </div>
-                </div>
-                """, unsafe_allow_html=True)
+                st.markdown('</div>', unsafe_allow_html=True)
             
             with col2:
-                st.markdown("""
-                <div class="chart-container">
-                    <div class="chart-inner">
-                        <div class="chart-title-wrapper">
-                            <h3 class="chart-title">🔄 Frequency Distribution</h3>
-                        </div>
-                        <div class="chart-content">
-                """, unsafe_allow_html=True)
+                st.markdown('<div class="chart-container">', unsafe_allow_html=True)
+                st.markdown('<div class="chart-title">🔄 Frequency Distribution</div>', unsafe_allow_html=True)
                 st.plotly_chart(fig5, use_container_width=True, config={
                     'displayModeBar': False,
                     'responsive': True,
                     'autosizable': True
                 })
-                st.markdown("""
-                        </div>
-                    </div>
-                </div>
-                """, unsafe_allow_html=True)
+                st.markdown('</div>', unsafe_allow_html=True)
             
             with col3:
-                st.markdown("""
-                <div class="chart-container">
-                    <div class="chart-inner">
-                        <div class="chart-title-wrapper">
-                            <h3 class="chart-title">💵 Monetary Distribution</h3>
-                        </div>
-                        <div class="chart-content">
-                """, unsafe_allow_html=True)
+                st.markdown('<div class="chart-container">', unsafe_allow_html=True)
+                st.markdown('<div class="chart-title">💵 Monetary Distribution</div>', unsafe_allow_html=True)
                 st.plotly_chart(fig6, use_container_width=True, config={
                     'displayModeBar': False,
                     'responsive': True,
                     'autosizable': True
                 })
-                st.markdown("""
-                        </div>
-                    </div>
-                </div>
-                """, unsafe_allow_html=True)
-            st.markdown('</div>', unsafe_allow_html=True)
+                st.markdown('</div>', unsafe_allow_html=True)
             
             # Row 4: Full width table
-            st.markdown("""
-            <div class="chart-container chart-full">
-                <div class="chart-inner">
-                    <div class="chart-title-wrapper">
-                        <h3 class="chart-title">📊 Segment Summary</h3>
-                    </div>
-                    <div class="chart-content table-chart-container">
-            """, unsafe_allow_html=True)
+            st.markdown('<div class="chart-container">', unsafe_allow_html=True)
+            st.markdown('<div class="chart-title">📊 Segment Summary</div>', unsafe_allow_html=True)
             st.plotly_chart(fig7, use_container_width=True, config={
                 'displayModeBar': False,
                 'responsive': True,
                 'autosizable': True
             })
-            st.markdown("""
-                    </div>
-                </div>
-            </div>
-            """, unsafe_allow_html=True)
+            st.markdown('</div>', unsafe_allow_html=True)
             
             # Data summary
             with st.expander("📋 Data Summary"):
@@ -1663,7 +784,6 @@ def main():
         else:
             st.markdown("""
             <div class="empty-state">
-                <div class="empty-icon">📊</div>
                 <h3>No Data Available</h3>
                 <p>Try adjusting your filters to see data</p>
             </div>
@@ -1675,27 +795,25 @@ def main():
                             if c in profs and profs[c]['name'] == '🏆 Champions']
         
         if len(champion_clusters) > 0:
-            st.markdown('<div class="champion-section">', unsafe_allow_html=True)
-            st.markdown('<div class="champion-title">🏆 Champion Segments Breakdown</div>', unsafe_allow_html=True)
-            
+            st.markdown('### 🏆 Champion Segments Breakdown')
             cols = st.columns(2)
             for idx, cid in enumerate(sorted(champion_clusters)):
                 if cid in champion_details:
                     det = champion_details[cid]
                     with cols[idx % 2]:
                         st.markdown(f"""
-                        <div class="champion-card">
-                            <div class="champion-number">Champion C{cid}</div>
-                            <div class="champion-tier">🏅 {det['tier']}</div>
-                            <div class="champion-desc">{det['desc']}</div>
-                            <div class="champion-chars">📊 {det['char']}</div>
+                        <div class="strategy-card">
+                            <div style="font-size: 1.25rem; font-weight: 800; color: #FFD700;">Champion C{cid}</div>
+                            <div style="font-size: 1rem; font-weight: 700; color: #fff;">🏅 {det['tier']}</div>
+                            <div style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.8);">{det['desc']}</div>
+                            <div style="font-size: 0.75rem; color: rgba(255, 215, 0, 0.9); background: rgba(255, 215, 0, 0.1); padding: 0.5rem; border-radius: 6px; margin-top: 0.5rem;">
+                                📊 {det['char']}
+                            </div>
                         </div>
                         """, unsafe_allow_html=True)
-            
-            st.markdown('</div>', unsafe_allow_html=True)
         
         # Strategy Cards
-        strategy_cards_html = ""
+        st.markdown('### 🎯 Growth Strategies')
         for cid, p in profs.items():
             if segment_filter == 'all' or segment_filter == cid:
                 # Build tactics HTML
@@ -1706,55 +824,37 @@ def main():
                 # Build KPIs HTML
                 kpis_html = ""
                 for kpi in p['kpis']:
-                    kpis_html += f'<div class="kpi-item">{kpi}</div>'
+                    kpis_html += f'<div class="tactic-item">{kpi}</div>'
                 
-                strategy_cards_html += f"""
+                st.markdown(f"""
                 <div class="strategy-card" style="background: {p['grad']}">
-                    <div class="strategy-header">
-                        <div>
-                            <h3 class="strategy-name">{p['name']}</h3>
-                            <div class="strategy-subtitle">{p['strategy']} Strategy</div>
-                        </div>
-                        <div class="priority-badge">{p['priority']}</div>
+                    <div class="strategy-name">{p['name']}</div>
+                    <div style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.9); margin-bottom: 1rem;">
+                        {p['strategy']} Strategy • <span style="background: rgba(255, 255, 255, 0.2); padding: 0.25rem 0.5rem; border-radius: 12px; font-size: 0.75rem;">{p['priority']}</span>
                     </div>
                     
-                    <div class="tactics-section">
-                        <div class="tactics-title">🎯 Key Tactics</div>
-                        <div class="tactics-grid">
-                            {tactics_html}
-                        </div>
+                    <div style="margin: 1rem 0;">
+                        <div style="font-size: 0.875rem; font-weight: 700; color: rgba(255, 255, 255, 0.9); margin-bottom: 0.5rem;">🎯 Key Tactics</div>
+                        {tactics_html}
                     </div>
                     
-                    <div class="tactics-section">
-                        <div class="tactics-title">📊 Target KPIs</div>
-                        <div class="kpis-grid">
-                            {kpis_html}
-                        </div>
+                    <div style="margin: 1rem 0;">
+                        <div style="font-size: 0.875rem; font-weight: 700; color: rgba(255, 255, 255, 0.9); margin-bottom: 0.5rem;">📊 Target KPIs</div>
+                        {kpis_html}
                     </div>
                     
-                    <div class="strategy-footer">
-                        <div class="budget-item">
-                            <div class="budget-label">Budget Allocation</div>
-                            <div class="budget-value">{p['budget']}</div>
+                    <div style="display: flex; justify-content: space-between; margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid rgba(255, 255, 255, 0.1);">
+                        <div style="text-align: center;">
+                            <div style="font-size: 0.75rem; color: rgba(255, 255, 255, 0.7);">Budget Allocation</div>
+                            <div style="font-size: 1.25rem; font-weight: 800;">{p['budget']}</div>
                         </div>
-                        <div class="budget-item">
-                            <div class="budget-label">Expected ROI</div>
-                            <div class="budget-value">{p['roi']}</div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 0.75rem; color: rgba(255, 255, 255, 0.7);">Expected ROI</div>
+                            <div style="font-size: 1.25rem; font-weight: 800;">{p['roi']}</div>
                         </div>
                     </div>
                 </div>
-                """
-        
-        if strategy_cards_html:
-            st.markdown(f'<div class="strategy-grid">{strategy_cards_html}</div>', unsafe_allow_html=True)
-        else:
-            st.markdown("""
-            <div class="empty-state">
-                <div class="empty-icon">🎯</div>
-                <h3>No Strategy Cards Available</h3>
-                <p>Try selecting a different segment filter</p>
-            </div>
-            """, unsafe_allow_html=True)
+                """, unsafe_allow_html=True)
     
     with tab3:
         if len(filtered_df) > 0:
@@ -1797,16 +897,15 @@ def main():
                 most_frequent_segment = "N/A"
                 most_frequent_value = 0
             
-            st.markdown('<div class="insights-section">', unsafe_allow_html=True)
-            st.markdown('<div class="insights-title">🧠 AI-Powered Insights & Recommendations</div>', unsafe_allow_html=True)
+            st.markdown('### 🧠 AI-Powered Insights & Recommendations')
             
             col1, col2 = st.columns(2)
             
             with col1:
                 st.markdown("""
-                <div class="insight-card">
-                    <h4 class="insight-heading">📊 Performance Analysis</h4>
-                    <ul class="insight-list">
+                <div class="strategy-card">
+                    <div class="strategy-name">📊 Performance Analysis</div>
+                    <ul style="list-style: none; padding: 0; margin: 0;">
                 """, unsafe_allow_html=True)
                 
                 insights_list = [
@@ -1817,7 +916,7 @@ def main():
                 ]
                 
                 for insight in insights_list:
-                    st.markdown(f"<li>{insight}</li>", unsafe_allow_html=True)
+                    st.markdown(f"<li style='padding: 0.5rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.1);'>{insight}</li>", unsafe_allow_html=True)
                 
                 st.markdown("""
                     </ul>
@@ -1826,20 +925,18 @@ def main():
             
             with col2:
                 st.markdown("""
-                <div class="insight-card">
-                    <h4 class="insight-heading">💡 Strategic Recommendations</h4>
-                    <ul class="insight-list">
-                        <li>🎯 Launch retention programs for high-value segments</li>
-                        <li>📧 Implement personalized win-back campaigns</li>
-                        <li>🚀 Accelerate nurturing flows for potential customers</li>
-                        <li>💎 Create VIP experiences for champion segments</li>
-                        <li>📈 Develop cross-sell strategies for loyal customers</li>
-                        <li>🔍 Monitor dormant segment reactivation rates</li>
+                <div class="strategy-card">
+                    <div class="strategy-name">💡 Strategic Recommendations</div>
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                        <li style="padding: 0.5rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.1);">🎯 Launch retention programs for high-value segments</li>
+                        <li style="padding: 0.5rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.1);">📧 Implement personalized win-back campaigns</li>
+                        <li style="padding: 0.5rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.1);">🚀 Accelerate nurturing flows for potential customers</li>
+                        <li style="padding: 0.5rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.1);">💎 Create VIP experiences for champion segments</li>
+                        <li style="padding: 0.5rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.1);">📈 Develop cross-sell strategies for loyal customers</li>
+                        <li style="padding: 0.5rem 0;">🔍 Monitor dormant segment reactivation rates</li>
                     </ul>
                 </div>
                 """, unsafe_allow_html=True)
-            
-            st.markdown('</div>', unsafe_allow_html=True)
             
             # Additional insights
             with st.expander("📈 Advanced Analytics"):
@@ -1886,21 +983,16 @@ def main():
         else:
             st.markdown("""
             <div class="empty-state">
-                <div class="empty-icon">💡</div>
                 <h3>No Insights Available</h3>
                 <p>Try adjusting your filters to see insights</p>
             </div>
             """, unsafe_allow_html=True)
     
-    # Tutup main content wrapper
-    st.markdown('</div>', unsafe_allow_html=True)
-    
     # Footer
+    st.markdown("---")
     st.markdown("""
-    <div class="footer">
-        Customer Intelligence Hub v2.1 • Powered by AI Segmentation • Data Updated Daily • 
-        <a href="#" style="color: #667eea; text-decoration: none;">Export Report</a> • 
-        <a href="#" style="color: #667eea; text-decoration: none;">Schedule Delivery</a>
+    <div style="text-align: center; color: #94a3b8; font-size: 0.875rem; padding: 1rem;">
+        Customer Intelligence Hub v2.1 • Powered by AI Segmentation • Data Updated Daily
     </div>
     """, unsafe_allow_html=True)
 
