@@ -1359,119 +1359,86 @@ def main():
     </div>
     """, unsafe_allow_html=True)
     
-    # Create a grid for all segments overview
-    overview_html = ""
-    overview_cards_data = []
+    # Create columns for the grid
+    cols = st.columns(3)
     
-    # Collect all segment data
-    for seg_key, seg_data in strats.items():
-        overview_cards_data.append({
-            'key': seg_key,
-            'data': seg_data
-        })
-    
-    # Sort by priority (CRITICAL, URGENT, HIGH, MEDIUM)
-    priority_order = {'CRITICAL': 0, 'URGENT': 1, 'HIGH': 2, 'MEDIUM': 3}
-    overview_cards_data.sort(key=lambda x: priority_order.get(x['data']['priority'], 4))
-    
-    # Generate HTML for each segment
-    for card in overview_cards_data:
+    # Display segment cards in a grid
+    for idx, card in enumerate(overview_cards_data):
         seg_key = card['key']
         seg_data = card['data']
         
-        # Create tactics chips
-        tactics_chips = ""
-        for tactic in seg_data['tactics'][:3]:  # Show first 3 tactics
-            icon = tactic.split()[0]  # Get emoji from tactic
-            text = ' '.join(tactic.split()[1:])  # Get text after emoji
-            tactics_chips += f'<span class="tactic-chip">{icon} {text}</span>'
-        
-        # Create KPI badges
-        kpi_badges = ""
-        for kpi in seg_data['kpis']:
-            # Check if it's a percentage target
-            if '>' in kpi or '<' in kpi:
-                symbol = '>' if '>' in kpi else '<'
-                parts = kpi.split(symbol)
-                kpi_badges += f'<span class="kpi-badge">{parts[0].strip()}{symbol}{parts[1].strip()}</span>'
-            else:
-                kpi_badges += f'<span class="kpi-badge">{kpi}</span>'
-        
-        overview_html += f"""
-        <div class="segment-overview-card" style="background: {seg_data['grad']}">
-            <div class="segment-overview-header">
-                <div class="segment-title-section">
-                    <div class="segment-icon">{seg_data['name'].split()[0]}</div>
-                    <div>
-                        <h3 class="segment-name">{seg_data['name']}</h3>
-                        <div class="segment-priority">
-                            <span class="priority-dot priority-{seg_data['priority'].lower()}"></span>
-                            {seg_data['priority']}
+        with cols[idx % 3]:
+            # Create HTML for the card
+            card_html = f"""
+            <div class="segment-overview-card" style="background: {seg_data['grad']}">
+                <div class="segment-overview-header">
+                    <div class="segment-title-section">
+                        <div class="segment-icon">{seg_data['name'].split()[0]}</div>
+                        <div>
+                            <h3 class="segment-name">{seg_data['name']}</h3>
+                            <div class="segment-priority">
+                                <span class="priority-dot priority-{seg_data['priority'].lower()}"></span>
+                                {seg_data['priority']}
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="segment-strategy">
-                    <span class="strategy-label">📋 {seg_data['strategy']} Strategy</span>
-                </div>
-            </div>
-            
-            <div class="segment-content">
-                <div class="segment-section">
-                    <div class="section-title-small">🎯 Key Tactics</div>
-                    <div class="tactics-grid">
-                        {tactics_chips}
+                    <div class="segment-strategy">
+                        <span class="strategy-label">📋 {seg_data['strategy']} Strategy</span>
                     </div>
                 </div>
                 
-                <div class="segment-section">
-                    <div class="section-title-small">📊 Target KPIs</div>
-                    <div class="kpis-grid">
-                        {kpi_badges}
-                    </div>
-                </div>
-            </div>
+                <div class="segment-content">
+                    <div class="segment-section">
+                        <div class="section-title-small">🎯 Key Tactics</div>
+                        <div class="tactics-grid">
+            """
             
-            <div class="segment-footer">
-                <div class="budget-roi-container">
-                    <div class="metric-box">
-                        <div class="metric-label">💰 Budget Allocation</div>
-                        <div class="metric-value-large">{seg_data['budget']}</div>
+            # Add tactics
+            for tactic in seg_data['tactics'][:3]:
+                card_html += f'<span class="tactic-chip">{tactic}</span>'
+            
+            card_html += """
+                        </div>
                     </div>
-                    <div class="metric-box">
-                        <div class="metric-label">📈 ROI Target</div>
-                        <div class="metric-value-large">{seg_data['roi']}</div>
+                    
+                    <div class="segment-section">
+                        <div class="section-title-small">📊 Target KPIs</div>
+                        <div class="kpis-grid">
+            """
+            
+            # Add KPIs
+            for kpi in seg_data['kpis']:
+                card_html += f'<span class="kpi-badge">{kpi}</span>'
+            
+            card_html += f"""
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="segment-footer">
+                    <div class="budget-roi-container">
+                        <div class="metric-box">
+                            <div class="metric-label">💰 Budget Allocation</div>
+                            <div class="metric-value-large">{seg_data['budget']}</div>
+                        </div>
+                        <div class="metric-box">
+                            <div class="metric-label">📈 ROI Target</div>
+                            <div class="metric-value-large">{seg_data['roi']}</div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        """
+            """
+            
+            st.markdown(card_html, unsafe_allow_html=True)
     
-    # Display the overview grid
-    st.markdown(f"""
+    # Add CSS for the segment cards
+    st.markdown("""
     <style>
-        .segment-overview-grid {{
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1.5rem;
-            margin-bottom: 3rem;
-        }}
-        
-        @media (max-width: 1200px) {{
-            .segment-overview-grid {{
-                grid-template-columns: repeat(2, 1fr);
-            }}
-        }}
-        
-        @media (max-width: 768px) {{
-            .segment-overview-grid {{
-                grid-template-columns: 1fr;
-            }}
-        }}
-        
-        .segment-overview-card {{
+        .segment-overview-card {
             background: linear-gradient(135deg, rgba(30, 41, 59, 0.95) 0%, rgba(15, 23, 42, 0.9) 100%);
             border-radius: 20px;
-            padding: 1.75rem;
+            padding: 1.5rem;
             border: 1px solid rgba(255, 255, 255, 0.08);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
@@ -1480,9 +1447,10 @@ def main():
             display: flex;
             flex-direction: column;
             height: 100%;
-        }}
+            margin-bottom: 1.5rem;
+        }
         
-        .segment-overview-card::before {{
+        .segment-overview-card::before {
             content: '';
             position: absolute;
             top: 0;
@@ -1490,232 +1458,242 @@ def main():
             right: 0;
             height: 4px;
             border-radius: 20px 20px 0 0;
-        }}
+        }
         
-        .segment-overview-card:hover {{
+        .segment-overview-card:hover {
             transform: translateY(-6px);
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
             border-color: rgba(255, 255, 255, 0.15);
-        }}
+        }
         
-        .segment-overview-header {{
+        .segment-overview-header {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.25rem;
             padding-bottom: 1rem;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }}
+        }
         
-        .segment-title-section {{
+        .segment-title-section {
             display: flex;
             align-items: center;
-            gap: 1rem;
-        }}
+            gap: 0.75rem;
+            flex: 1;
+        }
         
-        .segment-icon {{
-            font-size: 2rem;
+        .segment-icon {
+            font-size: 1.75rem;
             background: rgba(255, 255, 255, 0.1);
-            padding: 0.75rem;
+            padding: 0.5rem;
             border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 56px;
-            height: 56px;
-        }}
+            min-width: 48px;
+            height: 48px;
+        }
         
-        .segment-name {{
-            font-size: 1.4rem;
+        .segment-name {
+            font-size: 1.25rem;
             font-weight: 800;
             color: #fff;
             margin: 0 0 0.25rem 0;
             line-height: 1.2;
-        }}
+        }
         
-        .segment-priority {{
+        .segment-priority {
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             font-weight: 700;
             color: rgba(255, 255, 255, 0.9);
-        }}
+        }
         
-        .priority-dot {{
+        .priority-dot {
             width: 8px;
             height: 8px;
             border-radius: 50%;
             display: inline-block;
-        }}
+        }
         
-        .priority-critical {{
+        .priority-critical {
             background: linear-gradient(135deg, #FF416C, #FF4B2B);
             box-shadow: 0 0 10px rgba(255, 65, 108, 0.5);
-        }}
+        }
         
-        .priority-urgent {{
+        .priority-urgent {
             background: linear-gradient(135deg, #FF6B6B, #EE5A6F);
             box-shadow: 0 0 10px rgba(255, 107, 107, 0.5);
-        }}
+        }
         
-        .priority-high {{
+        .priority-high {
             background: linear-gradient(135deg, #4ECDC4, #44A08D);
             box-shadow: 0 0 10px rgba(78, 205, 196, 0.5);
-        }}
+        }
         
-        .priority-medium {{
+        .priority-medium {
             background: linear-gradient(135deg, #FFD166, #FFB347);
             box-shadow: 0 0 10px rgba(255, 209, 102, 0.5);
-        }}
+        }
         
-        .segment-strategy {{
+        .segment-strategy {
             background: rgba(255, 255, 255, 0.08);
-            padding: 0.5rem 1rem;
+            padding: 0.35rem 0.75rem;
             border-radius: 20px;
             border: 1px solid rgba(255, 255, 255, 0.1);
-        }}
+            margin-left: 0.5rem;
+        }
         
-        .strategy-label {{
-            font-size: 0.85rem;
+        .strategy-label {
+            font-size: 0.75rem;
             font-weight: 600;
             color: rgba(255, 255, 255, 0.9);
-        }}
+            white-space: nowrap;
+        }
         
-        .segment-content {{
+        .segment-content {
             flex: 1;
-            margin-bottom: 1.5rem;
-        }}
-        
-        .segment-section {{
             margin-bottom: 1.25rem;
-        }}
+        }
         
-        .segment-section:last-child {{
+        .segment-section {
+            margin-bottom: 1rem;
+        }
+        
+        .segment-section:last-child {
             margin-bottom: 0;
-        }}
+        }
         
-        .section-title-small {{
-            font-size: 0.9rem;
+        .section-title-small {
+            font-size: 0.85rem;
             font-weight: 700;
             color: rgba(255, 255, 255, 0.9);
-            margin-bottom: 0.75rem;
+            margin-bottom: 0.5rem;
             text-transform: uppercase;
             letter-spacing: 0.05em;
             display: flex;
             align-items: center;
             gap: 0.5rem;
-        }}
+        }
         
-        .tactics-grid {{
+        .tactics-grid {
             display: flex;
             flex-wrap: wrap;
             gap: 0.5rem;
-        }}
+        }
         
-        .tactic-chip {{
+        .tactic-chip {
             background: rgba(255, 255, 255, 0.1);
             border-radius: 12px;
-            padding: 0.5rem 0.75rem;
-            font-size: 0.8rem;
+            padding: 0.4rem 0.6rem;
+            font-size: 0.75rem;
             color: rgba(255, 255, 255, 0.9);
             border: 1px solid rgba(255, 255, 255, 0.05);
             transition: all 0.2s ease;
             display: inline-flex;
             align-items: center;
             gap: 0.25rem;
-        }}
+            margin-bottom: 0.25rem;
+        }
         
-        .tactic-chip:hover {{
+        .tactic-chip:hover {
             background: rgba(255, 255, 255, 0.15);
             transform: translateY(-2px);
-        }}
+        }
         
-        .kpis-grid {{
+        .kpis-grid {
             display: flex;
             flex-wrap: wrap;
             gap: 0.5rem;
-        }}
+        }
         
-        .kpi-badge {{
+        .kpi-badge {
             background: rgba(255, 255, 255, 0.08);
             border-radius: 12px;
-            padding: 0.5rem 0.75rem;
-            font-size: 0.8rem;
+            padding: 0.4rem 0.6rem;
+            font-size: 0.75rem;
             font-weight: 700;
             color: rgba(255, 255, 255, 0.9);
             border: 1px solid rgba(255, 255, 255, 0.05);
-        }}
+        }
         
-        .segment-footer {{
-            padding-top: 1.5rem;
+        .segment-footer {
+            padding-top: 1rem;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }}
+        }
         
-        .budget-roi-container {{
+        .budget-roi-container {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
-        }}
+            gap: 0.75rem;
+        }
         
-        .metric-box {{
+        .metric-box {
             background: rgba(255, 255, 255, 0.08);
             border-radius: 12px;
-            padding: 1rem;
+            padding: 0.75rem;
             text-align: center;
             border: 1px solid rgba(255, 255, 255, 0.05);
             transition: all 0.2s ease;
-        }}
+        }
         
-        .metric-box:hover {{
+        .metric-box:hover {
             background: rgba(255, 255, 255, 0.12);
             transform: translateY(-2px);
-        }}
+        }
         
-        .metric-label {{
-            font-size: 0.75rem;
+        .metric-label {
+            font-size: 0.7rem;
             color: rgba(255, 255, 255, 0.7);
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.25rem;
             text-transform: uppercase;
             letter-spacing: 0.05em;
             font-weight: 600;
-        }}
+        }
         
-        .metric-value-large {{
-            font-size: 1.75rem;
+        .metric-value-large {
+            font-size: 1.5rem;
             font-weight: 900;
             color: #fff;
             line-height: 1;
-        }}
+        }
         
-        /* Color-specific overrides for each segment */
-        .segment-overview-card[style*="#FFD700"]::before {{
+        /* Color-specific top borders */
+        .segment-overview-card[style*="FFD700"]::before {
             background: linear-gradient(90deg, #FFD700, #FFA500, #FF8C00);
-        }}
+        }
         
-        .segment-overview-card[style*="#667eea"]::before {{
+        .segment-overview-card[style*="667eea"]::before {
             background: linear-gradient(90deg, #667eea, #764ba2, #5a52a3);
-        }}
+        }
         
-        .segment-overview-card[style*="#f093fb"]::before {{
+        .segment-overview-card[style*="f093fb"]::before {
             background: linear-gradient(90deg, #f093fb, #f5576c, #d2368d);
-        }}
+        }
         
-        .segment-overview-card[style*="#ff6b6b"]::before {{
+        .segment-overview-card[style*="ff6b6b"]::before {
             background: linear-gradient(90deg, #ff6b6b, #ee5a6f, #c44569);
-        }}
+        }
         
-        .segment-overview-card[style*="#11998e"]::before {{
+        .segment-overview-card[style*="11998e"]::before {
             background: linear-gradient(90deg, #11998e, #38ef7d, #00b09b);
-        }}
+        }
         
-        .segment-overview-card[style*="#89f7fe"]::before {{
+        .segment-overview-card[style*="89f7fe"]::before {
             background: linear-gradient(90deg, #89f7fe, #66a6ff, #4a6fff);
-        }}
+        }
     </style>
+    """, unsafe_allow_html=True)
     
-    <div class="segment-overview-grid">
-        {overview_html}
+    # Add a note about data processing
+    st.markdown("""
+    <div style="background: rgba(30, 41, 59, 0.5); border-left: 4px solid #667eea; padding: 1rem 1.5rem; border-radius: 8px; margin-top: 1rem; margin-bottom: 2rem;">
+        <div style="display: flex; align-items: center; gap: 0.75rem; color: #94a3b8; font-size: 0.9rem;">
+            <span style="font-size: 1.25rem;">ℹ️</span>
+            <span><strong>Data Processing Note:</strong> All segment strategies are dynamically calculated from your customer RFM data. The algorithms analyze Recency, Frequency, and Monetary values to assign optimal strategies and tactics for maximum ROI.</span>
+        </div>
     </div>
     """, unsafe_allow_html=True)
     
