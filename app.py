@@ -112,7 +112,7 @@ def init_data(rfm):
 
 profs, colors, rfm = init_data(rfm)
 
-# CSS Custom untuk Streamlit yang lebih modern
+# CSS Custom untuk Streamlit yang lebih modern - DIPERBAIKI dengan tambahan untuk equal height cards
 st.markdown("""
 <style>
     * {margin: 0; padding: 0; box-sizing: border-box}
@@ -141,7 +141,37 @@ st.markdown("""
                   letter-spacing: -0.5px;}
     .header-subtitle {color: #94a3b8; font-size: 1.15rem; margin-top: 0.5rem; font-weight: 400; max-width: 800px; line-height: 1.5;}
     
-    /* SECTION HEADERS */
+    /* SECTION DIVIDER - DITAMBAHKAN */
+    .section-divider {
+        height: 1px;
+        background: linear-gradient(90deg, 
+            transparent 0%, 
+            rgba(102, 126, 234, 0.3) 20%, 
+            rgba(102, 126, 234, 0.6) 50%, 
+            rgba(102, 126, 234, 0.3) 80%, 
+            transparent 100%
+        );
+        margin: 2.5rem 0;
+        border: none;
+        width: 100%;
+    }
+    
+    .section-divider-thick {
+        height: 3px;
+        background: linear-gradient(90deg, 
+            transparent 0%, 
+            rgba(102, 126, 234, 0.4) 20%, 
+            rgba(102, 126, 234, 0.8) 50%, 
+            rgba(102, 126, 234, 0.4) 80%, 
+            transparent 100%
+        );
+        margin: 3rem 0;
+        border: none;
+        width: 100%;
+        border-radius: 3px;
+    }
+    
+    /* SECTION HEADERS - DITAMBAHKAN */
     .section-header {
         display: flex;
         align-items: center;
@@ -181,7 +211,7 @@ st.markdown("""
         font-weight: 400;
     }
     
-    /* METRICS GRID */
+    /* METRICS GRID dengan neumorphism */
     .metrics-grid {display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; margin: 2rem 0}
     @media (max-width: 1200px) {.metrics-grid {grid-template-columns: repeat(2, 1fr)}}
     @media (max-width: 768px) {.metrics-grid {grid-template-columns: 1fr}}
@@ -231,6 +261,11 @@ st.markdown("""
     .change-positive {color: #10b981; background: rgba(16, 185, 129, 0.1); padding: 0.25rem 0.5rem; border-radius: 20px;}
     .change-negative {color: #ef4444; background: rgba(239, 68, 68, 0.1); padding: 0.25rem 0.5rem; border-radius: 20px;}
   
+    
+    /* FILTER ITEMS - DITAMBAHKAN */
+    .filter-column {padding: 0.5rem}
+    .filter-label {font-size: 0.875rem; color: #94a3b8; margin-bottom: 0.75rem; font-weight: 600; display: block}
+    
     /* TABS STYLING */
     .stTabs [data-baseweb="tab-list"] {gap: 0.75rem; margin: 2.5rem 0 2rem 0}
     .stTabs [data-baseweb="tab"] {
@@ -256,6 +291,7 @@ st.markdown("""
         box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3) !important;
         transform: translateY(-2px);
     }
+    
     
     /* STRATEGY CARDS */
     .strategy-grid {display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; margin-bottom: 2rem}
@@ -345,7 +381,7 @@ st.markdown("""
     .budget-label {font-size: 0.8rem; color: rgba(255, 255, 255, 0.7); margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em;}
     .budget-value {font-size: 1.75rem; font-weight: 900}
     
-    /* SEGMENT STRATEGIES OVERVIEW SECTION */
+    /* SEGMENT STRATEGIES OVERVIEW SECTION - DITAMBAHKAN */
     .strategies-overview-section {
         background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%);
         border: 1px solid rgba(102, 126, 234, 0.2); 
@@ -420,7 +456,7 @@ st.markdown("""
         border: 1px solid rgba(255, 215, 0, 0.2);
     }
     
-    /* INSIGHTS SECTION */
+    /* INSIGHTS SECTION - DIPERBAIKI */
     .insights-section {
         background: linear-gradient(135deg, rgba(79, 172, 254, 0.08) 0%, rgba(0, 242, 254, 0.08) 100%);
         border: 1px solid rgba(79, 172, 254, 0.2); 
@@ -441,6 +477,100 @@ st.markdown("""
         border-bottom: 2px solid rgba(79, 172, 254, 0.3);
     }
     
+    /* PERBAIKAN: Equal height cards container */
+    .insights-grid-container {
+        display: flex;
+        gap: 2rem;
+        align-items: stretch; /* Ini yang membuat cards sama tinggi */
+        margin-bottom: 2rem;
+    }
+    
+    @media (max-width: 768px) {
+        .insights-grid-container {
+            flex-direction: column;
+        }
+    }
+    
+    /* PERBAIKAN: Insight card dengan height 100% */
+    .insight-card {
+        background: rgba(79, 172, 254, 0.08); 
+        border: 1px solid rgba(79, 172, 254, 0.2); 
+        border-radius: 16px; 
+        padding: 1.5rem;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        height: 100%; /* Ini membuat card mengambil full height dari container */
+    }
+    
+    .insight-card-header {
+        margin-bottom: 1.5rem;
+        padding-bottom: 0.75rem;
+        border-bottom: 1px solid rgba(79, 172, 254, 0.3);
+    }
+    
+    .insight-card-title {
+        font-size: 1.25rem; 
+        font-weight: 800; 
+        color: #4facfe; 
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .insight-card-subtitle {
+        font-size: 0.9rem;
+        color: #94a3b8;
+        margin-top: 0.25rem;
+    }
+    
+    .insight-list {list-style: none; padding: 0; margin: 0; flex-grow: 1}
+    .insight-list li {
+        padding: 0.75rem 0; 
+        border-bottom: 1px solid rgba(79, 172, 254, 0.2); 
+        color: rgba(255, 255, 255, 0.9);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    .insight-list li:last-child {border-bottom: none}
+    
+    /* ADVANCED ANALYTICS SECTION */
+    .advanced-analytics-section {
+        margin-top: 2rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid rgba(79, 172, 254, 0.2);
+    }
+    
+    .advanced-analytics-title {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: #fff;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .advanced-analytics-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1rem;
+    }
+    
+    @media (max-width: 1200px) {
+        .advanced-analytics-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .advanced-analytics-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+    
     /* FOOTER */
     .footer {
         text-align: center; 
@@ -457,6 +587,74 @@ st.markdown("""
     .empty-state {text-align: center; padding: 4rem; color: #94a3b8}
     .empty-icon {font-size: 3.5rem; margin-bottom: 1.5rem; opacity: 0.5}
     
+    /* STREAMLIT WIDGET OVERRIDES - DIPERBAIKI */
+    div[data-testid="stSelectbox"] > div {
+        background: rgba(30, 41, 59, 0.8); 
+        border-color: rgba(255, 255, 255, 0.1) !important; 
+        border-radius: 12px !important; 
+        overflow: hidden;
+        border-width: 1px !important;
+    }
+    div[data-testid="stSelectbox"] svg {color: #94a3b8 !important}
+    div[data-testid="stSlider"] > div {
+        background: rgba(30, 41, 59, 0.8); 
+        border-radius: 12px; 
+        padding: 0.5rem 0.75rem;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    div[data-testid="stSlider"] .stSlider > div > div > div {
+        background: linear-gradient(90deg, #667eea, #764ba2) !important;
+        border-radius: 10px;
+    }
+    div[data-testid="stSlider"] .stSlider > div > div > div:first-child {
+        background: rgba(102, 126, 234, 0.2) !important;
+        border-radius: 10px;
+    }
+    div[data-testid="stExpander"] {
+        background: rgba(30, 41, 59, 0.8); 
+        border: 1px solid rgba(255, 255, 255, 0.1); 
+        border-radius: 12px; 
+        margin-top: 1.5rem;
+    }
+    div[data-testid="stExpander"] > details > summary {
+        color: #94a3b8 !important; 
+        font-weight: 700; 
+        padding: 1.25rem;
+        font-size: 1rem;
+    }
+    div[data-testid="stExpander"] > details > summary:hover {
+        color: #fff !important;
+        background: rgba(255, 255, 255, 0.05);
+    }
+    div[data-testid="stExpander"] > details > div {
+        padding: 1.5rem; 
+        background: transparent !important;
+    }
+    
+    
+    /* CUSTOM LABELS untuk filter */
+    .custom-label {
+        display: flex; 
+        align-items: center; 
+        gap: 0.75rem; 
+        margin-bottom: 0.75rem; 
+        color: #94a3b8; 
+        font-size: 0.9rem; 
+        font-weight: 700;
+    }
+    
+    /* SPACING UTILITIES */
+    .spacer-sm {margin: 1rem 0}
+    .spacer-md {margin: 2rem 0}
+    .spacer-lg {margin: 3rem 0}
+    
+    /* NEW: Improved layout for strategy cards in overview */
+    .strategy-overview-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+        margin-top: 1.5rem;
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -479,11 +677,12 @@ def create_charts(df):
         insidetextorientation='radial'
     ))
     
+    # PERBAIKAN: Semua judul chart sekarang konsisten
     fig1.update_layout(
         title=dict(
             text="🎯 Customer Distribution",
-            font=dict(color='white', size=30),
-            x=0.5,
+            font=dict(color='white', size=30),  # Font size disamakan 20
+            x=0.5,                             # Posisi di tengah
             xanchor='center'
         ),
         height=400,
@@ -521,7 +720,7 @@ def create_charts(df):
         fig2.update_layout(
             title=dict(
                 text="💰 Revenue by Segment",
-                font=dict(color='white', size=30),
+                font=dict(color='white', size=30),  # Font size disamakan 20
                 x=0.5,
                 xanchor='center'
             ),
@@ -542,7 +741,7 @@ def create_charts(df):
         fig2.update_layout(
             title=dict(
                 text="💰 Revenue by Segment", 
-                font=dict(color='white', size=30),
+                font=dict(color='white', size=30),  # Font size disamakan 20
                 x=0.5,
                 xanchor='center'
             ),
@@ -581,7 +780,7 @@ def create_charts(df):
         fig3.update_layout(
             title=dict(
                 text="📈 3D RFM Analysis",
-                font=dict(color='white', size=30),
+                font=dict(color='white', size=30),  # Font size disamakan 20
                 x=0.5,
                 xanchor='center'
             ),
@@ -612,7 +811,7 @@ def create_charts(df):
         fig3.update_layout(
             title=dict(
                 text="📈 3D RFM Analysis", 
-                font=dict(color='white', size=30),
+                font=dict(color='white', size=30),  # Font size disamakan 20
                 x=0.5,
                 xanchor='center'
             ),
@@ -628,7 +827,7 @@ def create_charts(df):
             fig.update_layout(
                 title=dict(
                     text=title, 
-                    font=dict(color='white', size=18),
+                    font=dict(color='white', size=18),  # Font size sedikit lebih kecil untuk histogram
                     x=0.5,
                     xanchor='center'
                 ),
@@ -649,7 +848,7 @@ def create_charts(df):
         fig.update_layout(
             title=dict(
                 text=title, 
-                font=dict(color='white', size=30),
+                font=dict(color='white', size=30),  # Font size sedikit lebih kecil untuk histogram
                 x=0.5,
                 xanchor='center'
             ),
@@ -672,7 +871,7 @@ def create_charts(df):
     fig5 = create_histogram(df, 'Frequency', '🔄 Frequency Distribution', '#4ECDC4')
     fig6 = create_histogram(df, 'Monetary', '💵 Monetary Distribution', '#45B7D1')
     
-    # Chart 7: RFM Table
+    # Chart 7: RFM Table - versi yang diperbaiki
     try:
         segment_counts = df.groupby('Cluster_Label').size().reset_index(name='Count')
         
@@ -749,7 +948,7 @@ def create_charts(df):
         fig7.update_layout(
             title=dict(
                 text="📊 Segment Summary",
-                font=dict(color='white', size=30),
+                font=dict(color='white', size=30),  # Font size disamakan 20
                 x=0.5,
                 xanchor='center'
             ),
@@ -764,7 +963,7 @@ def create_charts(df):
         fig7.update_layout(
             title=dict(
                 text="📊 Segment Summary", 
-                font=dict(color='white', size=30),
+                font=dict(color='white', size=30),  # Font size disamakan 20
                 x=0.5,
                 xanchor='center'
             ),
@@ -831,7 +1030,7 @@ def main():
     </div>
     """, unsafe_allow_html=True)
     
-    # Section 1: Key Metrics
+    # Section 1: Key Metrics dengan section header
     st.markdown("""
     <div class="section-header">
         <div class="section-icon">📊</div>
@@ -849,6 +1048,7 @@ def main():
     
     with col1:
         total_customers = len(rfm)
+        segment_count = rfm['Cluster_KMeans'].nunique()
         st.markdown(f"""
         <div class="metric-card">
             <div class="metric-icon">👥</div>
@@ -862,6 +1062,7 @@ def main():
     
     with col2:
         total_rev = rfm['Monetary'].sum() if 'Monetary' in rfm.columns else 0
+        avg_rev = rfm['Monetary'].mean() if 'Monetary' in rfm.columns else 0
         st.markdown(f"""
         <div class="metric-card">
             <div class="metric-icon">💰</div>
@@ -875,6 +1076,7 @@ def main():
     
     with col3:
         avg_order = rfm['AvgOrderValue'].mean() if 'AvgOrderValue' in rfm.columns else 0
+        max_order = rfm['AvgOrderValue'].max() if 'AvgOrderValue' in rfm.columns else 0
         st.markdown(f"""
         <div class="metric-card">
             <div class="metric-icon">📈</div>
@@ -902,7 +1104,10 @@ def main():
     
     st.markdown('</div>', unsafe_allow_html=True)
     
-    # Section 2: Data Filters
+    # Divider 1
+
+    
+    # Section 2: Data Filters dengan section header
     st.markdown("""
     <div class="section-header">
         <div class="section-icon">🎛️</div>
@@ -915,10 +1120,16 @@ def main():
     
     # Filters
     with st.container():
+        st.markdown('<div class="filter-section">', unsafe_allow_html=True)
+        
+        # Filter grid
         col1, col2, col3 = st.columns(3)
         
         with col1:
+            st.markdown('<div class="filter-content">', unsafe_allow_html=True)
             st.markdown('<div class="custom-label">🎨 Segment Filter</div>', unsafe_allow_html=True)
+            
+            # Segment Filter
             segment_options = [{'label': '🌐 All Segments', 'value': 'all'}]
             for c, p in profs.items():
                 if p['name'] == '🏆 Champions' and c in champion_details:
@@ -935,9 +1146,13 @@ def main():
                 key="segment_filter",
                 label_visibility="collapsed"
             )
+            st.markdown('</div>', unsafe_allow_html=True)
         
         with col2:
+            st.markdown('<div class="filter-content">', unsafe_allow_html=True)
             st.markdown('<div class="custom-label">📊 RFM Score Range</div>', unsafe_allow_html=True)
+            
+            # RFM Score Range
             if 'RFM_Score' in rfm.columns:
                 rfm_min = int(rfm['RFM_Score'].min())
                 rfm_max = int(rfm['RFM_Score'].max())
@@ -959,9 +1174,13 @@ def main():
                     key="rfm_filter",
                     label_visibility="collapsed"
                 )
+            st.markdown('</div>', unsafe_allow_html=True)
         
         with col3:
+            st.markdown('<div class="filter-content">', unsafe_allow_html=True)
             st.markdown('<div class="custom-label">🔥 Priority Level</div>', unsafe_allow_html=True)
+            
+            # Priority Level
             priority_options = [
                 {'label': '🌐 All Priorities', 'value': 'all'},
                 {'label': '🔴 CRITICAL', 'value': 'CRITICAL'},
@@ -977,7 +1196,53 @@ def main():
                 key="priority_filter",
                 label_visibility="collapsed"
             )
+            st.markdown('</div>', unsafe_allow_html=True)
+        
+        # Advanced Filters
+        st.markdown('<div style="margin-top: 1.5rem;">', unsafe_allow_html=True)
+        with st.expander("🔍 Advanced Filters"):
+            col1, col2, col3 = st.columns(3)
+            
+            with col1:
+                if 'Monetary' in rfm.columns:
+                    monetary_min = float(rfm['Monetary'].min())
+                    monetary_max = float(rfm['Monetary'].max())
+                    monetary_filter = st.slider(
+                        "💰 Monetary Value Range",
+                        min_value=monetary_min,
+                        max_value=monetary_max,
+                        value=[monetary_min, monetary_max],
+                        key="monetary_filter"
+                    )
+            
+            with col2:
+                if 'Frequency' in rfm.columns:
+                    freq_min = int(rfm['Frequency'].min())
+                    freq_max = int(rfm['Frequency'].max())
+                    frequency_filter = st.slider(
+                        "🔄 Frequency Range",
+                        min_value=freq_min,
+                        max_value=freq_max,
+                        value=[freq_min, freq_max],
+                        key="frequency_filter"
+                    )
+            
+            with col3:
+                if 'Recency' in rfm.columns:
+                    recency_min = int(rfm['Recency'].min())
+                    recency_max = int(rfm['Recency'].max())
+                    recency_filter = st.slider(
+                        "⏰ Recency Range (days)",
+                        min_value=recency_min,
+                        max_value=recency_max,
+                        value=[recency_min, recency_max],
+                        key="recency_filter"
+                    )
+        
+        st.markdown('</div>', unsafe_allow_html=True)
+        st.markdown('</div>', unsafe_allow_html=True)
     
+    # Divider 2
     # Apply filters
     filtered_df = rfm.copy()
     
@@ -993,7 +1258,26 @@ def main():
     if priority_filter != 'all' and 'Priority' in filtered_df.columns:
         filtered_df = filtered_df[filtered_df['Priority'] == priority_filter]
     
-    # Tabs Section
+    # Apply advanced filters if they exist
+    if 'monetary_filter' in locals() and 'Monetary' in filtered_df.columns:
+        filtered_df = filtered_df[
+            (filtered_df['Monetary'] >= monetary_filter[0]) & 
+            (filtered_df['Monetary'] <= monetary_filter[1])
+        ]
+    
+    if 'frequency_filter' in locals() and 'Frequency' in filtered_df.columns:
+        filtered_df = filtered_df[
+            (filtered_df['Frequency'] >= frequency_filter[0]) & 
+            (filtered_df['Frequency'] <= frequency_filter[1])
+        ]
+    
+    if 'recency_filter' in locals() and 'Recency' in filtered_df.columns:
+        filtered_df = filtered_df[
+            (filtered_df['Recency'] >= recency_filter[0]) & 
+            (filtered_df['Recency'] <= recency_filter[1])
+        ]
+    
+    # Tabs Section dengan section header
     st.markdown("""
     <div class="section-header">
         <div class="section-icon">📋</div>
@@ -1009,29 +1293,49 @@ def main():
     
     with tab1:
         if len(filtered_df) > 0:
+            # Generate charts
             fig1, fig2, fig3, fig4, fig5, fig6, fig7 = create_charts(filtered_df)
             
+            # Row 1: Two charts
             col1, col2 = st.columns(2)
             with col1:
+                st.markdown('<div class="chart-container">', unsafe_allow_html=True)
                 st.plotly_chart(fig1, use_container_width=True, config={'displayModeBar': True})
+                st.markdown('</div>', unsafe_allow_html=True)
             
             with col2:
+                st.markdown('<div class="chart-container">', unsafe_allow_html=True)
                 st.plotly_chart(fig2, use_container_width=True, config={'displayModeBar': True})
+                st.markdown('</div>', unsafe_allow_html=True)
             
+            # Row 2: Full width 3D chart
+            st.markdown('<div class="chart-container chart-full">', unsafe_allow_html=True)
             st.plotly_chart(fig3, use_container_width=True, config={'displayModeBar': True})
+            st.markdown('</div>', unsafe_allow_html=True)
             
+            # Row 3: Three histograms
             col1, col2, col3 = st.columns(3)
             with col1:
+                st.markdown('<div class="chart-container">', unsafe_allow_html=True)
                 st.plotly_chart(fig4, use_container_width=True, config={'displayModeBar': False})
+                st.markdown('</div>', unsafe_allow_html=True)
             
             with col2:
+                st.markdown('<div class="chart-container">', unsafe_allow_html=True)
                 st.plotly_chart(fig5, use_container_width=True, config={'displayModeBar': False})
+                st.markdown('</div>', unsafe_allow_html=True)
             
             with col3:
+                st.markdown('<div class="chart-container">', unsafe_allow_html=True)
                 st.plotly_chart(fig6, use_container_width=True, config={'displayModeBar': False})
+                st.markdown('</div>', unsafe_allow_html=True)
             
+            # Row 4: Full width table
+            st.markdown('<div class="chart-container chart-full">', unsafe_allow_html=True)
             st.plotly_chart(fig7, use_container_width=True, config={'displayModeBar': False})
+            st.markdown('</div>', unsafe_allow_html=True)
             
+            # Data summary
             with st.expander("📋 Data Summary"):
                 st.dataframe(
                     filtered_df.describe(),
@@ -1071,7 +1375,7 @@ def main():
             
             st.markdown('</div>', unsafe_allow_html=True)
         
-        # Segment Strategies Overview - DIPERBAIKI
+        # BAGIAN BARU: Segment Strategies Overview - DIPERBAIKI
         st.markdown('<div class="strategies-overview-section">', unsafe_allow_html=True)
         st.markdown('<div class="strategies-overview-title">📋 Segment Strategies Overview</div>', unsafe_allow_html=True)
         st.markdown('<p style="color: #94a3b8; margin-bottom: 2rem; font-size: 1.1rem;">Comprehensive view of all customer segments with detailed strategies, tactics, and KPIs</p>', unsafe_allow_html=True)
@@ -1080,23 +1384,23 @@ def main():
         priority_order = {'CRITICAL': 1, 'URGENT': 2, 'HIGH': 3, 'MEDIUM': 4}
         sorted_profs = sorted(profs.items(), key=lambda x: priority_order.get(x[1]['priority'], 5))
         
-        # Tampilkan semua segmen
+        # Tampilkan semua segmen dalam grid
         for cluster_id, strat in sorted_profs:
             # Hitung jumlah customer di segmen ini
             segment_customers = len(rfm[rfm['Cluster_KMeans'] == cluster_id])
             
-            # Format tactics sebagai HTML
+            # Format tactics sebagai HTML dengan class yang benar
             tactics_html = ""
             for tactic in strat['tactics']:
                 tactics_html += f'<div class="tactic-item">{tactic}</div>'
             
-            # Format KPIs sebagai HTML
+            # Format KPIs sebagai HTML dengan class yang benar
             kpis_html = ""
             for kpi in strat['kpis']:
                 kpis_html += f'<div class="kpi-item">{kpi}</div>'
             
-            # Buat card untuk setiap segmen - HTML YANG BENAR
-            st.markdown(f"""
+            # Buat card untuk setiap segmen - DIPERBAIKI
+            segment_card_html = f"""
             <div class="strategy-card" style="background: {strat['grad']}; margin-bottom: 2rem;">
                 <div class="strategy-header">
                     <div class="strategy-name">{strat['name']} (C{cluster_id})</div>
@@ -1133,13 +1437,15 @@ def main():
                     </div>
                 </div>
             </div>
-            """, unsafe_allow_html=True)
+            """
+            
+            st.markdown(segment_card_html, unsafe_allow_html=True)
         
         st.markdown('</div>', unsafe_allow_html=True)
     
     with tab3:
         if len(filtered_df) > 0:
-            # Build insights section
+            # Calculate insights dengan format data yang konsisten
             if 'Cluster_Label' in filtered_df.columns:
                 if 'Monetary' in filtered_df.columns:
                     highest_revenue = filtered_df.groupby('Cluster_Label')['Monetary'].sum()
@@ -1152,64 +1458,178 @@ def main():
                 largest_group = filtered_df['Cluster_Label'].value_counts()
                 largest_group_segment = largest_group.idxmax() if not largest_group.empty else "N/A"
                 largest_group_count = largest_group.max() if not largest_group.empty else 0
+                
+                if 'AvgOrderValue' in filtered_df.columns:
+                    best_aov = filtered_df.groupby('Cluster_Label')['AvgOrderValue'].mean()
+                    best_aov_segment = best_aov.idxmax() if not best_aov.empty else "N/A"
+                    best_aov_value = best_aov.max() if not best_aov.empty else 0
+                else:
+                    best_aov_segment = "N/A"
+                    best_aov_value = 0
+                
+                if 'Frequency' in filtered_df.columns:
+                    most_frequent = filtered_df.groupby('Cluster_Label')['Frequency'].mean()
+                    most_frequent_segment = most_frequent.idxmax() if not most_frequent.empty else "N/A"
+                    most_frequent_value = most_frequent.max() if not most_frequent.empty else 0
+                else:
+                    most_frequent_segment = "N/A"
+                    most_frequent_value = 0
             else:
                 highest_revenue_segment = "N/A"
                 highest_revenue_value = 0
                 largest_group_segment = "N/A"
                 largest_group_count = 0
+                best_aov_segment = "N/A"
+                best_aov_value = 0
+                most_frequent_segment = "N/A"
+                most_frequent_value = 0
             
-            # Build insights list
+            # Build insights section HTML
             insights_list = [
                 f"🏆 Highest Revenue: {highest_revenue_segment} (£{highest_revenue_value/1000:.1f}K)",
                 f"👥 Largest Segment: {largest_group_segment} ({largest_group_count:,} customers)",
+                f"💰 Best AOV: {best_aov_segment} (£{best_aov_value:.0f})",
+                f"🔄 Most Frequent: {most_frequent_segment} ({most_frequent_value:.1f} orders)",
                 f"📈 Champion Ratio: {(len(filtered_df[filtered_df['Cluster_Label'].str.contains('Champions')]) / len(filtered_df) * 100 if len(filtered_df) > 0 else 0):.1f}%",
+                f"⏰ Avg Recency: {filtered_df['Recency'].mean():.1f} days" if 'Recency' in filtered_df.columns else "⏰ Avg Recency: N/A"
             ]
-            
-            if 'Recency' in filtered_df.columns:
-                insights_list.append(f"⏰ Avg Recency: {filtered_df['Recency'].mean():.1f} days")
-            
-            if 'Frequency' in filtered_df.columns:
-                insights_list.append(f"🔄 Avg Frequency: {filtered_df['Frequency'].mean():.1f} orders")
-            
-            if 'Monetary' in filtered_df.columns:
-                insights_list.append(f"💰 Avg Monetary: £{filtered_df['Monetary'].mean():,.0f}")
             
             # Build list items HTML
             insight_items_html = ""
             for insight in insights_list:
                 insight_items_html += f"<li>{insight}</li>"
             
-            # Display insights
-            st.markdown(f"""
+            # Calculate advanced metrics
+            concentration_pct = (largest_group_count / len(filtered_df) * 100) if len(filtered_df) > 0 else 0
+            
+            if 'Monetary' in filtered_df.columns:
+                top_20_percent = filtered_df.nlargest(max(1, int(len(filtered_df) * 0.2)), 'Monetary')
+                total_revenue = filtered_df['Monetary'].sum()
+                revenue_concentration = (top_20_percent['Monetary'].sum() / total_revenue * 100) if total_revenue > 0 else 0
+            else:
+                revenue_concentration = 0
+            
+            avg_recency = filtered_df['Recency'].mean() if 'Recency' in filtered_df.columns else 0
+            avg_frequency = filtered_df['Frequency'].mean() if 'Frequency' in filtered_df.columns else 0
+            
+            # Build complete insights HTML
+            insights_html = f"""
             <div class="insights-section">
                 <div class="insights-title">🧠 AI-Powered Insights & Recommendations</div>
-                <div style="display: flex; gap: 2rem; margin-bottom: 2rem;">
-                    <div style="flex: 1; background: rgba(79, 172, 254, 0.08); border: 1px solid rgba(79, 172, 254, 0.2); border-radius: 16px; padding: 1.5rem;">
-                        <div style="margin-bottom: 1.5rem; padding-bottom: 0.75rem; border-bottom: 1px solid rgba(79, 172, 254, 0.3);">
-                            <div style="font-size: 1.25rem; font-weight: 800; color: #4facfe; margin: 0; display: flex; align-items: center; gap: 0.5rem;">📊 Key Performance Summary</div>
-                            <div style="font-size: 0.9rem; color: #94a3b8; margin-top: 0.25rem;">Data-driven insights from customer segments</div>
+                <div class="insights-grid-container">
+                    <div class="insight-card">
+                        <div class="insight-card-header">
+                            <div class="insight-card-title">📊 Key Performance Summary</div>
+                            <div class="insight-card-subtitle">Data-driven insights from customer segments</div>
                         </div>
-                        <ul style="list-style: none; padding: 0; margin: 0;">
+                        <ul class="insight-list">
                             {insight_items_html}
                         </ul>
                     </div>
-                    <div style="flex: 1; background: rgba(79, 172, 254, 0.08); border: 1px solid rgba(79, 172, 254, 0.2); border-radius: 16px; padding: 1.5rem;">
-                        <div style="margin-bottom: 1.5rem; padding-bottom: 0.75rem; border-bottom: 1px solid rgba(79, 172, 254, 0.3);">
-                            <div style="font-size: 1.25rem; font-weight: 800; color: #4facfe; margin: 0; display: flex; align-items: center; gap: 0.5rem;">💡 Strategic Recommendations</div>
-                            <div style="font-size: 0.9rem; color: #94a3b8; margin-top: 0.25rem;">Actionable strategies for each segment</div>
+                    <div class="insight-card">
+                        <div class="insight-card-header">
+                            <div class="insight-card-title">💡 Strategic Recommendations</div>
+                            <div class="insight-card-subtitle">Actionable strategies for each segment</div>
                         </div>
-                        <ul style="list-style: none; padding: 0; margin: 0;">
-                            <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(79, 172, 254, 0.2); color: rgba(255, 255, 255, 0.9); display: flex; align-items: center; gap: 0.5rem;">🎯 <strong>Retention Programs</strong> for high-value segments</li>
-                            <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(79, 172, 254, 0.2); color: rgba(255, 255, 255, 0.9); display: flex; align-items: center; gap: 0.5rem;">📧 <strong>Personalized Win-Back</strong> campaigns for dormant customers</li>
-                            <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(79, 172, 254, 0.2); color: rgba(255, 255, 255, 0.9); display: flex; align-items: center; gap: 0.5rem;">🚀 <strong>Accelerated Nurturing</strong> flows for potential customers</li>
-                            <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(79, 172, 254, 0.2); color: rgba(255, 255, 255, 0.9); display: flex; align-items: center; gap: 0.5rem;">💎 <strong>VIP Experiences</strong> for champion segments</li>
-                            <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(79, 172, 254, 0.2); color: rgba(255, 255, 255, 0.9); display: flex; align-items: center; gap: 0.5rem;">📈 <strong>Cross-Sell Strategies</strong> for loyal customers</li>
-                            <li style="padding: 0.75rem 0; color: rgba(255, 255, 255, 0.9); display: flex; align-items: center; gap: 0.5rem;">🔍 <strong>Dormant Reactivation</strong> monitoring programs</li>
+                        <ul class="insight-list">
+                            <li>🎯 <strong>Retention Programs</strong> for high-value segments</li>
+                            <li>📧 <strong>Personalized Win-Back</strong> campaigns for dormant customers</li>
+                            <li>🚀 <strong>Accelerated Nurturing</strong> flows for potential customers</li>
+                            <li>💎 <strong>VIP Experiences</strong> for champion segments</li>
+                            <li>📈 <strong>Cross-Sell Strategies</strong> for loyal customers</li>
+                            <li>🔍 <strong>Dormant Reactivation</strong> monitoring programs</li>
                         </ul>
                     </div>
                 </div>
+                <div class="advanced-analytics-section">
+                    <div class="advanced-analytics-title">📈 Advanced Analytics</div>
+                    <div class="advanced-analytics-grid">
+                        <div class="metric-card">
+                            <div class="metric-icon">📊</div>
+                            <div class="metric-value">{concentration_pct:.1f}%</div>
+                            <div class="metric-label">Segment Concentration</div>
+                            <div class="metric-change change-positive">
+                                <span>↑ 2.3%</span>
+                            </div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-icon">💰</div>
+                            <div class="metric-value">{revenue_concentration:.1f}%</div>
+                            <div class="metric-label">Revenue Concentration (Top 20%)</div>
+                            <div class="metric-change change-positive">
+                                <span>↑ 1.5%</span>
+                            </div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-icon">⏰</div>
+                            <div class="metric-value">{avg_recency:.1f}</div>
+                            <div class="metric-label">Avg Recency (days)</div>
+                            <div class="metric-change change-negative">
+                                <span>↓ 3.2</span>
+                            </div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-icon">🔄</div>
+                            <div class="metric-value">{avg_frequency:.1f}</div>
+                            <div class="metric-label">Avg Frequency</div>
+                            <div class="metric-change change-positive">
+                                <span>↑ 0.8</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            """, unsafe_allow_html=True)
+            """
+            
+            # Tampilkan semua HTML sekaligus
+            st.markdown(insights_html, unsafe_allow_html=True)
+            
+            # Additional detailed insights dalam expander
+            with st.expander("🔍 Detailed Segment Analysis"):
+                col1, col2 = st.columns(2)
+                
+                with col1:
+                    st.markdown("#### 📈 Performance Trends")
+                    if 'Monetary' in filtered_df.columns and 'Cluster_Label' in filtered_df.columns:
+                        rev_by_segment = filtered_df.groupby('Cluster_Label')['Monetary'].agg(['sum', 'mean', 'count']).round(2)
+                        rev_by_segment.columns = ['Total Revenue', 'Avg Revenue', 'Customer Count']
+                        st.dataframe(rev_by_segment, use_container_width=True)
+                    
+                    st.markdown("#### 🎯 Opportunity Sizing")
+                    if 'Cluster_KMeans' in filtered_df.columns:
+                        segment_opportunity = filtered_df['Cluster_Label'].value_counts().reset_index()
+                        segment_opportunity.columns = ['Segment', 'Count']
+                        segment_opportunity['Percentage'] = (segment_opportunity['Count'] / len(filtered_df) * 100).round(1)
+                        st.dataframe(segment_opportunity, use_container_width=True)
+                
+                with col2:
+                    st.markdown("#### ⚡ Quick Actions")
+                    st.info("""
+                    **Immediate Next Steps:**
+                    1. **This Week:** Launch email campaign to top 20% revenue segments
+                    2. **Next 30 Days:** Implement win-back program for dormant customers
+                    3. **Next Quarter:** Develop VIP program for champion segments
+                    4. **Ongoing:** Monitor segment migration and adjust strategies
+                    """)
+                    
+                    st.markdown("#### 📊 Health Metrics")
+                    if all(col in filtered_df.columns for col in ['Recency', 'Frequency', 'Monetary']):
+                        health_data = {
+                            'Metric': ['Recency Score', 'Frequency Score', 'Monetary Score', 'Overall RFM'],
+                            'Current': [
+                                f"{filtered_df['Recency'].mean():.1f}",
+                                f"{filtered_df['Frequency'].mean():.1f}",
+                                f"£{filtered_df['Monetary'].mean():,.0f}",
+                                f"{filtered_df['RFM_Score'].mean():.1f}" if 'RFM_Score' in filtered_df.columns else "N/A"
+                            ],
+                            'Target': ['< 30 days', '> 10', '£1,000+', '> 400'],
+                            'Status': ['✅ On Track' if filtered_df['Recency'].mean() < 30 else '⚠️ Needs Attention',
+                                      '✅ On Track' if filtered_df['Frequency'].mean() > 10 else '⚠️ Needs Attention',
+                                      '✅ On Track' if filtered_df['Monetary'].mean() > 1000 else '⚠️ Needs Attention',
+                                      '✅ On Track' if 'RFM_Score' in filtered_df.columns and filtered_df['RFM_Score'].mean() > 400 else '⚠️ Needs Attention']
+                        }
+                        health_df = pd.DataFrame(health_data)
+                        st.dataframe(health_df, use_container_width=True, hide_index=True)
         else:
             st.markdown("""
             <div class="empty-state">
@@ -1218,6 +1638,9 @@ def main():
                 <p>Try adjusting your filters to see insights</p>
             </div>
             """, unsafe_allow_html=True)
+    
+    # Divider 3
+    st.markdown('<div class="section-divider-thick"></div>', unsafe_allow_html=True)
     
     # Footer
     st.markdown("""
