@@ -120,6 +120,16 @@ st.markdown("""
     body {font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0f172a; min-height: 100vh}
     .stApp {background: transparent !important; padding: 0 !important; max-width: 100% !important}
     
+    /* SIDEBAR */
+    .st-emotion-cache-1cypcdb {background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%) !important; border-right: 1px solid #334155}
+    .st-emotion-cache-16txtl3 {padding: 2rem 1.5rem !important}
+    
+    /* HEADER dengan glassmorphism */
+    .main-header {display: flex; justify-content: center; align-items: center; flex-direction: column; text-align: center; gap: 0.5rem}
+    .header-title {font-size: 2.5rem; font-weight: 800; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+                  -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0; line-height: 1.2}
+    .header-subtitle {color: #94a3b8; font-size: 1.1rem; margin-top: 0.25rem; font-weight: 400; max-width: 800px}
+    
     /* METRICS GRID dengan neumorphism */
     .metrics-grid {display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin: 1.5rem 0}
     @media (max-width: 1200px) {.metrics-grid {grid-template-columns: repeat(2, 1fr)}}
@@ -137,6 +147,7 @@ st.markdown("""
     .metric-change {font-size: 0.75rem; display: flex; align-items: center; gap: 0.25rem; margin-top: 0.5rem}
     .change-positive {color: #10b981}
     .change-negative {color: #ef4444}
+  
     
     /* FILTER ITEMS - DITAMBAHKAN */
     .filter-column {padding: 0.5rem}
@@ -153,14 +164,6 @@ st.markdown("""
                                    color: #fff !important; border-color: transparent !important;
                                    box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3) !important}
     
-    /* CHARTS CONTAINER */
-    .chart-container {background: rgba(30, 41, 59, 0.8); border-radius: 16px; padding: 1.5rem; 
-                     border: 1px solid rgba(255, 255, 255, 0.05); margin-bottom: 1.5rem}
-    .chart-title {font-size: 1.125rem; font-weight: 700; color: #fff; margin-bottom: 1rem; 
-                 display: flex; align-items: center; gap: 0.5rem}
-    .charts-grid {display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; margin-bottom: 1.5rem}
-    @media (max-width: 1200px) {.charts-grid {grid-template-columns: 1fr}}
-    .chart-full {grid-column: 1 / -1}
     
     /* STRATEGY CARDS */
     .strategy-grid {display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; margin-bottom: 1.5rem}
@@ -243,7 +246,6 @@ st.markdown("""
     div[data-testid="stExpander"] > details > summary:hover {color: #fff !important}
     div[data-testid="stExpander"] > details > div {padding: 1rem; background: transparent !important}
     
-  
     
     /* CUSTOM LABELS untuk filter */
     .custom-label {display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; color: #94a3b8; font-size: 0.875rem; font-weight: 600}
