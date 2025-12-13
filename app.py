@@ -1758,52 +1758,6 @@ def main():
             # Tampilkan semua HTML sekaligus
             st.markdown(insights_html, unsafe_allow_html=True)
             
-            # Additional detailed insights dalam expander
-            with st.expander("🔍 Detailed Segment Analysis"):
-                col1, col2 = st.columns(2)
-                
-                with col1:
-                    st.markdown("#### 📈 Performance Trends")
-                    if 'Monetary' in filtered_df.columns and 'Cluster_Label' in filtered_df.columns:
-                        rev_by_segment = filtered_df.groupby('Cluster_Label')['Monetary'].agg(['sum', 'mean', 'count']).round(2)
-                        rev_by_segment.columns = ['Total Revenue', 'Avg Revenue', 'Customer Count']
-                        st.dataframe(rev_by_segment, use_container_width=True)
-                    
-                    st.markdown("#### 🎯 Opportunity Sizing")
-                    if 'Cluster_KMeans' in filtered_df.columns:
-                        segment_opportunity = filtered_df['Cluster_Label'].value_counts().reset_index()
-                        segment_opportunity.columns = ['Segment', 'Count']
-                        segment_opportunity['Percentage'] = (segment_opportunity['Count'] / len(filtered_df) * 100).round(1)
-                        st.dataframe(segment_opportunity, use_container_width=True)
-                
-                with col2:
-                    st.markdown("#### ⚡ Quick Actions")
-                    st.info("""
-                    **Immediate Next Steps:**
-                    1. **This Week:** Launch email campaign to top 20% revenue segments
-                    2. **Next 30 Days:** Implement win-back program for dormant customers
-                    3. **Next Quarter:** Develop VIP program for champion segments
-                    4. **Ongoing:** Monitor segment migration and adjust strategies
-                    """)
-                    
-                    st.markdown("#### 📊 Health Metrics")
-                    if all(col in filtered_df.columns for col in ['Recency', 'Frequency', 'Monetary']):
-                        health_data = {
-                            'Metric': ['Recency Score', 'Frequency Score', 'Monetary Score', 'Overall RFM'],
-                            'Current': [
-                                f"{filtered_df['Recency'].mean():.1f}",
-                                f"{filtered_df['Frequency'].mean():.1f}",
-                                f"£{filtered_df['Monetary'].mean():,.0f}",
-                                f"{filtered_df['RFM_Score'].mean():.1f}" if 'RFM_Score' in filtered_df.columns else "N/A"
-                            ],
-                            'Target': ['< 30 days', '> 10', '£1,000+', '> 400'],
-                            'Status': ['✅ On Track' if filtered_df['Recency'].mean() < 30 else '⚠️ Needs Attention',
-                                      '✅ On Track' if filtered_df['Frequency'].mean() > 10 else '⚠️ Needs Attention',
-                                      '✅ On Track' if filtered_df['Monetary'].mean() > 1000 else '⚠️ Needs Attention',
-                                      '✅ On Track' if 'RFM_Score' in filtered_df.columns and filtered_df['RFM_Score'].mean() > 400 else '⚠️ Needs Attention']
-                        }
-                        health_df = pd.DataFrame(health_data)
-                        st.dataframe(health_df, use_container_width=True, hide_index=True)
         else:
             st.markdown("""
             <div class="empty-state">
