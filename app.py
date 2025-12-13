@@ -1574,47 +1574,438 @@ def main():
             """, unsafe_allow_html=True)
     
     with tab2:
-        # Champion Breakdown Section - DIPERBAIKI
-        # Filter hanya clusters yang merupakan champion
-        champion_clusters = []
-        for cid, p in profs.items():
-            if p['name'] == '🏆 Champions':
-                champion_clusters.append(cid)
-        
-        if champion_clusters:
-            st.markdown('<div class="champion-section">', unsafe_allow_html=True)
-            st.markdown('<div class="champion-title">🏆 Champion Segments Breakdown</div>', unsafe_allow_html=True)
-            st.markdown('<div class="champion-subtitle">Understanding the 4 Different Champion Tiers</div>', unsafe_allow_html=True)
-            
-            # Create champion cards HTML
-            champion_cards_html = ""
-            for cid in champion_clusters:
-                if cid in champion_details:
-                    det = champion_details[cid]
-                    champion_cards_html += f"""
-                    <div class="champion-card">
-                        <div class="champion-header">
-                            <div class="champion-number">
-                                <span>Champion C{cid}</span>
-                            </div>
-                            <div class="segment-id">Segment ID: C{cid}</div>
-                        </div>
-                        <div class="champion-tier">🏅 {det['tier']}</div>
-                        <div class="champion-desc">{det['desc']}</div>
-                        <div class="champion-chars">📊 {det['char']}</div>
-                    </div>
-                    """
-            
-            st.markdown(f'<div class="champion-grid">{champion_cards_html}</div>', unsafe_allow_html=True)
-            st.markdown('</div>', unsafe_allow_html=True)
-        
-        # Strategy Cards untuk SEMUA segments - DIPERBAIKI
+    # Champion Breakdown Section - DIPERBAIKI dengan cara yang lebih sederhana
+    st.markdown('<div class="champion-section">', unsafe_allow_html=True)
+    st.markdown('<div class="champion-title">🏆 Champion Segments Breakdown</div>', unsafe_allow_html=True)
+    st.markdown('<div class="champion-subtitle">Understanding the 4 Different Champion Tiers</div>', unsafe_allow_html=True)
+    
+    # Buat layout 2x2 untuk champion cards
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        # Champion C1
         st.markdown("""
-        <div class="section-header">
-            <div class="section-icon">🎯</div>
-            <div>
-                <div class="section-title">Growth Strategies</div>
-                <div class="section-subtitle">Tailored marketing strategies for each customer segment</div>
+        <div class="champion-card">
+            <div class="champion-header">
+                <div class="champion-number">
+                    <span>Champion C1</span>
+                </div>
+                <div class="segment-id">Segment ID: C1</div>
+            </div>
+            <div class="champion-tier">🏅 Platinum Elite</div>
+            <div class="champion-desc">Super frequent buyers with highest engagement</div>
+            <div class="champion-chars">📊 11d recency, 15.6 orders, £5,425 spend</div>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        # Champion C4
+        st.markdown("""
+        <div class="champion-card">
+            <div class="champion-header">
+                <div class="champion-number">
+                    <span>Champion C4</span>
+                </div>
+                <div class="segment-id">Segment ID: C4</div>
+            </div>
+            <div class="champion-tier">🏅 Gold Tier</div>
+            <div class="champion-desc">Consistent champions with solid performance</div>
+            <div class="champion-chars">📊 1d recency, 10.9 orders, £3,981 spend</div>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col2:
+        # Champion C3
+        st.markdown("""
+        <div class="champion-card">
+            <div class="champion-header">
+                <div class="champion-number">
+                    <span>Champion C3</span>
+                </div>
+                <div class="segment-id">Segment ID: C3</div>
+            </div>
+            <div class="champion-tier">🏅 Ultra VIP</div>
+            <div class="champion-desc">Extreme high-value with massive order frequency</div>
+            <div class="champion-chars">📊 8d recency, 38.9 orders, £40,942 spend</div>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        # Champion C6
+        st.markdown("""
+        <div class="champion-card">
+            <div class="champion-header">
+                <div class="champion-number">
+                    <span>Champion C6</span>
+                </div>
+                <div class="segment-id">Segment ID: C6</div>
+            </div>
+            <div class="champion-tier">🏅 Diamond Elite</div>
+            <div class="champion-desc">Ultra frequent buyers with exceptional loyalty</div>
+            <div class="champion-chars">📊 1d recency, 126.8 orders, £33,796 spend</div>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    st.markdown('</div>', unsafe_allow_html=True)
+    
+    # Strategy Cards - DIPERBAIKI dengan cara yang lebih sederhana
+    st.markdown("""
+    <div class="section-header">
+        <div class="section-icon">🎯</div>
+        <div>
+            <div class="section-title">Growth Strategies</div>
+            <div class="section-subtitle">Tailored marketing strategies for each customer segment</div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Buat 2 kolom untuk strategy cards
+    strategy_col1, strategy_col2 = st.columns(2)
+    
+    with strategy_col1:
+        # Champions Strategy
+        st.markdown(f"""
+        <div class="strategy-card" style="background: linear-gradient(135deg,#FFD700,#FFA500, #FF8C00)">
+            <div class="strategy-header">
+                <div>
+                    <h3 class="strategy-name">🏆 Champions</h3>
+                    <div class="priority-badge">CRITICAL</div>
+                </div>
+                <div class="strategy-subtitle">📋 VIP Platinum Strategy</div>
+            </div>
+            
+            <div class="tactics-section">
+                <div class="tactics-title">🎯 Key Tactics</div>
+                <div class="tactics-grid">
+                    <div class="tactic-item">💎 Exclusive Early Access</div>
+                    <div class="tactic-item">🎁 Premium Gifts</div>
+                    <div class="tactic-item">📞 24/7 Manager</div>
+                    <div class="tactic-item">🌟 VIP Events</div>
+                    <div class="tactic-item">✨ Celebrations</div>
+                </div>
+            </div>
+            
+            <div class="tactics-section">
+                <div class="tactics-title">📊 Target KPIs</div>
+                <div class="kpis-grid">
+                    <div class="kpi-item">📈 Retention>95%</div>
+                    <div class="kpi-item">💰 Upsell>40%</div>
+                    <div class="kpi-item">👥 Referral>30%</div>
+                </div>
+            </div>
+            
+            <div class="strategy-footer">
+                <div class="budget-item">
+                    <div class="budget-label">💰 Budget Allocation</div>
+                    <div class="budget-value">30%</div>
+                    <div class="budget-progress-container">
+                        <div class="budget-progress">
+                            <div class="budget-progress-fill" style="width: 30%; background: #FFD700;"></div>
+                        </div>
+                        <div class="budget-percentage">30%</div>
+                    </div>
+                </div>
+                <div class="budget-item">
+                    <div class="budget-label">🚀 ROI Target</div>
+                    <div class="budget-value">500%</div>
+                    <div class="roi-gauge-container">
+                        <div class="roi-gauge">
+                            <div class="roi-gauge-background">
+                                <div class="roi-gauge-fill" style="height: 100%; background: linear-gradient(to top, #FFD700, rgba(255,255,255,0.8));"></div>
+                            </div>
+                            <div class="roi-value">500%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        # Big Spenders Strategy
+        st.markdown(f"""
+        <div class="strategy-card" style="background: linear-gradient(135deg,#f093fb,#f5576c,#d2368d)">
+            <div class="strategy-header">
+                <div>
+                    <h3 class="strategy-name">💰 Big Spenders</h3>
+                    <div class="priority-badge">CRITICAL</div>
+                </div>
+                <div class="strategy-subtitle">📋 Value Max Strategy</div>
+            </div>
+            
+            <div class="tactics-section">
+                <div class="tactics-title">🎯 Key Tactics</div>
+                <div class="tactics-grid">
+                    <div class="tactic-item">💳 Flex Terms</div>
+                    <div class="tactic-item">🎁 Luxury Gifts</div>
+                    <div class="tactic-item">🚚 Free Express</div>
+                    <div class="tactic-item">📦 Custom Bundles</div>
+                    <div class="tactic-item">🌟 Concierge</div>
+                </div>
+            </div>
+            
+            <div class="tactics-section">
+                <div class="tactics-title">📊 Target KPIs</div>
+                <div class="kpis-grid">
+                    <div class="kpi-item">🎯 AOV+15%</div>
+                    <div class="kpi-item">📈 Retention>90%</div>
+                    <div class="kpi-item">🎯 Sat>4.8/5</div>
+                </div>
+            </div>
+            
+            <div class="strategy-footer">
+                <div class="budget-item">
+                    <div class="budget-label">💰 Budget Allocation</div>
+                    <div class="budget-value">20%</div>
+                    <div class="budget-progress-container">
+                        <div class="budget-progress">
+                            <div class="budget-progress-fill" style="width: 20%; background: #f093fb;"></div>
+                        </div>
+                        <div class="budget-percentage">20%</div>
+                    </div>
+                </div>
+                <div class="budget-item">
+                    <div class="budget-label">🚀 ROI Target</div>
+                    <div class="budget-value">420%</div>
+                    <div class="roi-gauge-container">
+                        <div class="roi-gauge">
+                            <div class="roi-gauge-background">
+                                <div class="roi-gauge-fill" style="height: 84.0%; background: linear-gradient(to top, #f093fb, rgba(255,255,255,0.8));"></div>
+                            </div>
+                            <div class="roi-value">420%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        # Dormant Strategy
+        st.markdown(f"""
+        <div class="strategy-card" style="background: linear-gradient(135deg,#ff6b6b,#ee5a6f,#c44569)">
+            <div class="strategy-header">
+                <div>
+                    <h3 class="strategy-name">😴 Dormant</h3>
+                    <div class="priority-badge">URGENT</div>
+                </div>
+                <div class="strategy-subtitle">📋 Win-Back Strategy</div>
+            </div>
+            
+            <div class="tactics-section">
+                <div class="tactics-title">🎯 Key Tactics</div>
+                <div class="tactics-grid">
+                    <div class="tactic-item">🎁 25-30% Off</div>
+                    <div class="tactic-item">📧 Multi-Channel</div>
+                    <div class="tactic-item">🎯 Retargeting</div>
+                    <div class="tactic-item">💬 Personal Call</div>
+                    <div class="tactic-item">⏰ Urgency</div>
+                </div>
+            </div>
+            
+            <div class="tactics-section">
+                <div class="tactics-title">📊 Target KPIs</div>
+                <div class="kpis-grid">
+                    <div class="kpi-item">🎯 Winback>25%</div>
+                    <div class="kpi-item">🎯 Response>15%</div>
+                    <div class="kpi-item">🎯 ROI>200%</div>
+                </div>
+            </div>
+            
+            <div class="strategy-footer">
+                <div class="budget-item">
+                    <div class="budget-label">💰 Budget Allocation</div>
+                    <div class="budget-value">15%</div>
+                    <div class="budget-progress-container">
+                        <div class="budget-progress">
+                            <div class="budget-progress-fill" style="width: 15%; background: #ff6b6b;"></div>
+                        </div>
+                        <div class="budget-percentage">15%</div>
+                    </div>
+                </div>
+                <div class="budget-item">
+                    <div class="budget-label">🚀 ROI Target</div>
+                    <div class="budget-value">250%</div>
+                    <div class="roi-gauge-container">
+                        <div class="roi-gauge">
+                            <div class="roi-gauge-background">
+                                <div class="roi-gauge-fill" style="height: 50.0%; background: linear-gradient(to top, #ff6b6b, rgba(255,255,255,0.8));"></div>
+                            </div>
+                            <div class="roi-value">250%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with strategy_col2:
+        # Loyal Strategy
+        st.markdown(f"""
+        <div class="strategy-card" style="background: linear-gradient(135deg,#667eea,#764ba2,#5a52a3)">
+            <div class="strategy-header">
+                <div>
+                    <h3 class="strategy-name">💎 Loyal</h3>
+                    <div class="priority-badge">HIGH</div>
+                </div>
+                <div class="strategy-subtitle">📋 Loyalty Boost Strategy</div>
+            </div>
+            
+            <div class="tactics-section">
+                <div class="tactics-title">🎯 Key Tactics</div>
+                <div class="tactics-grid">
+                    <div class="tactic-item">🎯 Tiered Rewards</div>
+                    <div class="tactic-item">📱 App Benefits</div>
+                    <div class="tactic-item">🎉 Birthday Offers</div>
+                    <div class="tactic-item">💝 Referral Bonus</div>
+                    <div class="tactic-item">🔔 Flash Access</div>
+                </div>
+            </div>
+            
+            <div class="tactics-section">
+                <div class="tactics-title">📊 Target KPIs</div>
+                <div class="kpis-grid">
+                    <div class="kpi-item">📈 Retention>85%</div>
+                    <div class="kpi-item">🔄 Frequency+20%</div>
+                    <div class="kpi-item">⭐ NPS>8</div>
+                </div>
+            </div>
+            
+            <div class="strategy-footer">
+                <div class="budget-item">
+                    <div class="budget-label">💰 Budget Allocation</div>
+                    <div class="budget-value">25%</div>
+                    <div class="budget-progress-container">
+                        <div class="budget-progress">
+                            <div class="budget-progress-fill" style="width: 25%; background: #667eea;"></div>
+                        </div>
+                        <div class="budget-percentage">25%</div>
+                    </div>
+                </div>
+                <div class="budget-item">
+                    <div class="budget-label">🚀 ROI Target</div>
+                    <div class="budget-value">380%</div>
+                    <div class="roi-gauge-container">
+                        <div class="roi-gauge">
+                            <div class="roi-gauge-background">
+                                <div class="roi-gauge-fill" style="height: 76.0%; background: linear-gradient(to top, #667eea, rgba(255,255,255,0.8));"></div>
+                            </div>
+                            <div class="roi-value">380%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        # Potential Strategy
+        st.markdown(f"""
+        <div class="strategy-card" style="background: linear-gradient(135deg,#11998e,#38ef7d,#00b09b)">
+            <div class="strategy-header">
+                <div>
+                    <h3 class="strategy-name">🌱 Potential</h3>
+                    <div class="priority-badge">MEDIUM</div>
+                </div>
+                <div class="strategy-subtitle">📋 Fast Convert Strategy</div>
+            </div>
+            
+            <div class="tactics-section">
+                <div class="tactics-title">🎯 Key Tactics</div>
+                <div class="tactics-grid">
+                    <div class="tactic-item">🎓 Education</div>
+                    <div class="tactic-item">🎁 15% 2nd Buy</div>
+                    <div class="tactic-item">💌 Welcome Flow</div>
+                    <div class="tactic-item">📚 Tutorials</div>
+                    <div class="tactic-item">🎯 Cross-Sell</div>
+                </div>
+            </div>
+            
+            <div class="tactics-section">
+                <div class="tactics-title">📊 Target KPIs</div>
+                <div class="kpis-grid">
+                    <div class="kpi-item">🎯 Convert>35%</div>
+                    <div class="kpi-item">🎯 2nd<30d</div>
+                    <div class="kpi-item">🎯 LTV+25%</div>
+                </div>
+            </div>
+            
+            <div class="strategy-footer">
+                <div class="budget-item">
+                    <div class="budget-label">💰 Budget Allocation</div>
+                    <div class="budget-value">5%</div>
+                    <div class="budget-progress-container">
+                        <div class="budget-progress">
+                            <div class="budget-progress-fill" style="width: 5%; background: #11998e;"></div>
+                        </div>
+                        <div class="budget-percentage">5%</div>
+                    </div>
+                </div>
+                <div class="budget-item">
+                    <div class="budget-label">🚀 ROI Target</div>
+                    <div class="budget-value">180%</div>
+                    <div class="roi-gauge-container">
+                        <div class="roi-gauge">
+                            <div class="roi-gauge-background">
+                                <div class="roi-gauge-fill" style="height: 36.0%; background: linear-gradient(to top, #11998e, rgba(255,255,255,0.8));"></div>
+                            </div>
+                            <div class="roi-value">180%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        # Standard Strategy
+        st.markdown(f"""
+        <div class="strategy-card" style="background: linear-gradient(135deg,#89f7fe,#66a6ff,#4a6fff)">
+            <div class="strategy-header">
+                <div>
+                    <h3 class="strategy-name">📊 Standard</h3>
+                    <div class="priority-badge">MEDIUM</div>
+                </div>
+                <div class="strategy-subtitle">📋 Steady Engage Strategy</div>
+            </div>
+            
+            <div class="tactics-section">
+                <div class="tactics-title">🎯 Key Tactics</div>
+                <div class="tactics-grid">
+                    <div class="tactic-item">📧 Newsletters</div>
+                    <div class="tactic-item">🎯 Seasonal</div>
+                    <div class="tactic-item">💌 AI Recs</div>
+                    <div class="tactic-item">🎁 Surprises</div>
+                    <div class="tactic-item">📱 Community</div>
+                </div>
+            </div>
+            
+            <div class="tactics-section">
+                <div class="tactics-title">📊 Target KPIs</div>
+                <div class="kpis-grid">
+                    <div class="kpi-item">🎯 Engage>40%</div>
+                    <div class="kpi-item">📊 Stable</div>
+                    <div class="kpi-item">⭐ Sat>3.5/5</div>
+                </div>
+            </div>
+            
+            <div class="strategy-footer">
+                <div class="budget-item">
+                    <div class="budget-label">💰 Budget Allocation</div>
+                    <div class="budget-value">5%</div>
+                    <div class="budget-progress-container">
+                        <div class="budget-progress">
+                            <div class="budget-progress-fill" style="width: 5%; background: #89f7fe;"></div>
+                        </div>
+                        <div class="budget-percentage">5%</div>
+                    </div>
+                </div>
+                <div class="budget-item">
+                    <div class="budget-label">🚀 ROI Target</div>
+                    <div class="budget-value">150%</div>
+                    <div class="roi-gauge-container">
+                        <div class="roi-gauge">
+                            <div class="roi-gauge-background">
+                                <div class="roi-gauge-fill" style="height: 30.0%; background: linear-gradient(to top, #89f7fe, rgba(255,255,255,0.8));"></div>
+                            </div>
+                            <div class="roi-value">150%</div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         """, unsafe_allow_html=True)
