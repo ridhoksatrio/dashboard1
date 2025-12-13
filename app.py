@@ -112,7 +112,7 @@ def init_data(rfm):
 
 profs, colors, rfm = init_data(rfm)
 
-# CSS Custom untuk Streamlit yang lebih modern
+# CSS Custom untuk Streamlit yang lebih modern - DIPERBAIKI
 st.markdown("""
 <style>
     * {margin: 0; padding: 0; box-sizing: border-box}
@@ -149,13 +149,17 @@ st.markdown("""
     .change-positive {color: #10b981}
     .change-negative {color: #ef4444}
     
-    /* FILTER SECTION */
+    /* FILTER SECTION - DIPERBAIKI */
     .filter-section {background: rgba(30, 41, 59, 0.8); border-radius: 16px; padding: 1.5rem; 
-                    margin: 1.5rem 0; border: 1px solid rgba(255, 255, 255, 0.05)}
-    .filter-title {font-size: 1.25rem; font-weight: 700; color: #fff; margin-bottom: 1rem; 
+                    margin: 1.5rem 0; border: 1px solid rgba(255, 255, 255, 0.05); overflow: hidden}
+    .filter-title {font-size: 1.25rem; font-weight: 700; color: #fff; margin-bottom: 1.5rem; 
                   display: flex; align-items: center; gap: 0.5rem}
-    .filter-grid {display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem}
+    .filter-grid {display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem}
     @media (max-width: 768px) {.filter-grid {grid-template-columns: 1fr}}
+    
+    /* FILTER ITEMS - DITAMBAHKAN */
+    .filter-column {padding: 0.5rem}
+    .filter-label {font-size: 0.875rem; color: #94a3b8; margin-bottom: 0.5rem; font-weight: 600; display: block}
     
     /* TABS STYLING */
     .stTabs [data-baseweb="tab-list"] {gap: 0.5rem; margin-bottom: 1.5rem}
@@ -247,10 +251,22 @@ st.markdown("""
     .empty-state {text-align: center; padding: 3rem; color: #94a3b8}
     .empty-icon {font-size: 3rem; margin-bottom: 1rem; opacity: 0.5}
     
-    /* STREAMLIT WIDGET OVERRIDES */
-    div[data-testid="stSelectbox"] > div {background: rgba(30, 41, 59, 0.8); border-color: rgba(255, 255, 255, 0.1)}
-    div[data-testid="stSlider"] > div {background: rgba(30, 41, 59, 0.8)}
-    .stSlider > div > div > div {background: linear-gradient(90deg, #667eea, #764ba2)}
+    /* STREAMLIT WIDGET OVERRIDES - DIPERBAIKI */
+    div[data-testid="stSelectbox"] > div {background: rgba(30, 41, 59, 0.8); border-color: rgba(255, 255, 255, 0.1) !important; border-radius: 8px !important; overflow: hidden}
+    div[data-testid="stSelectbox"] svg {color: #94a3b8 !important}
+    div[data-testid="stSlider"] > div {background: rgba(30, 41, 59, 0.8); border-radius: 8px; padding: 1rem 0.5rem}
+    div[data-testid="stSlider"] .stSlider > div > div > div {background: linear-gradient(90deg, #667eea, #764ba2) !important}
+    div[data-testid="stSlider"] .stSlider > div > div > div:first-child {background: rgba(102, 126, 234, 0.2) !important}
+    div[data-testid="stExpander"] {background: rgba(30, 41, 59, 0.8); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; margin-top: 1rem}
+    div[data-testid="stExpander"] > details > summary {color: #94a3b8 !important; font-weight: 600; padding: 1rem}
+    div[data-testid="stExpander"] > details > summary:hover {color: #fff !important}
+    div[data-testid="stExpander"] > details > div {padding: 1rem; background: transparent !important}
+    
+    /* FILTER CONTENT CONTAINER */
+    .filter-content {padding: 0.5rem 0}
+    
+    /* CUSTOM LABELS untuk filter */
+    .custom-label {display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; color: #94a3b8; font-size: 0.875rem; font-weight: 600}
 </style>
 """, unsafe_allow_html=True)
 
@@ -657,108 +673,132 @@ def main():
     
     st.markdown('</div>', unsafe_allow_html=True)
     
-    # Filters
-    st.markdown('<div class="filter-section">', unsafe_allow_html=True)
-    st.markdown('<div class="filter-title">🎛️ Smart Filters</div>', unsafe_allow_html=True)
-    
-    col1, col2, col3 = st.columns(3)
-    with col1:
-        # Segment Filter
-        segment_options = [{'label': '🌐 All Segments', 'value': 'all'}]
-        for c, p in profs.items():
-            if p['name'] == '🏆 Champions' and c in champion_details:
-                label = f"{p['name']} - {champion_details[c]['tier']}"
-            else:
-                label = p['name']
-            segment_options.append({'label': label, 'value': c})
+    # Filters - DIPERBAIKI: Konten sekarang di dalam bubble
+    with st.container():
+        st.markdown('<div class="filter-section">', unsafe_allow_html=True)
         
-        segment_filter = st.selectbox(
-            "🎨 Segment Filter",
-            options=[opt['value'] for opt in segment_options],
-            format_func=lambda x: next((opt['label'] for opt in segment_options if opt['value'] == x), x),
-            index=0,
-            key="segment_filter"
-        )
-    
-    with col2:
-        # RFM Score Range
-        if 'RFM_Score' in rfm.columns:
-            rfm_min = int(rfm['RFM_Score'].min())
-            rfm_max = int(rfm['RFM_Score'].max())
-            rfm_filter = st.slider(
-                "📊 RFM Score Range",
-                min_value=rfm_min,
-                max_value=rfm_max,
-                value=[rfm_min, rfm_max],
-                key="rfm_filter"
-            )
-        else:
-            rfm_filter = [0, 100]
-            st.slider(
-                "📊 RFM Score Range",
-                min_value=0,
-                max_value=100,
-                value=[0, 100],
-                key="rfm_filter"
-            )
-    
-    with col3:
-        # Priority Level
-        priority_options = [
-            {'label': '🌐 All Priorities', 'value': 'all'},
-            {'label': '🔴 CRITICAL', 'value': 'CRITICAL'},
-            {'label': '🔥 URGENT', 'value': 'URGENT'},
-            {'label': '⚡ HIGH', 'value': 'HIGH'},
-            {'label': '📊 MEDIUM', 'value': 'MEDIUM'}
-        ]
-        priority_filter = st.selectbox(
-            "🔥 Priority Level",
-            options=[opt['value'] for opt in priority_options],
-            format_func=lambda x: next((opt['label'] for opt in priority_options if opt['value'] == x), x),
-            index=0,
-            key="priority_filter"
-        )
-    
-    # Additional Filters in expander
-    with st.expander("🔍 Advanced Filters"):
+        # Title
+        st.markdown('<div class="filter-title">🎛️ Smart Filters</div>', unsafe_allow_html=True)
+        
+        # Filter grid
         col1, col2, col3 = st.columns(3)
+        
         with col1:
-            if 'Monetary' in rfm.columns:
-                monetary_min = float(rfm['Monetary'].min())
-                monetary_max = float(rfm['Monetary'].max())
-                monetary_filter = st.slider(
-                    "💰 Monetary Value Range",
-                    min_value=monetary_min,
-                    max_value=monetary_max,
-                    value=[monetary_min, monetary_max],
-                    key="monetary_filter"
-                )
+            st.markdown('<div class="filter-content">', unsafe_allow_html=True)
+            st.markdown('<div class="custom-label">🎨 Segment Filter</div>', unsafe_allow_html=True)
+            
+            # Segment Filter
+            segment_options = [{'label': '🌐 All Segments', 'value': 'all'}]
+            for c, p in profs.items():
+                if p['name'] == '🏆 Champions' and c in champion_details:
+                    label = f"{p['name']} - {champion_details[c]['tier']}"
+                else:
+                    label = p['name']
+                segment_options.append({'label': label, 'value': c})
+            
+            segment_filter = st.selectbox(
+                "",
+                options=[opt['value'] for opt in segment_options],
+                format_func=lambda x: next((opt['label'] for opt in segment_options if opt['value'] == x), x),
+                index=0,
+                key="segment_filter",
+                label_visibility="collapsed"
+            )
+            st.markdown('</div>', unsafe_allow_html=True)
         
         with col2:
-            if 'Frequency' in rfm.columns:
-                freq_min = int(rfm['Frequency'].min())
-                freq_max = int(rfm['Frequency'].max())
-                frequency_filter = st.slider(
-                    "🔄 Frequency Range",
-                    min_value=freq_min,
-                    max_value=freq_max,
-                    value=[freq_min, freq_max],
-                    key="frequency_filter"
+            st.markdown('<div class="filter-content">', unsafe_allow_html=True)
+            st.markdown('<div class="custom-label">📊 RFM Score Range</div>', unsafe_allow_html=True)
+            
+            # RFM Score Range
+            if 'RFM_Score' in rfm.columns:
+                rfm_min = int(rfm['RFM_Score'].min())
+                rfm_max = int(rfm['RFM_Score'].max())
+                rfm_filter = st.slider(
+                    "",
+                    min_value=rfm_min,
+                    max_value=rfm_max,
+                    value=[rfm_min, rfm_max],
+                    key="rfm_filter",
+                    label_visibility="collapsed"
                 )
+            else:
+                rfm_filter = [0, 100]
+                st.slider(
+                    "",
+                    min_value=0,
+                    max_value=100,
+                    value=[0, 100],
+                    key="rfm_filter",
+                    label_visibility="collapsed"
+                )
+            st.markdown('</div>', unsafe_allow_html=True)
         
         with col3:
-            if 'Recency' in rfm.columns:
-                recency_min = int(rfm['Recency'].min())
-                recency_max = int(rfm['Recency'].max())
-                recency_filter = st.slider(
-                    "⏰ Recency Range (days)",
-                    min_value=recency_min,
-                    max_value=recency_max,
-                    value=[recency_min, recency_max],
-                    key="recency_filter"
-                )
-    
-    st.markdown('</div>', unsafe_allow_html=True)
+            st.markdown('<div class="filter-content">', unsafe_allow_html=True)
+            st.markdown('<div class="custom-label">🔥 Priority Level</div>', unsafe_allow_html=True)
+            
+            # Priority Level
+            priority_options = [
+                {'label': '🌐 All Priorities', 'value': 'all'},
+                {'label': '🔴 CRITICAL', 'value': 'CRITICAL'},
+                {'label': '🔥 URGENT', 'value': 'URGENT'},
+                {'label': '⚡ HIGH', 'value': 'HIGH'},
+                {'label': '📊 MEDIUM', 'value': 'MEDIUM'}
+            ]
+            priority_filter = st.selectbox(
+                "",
+                options=[opt['value'] for opt in priority_options],
+                format_func=lambda x: next((opt['label'] for opt in priority_options if opt['value'] == x), x),
+                index=0,
+                key="priority_filter",
+                label_visibility="collapsed"
+            )
+            st.markdown('</div>', unsafe_allow_html=True)
+        
+        # Advanced Filters
+        st.markdown('<div style="margin-top: 1.5rem;">', unsafe_allow_html=True)
+        with st.expander("🔍 Advanced Filters"):
+            col1, col2, col3 = st.columns(3)
+            
+            with col1:
+                if 'Monetary' in rfm.columns:
+                    monetary_min = float(rfm['Monetary'].min())
+                    monetary_max = float(rfm['Monetary'].max())
+                    monetary_filter = st.slider(
+                        "💰 Monetary Value Range",
+                        min_value=monetary_min,
+                        max_value=monetary_max,
+                        value=[monetary_min, monetary_max],
+                        key="monetary_filter"
+                    )
+            
+            with col2:
+                if 'Frequency' in rfm.columns:
+                    freq_min = int(rfm['Frequency'].min())
+                    freq_max = int(rfm['Frequency'].max())
+                    frequency_filter = st.slider(
+                        "🔄 Frequency Range",
+                        min_value=freq_min,
+                        max_value=freq_max,
+                        value=[freq_min, freq_max],
+                        key="frequency_filter"
+                    )
+            
+            with col3:
+                if 'Recency' in rfm.columns:
+                    recency_min = int(rfm['Recency'].min())
+                    recency_max = int(rfm['Recency'].max())
+                    recency_filter = st.slider(
+                        "⏰ Recency Range (days)",
+                        min_value=recency_min,
+                        max_value=recency_max,
+                        value=[recency_min, recency_max],
+                        key="recency_filter"
+                    )
+        
+        st.markdown('</div>', unsafe_allow_html=True)
+        st.markdown('</div>', unsafe_allow_html=True)
     
     # Apply filters
     filtered_df = rfm.copy()
