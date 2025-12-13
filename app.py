@@ -1575,9 +1575,9 @@ def main():
     
     with tab2:
     # Champion Breakdown Section - DIPERBAIKI dengan cara yang lebih sederhana
-    st.markdown('<div class="champion-section">', unsafe_allow_html=True)
-    st.markdown('<div class="champion-title">🏆 Champion Segments Breakdown</div>', unsafe_allow_html=True)
-    st.markdown('<div class="champion-subtitle">Understanding the 4 Different Champion Tiers</div>', unsafe_allow_html=True)
+        st.markdown('<div class="champion-section">', unsafe_allow_html=True)
+        st.markdown('<div class="champion-title">🏆 Champion Segments Breakdown</div>', unsafe_allow_html=True)
+        st.markdown('<div class="champion-subtitle">Understanding the 4 Different Champion Tiers</div>', unsafe_allow_html=True)
     
     # Buat layout 2x2 untuk champion cards
     col1, col2 = st.columns(2)
