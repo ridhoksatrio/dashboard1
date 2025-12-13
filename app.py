@@ -857,7 +857,7 @@ def create_charts(df):
                 xanchor='center'
             ),
             height=400,
-            margin=dict(t=50, b=20, l=20, r=20),
+            margin=dict(t=100, b=20, l=20, r=20),
             plot_bgcolor='rgba(0,0,0,0)',
             paper_bgcolor='rgba(0,0,0,0)'
         )
