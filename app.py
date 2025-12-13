@@ -395,7 +395,7 @@ st.markdown("""
         font-weight: 900; 
         color: #667eea; 
         margin-bottom: 1rem; 
-        display: flex; 
+display: flex; 
         align-items: center; 
         gap: 0.75rem;
         padding-bottom: 0.75rem;
@@ -698,6 +698,56 @@ st.markdown("""
         text-transform: uppercase;
         letter-spacing: 0.05em;
     }
+    
+    /* NEW: Tactic chip and KPI badge styles */
+    .tactic-chip {
+        background: rgba(255, 255, 255, 0.1); 
+        border-radius: 12px; 
+        padding: 0.75rem 1rem; 
+        font-size: 0.9rem;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        display: inline-block;
+        margin: 0.25rem;
+    }
+    
+    .kpi-badge {
+        background: rgba(255, 255, 255, 0.08); 
+        border-radius: 12px; 
+        padding: 0.75rem 1rem; 
+        text-align: center;
+        font-size: 0.875rem; 
+        font-weight: 700;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        display: inline-block;
+        margin: 0.25rem;
+    }
+    
+    /* Segment Content Styles */
+    .segment-content {
+        margin: 1.5rem 0;
+    }
+    
+    .segment-section {
+        margin-bottom: 1.5rem;
+    }
+    
+    .section-title-small {
+        font-size: 0.875rem; 
+        font-weight: 800; 
+        color: rgba(255, 255, 255, 0.9); 
+        margin-bottom: 0.75rem;
+        text-transform: uppercase; 
+        letter-spacing: 0.05em;
+    }
+    
+    .segment-footer {
+        display: flex; 
+        justify-content: space-between; 
+        margin-top: 2rem; 
+        padding-top: 1.5rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        gap: 1rem;
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -720,12 +770,11 @@ def create_charts(df):
         insidetextorientation='radial'
     ))
     
-    # PERBAIKAN: Semua judul chart sekarang konsisten
     fig1.update_layout(
         title=dict(
             text="🎯 Customer Distribution",
-            font=dict(color='white', size=30),  # Font size disamakan 20
-            x=0.5,                             # Posisi di tengah
+            font=dict(color='white', size=30),
+            x=0.5,
             xanchor='center'
         ),
         height=400,
@@ -763,7 +812,7 @@ def create_charts(df):
         fig2.update_layout(
             title=dict(
                 text="💰 Revenue by Segment",
-                font=dict(color='white', size=30),  # Font size disamakan 20
+                font=dict(color='white', size=30),
                 x=0.5,
                 xanchor='center'
             ),
@@ -784,7 +833,7 @@ def create_charts(df):
         fig2.update_layout(
             title=dict(
                 text="💰 Revenue by Segment", 
-                font=dict(color='white', size=30),  # Font size disamakan 20
+                font=dict(color='white', size=30),
                 x=0.5,
                 xanchor='center'
             ),
@@ -823,7 +872,7 @@ def create_charts(df):
         fig3.update_layout(
             title=dict(
                 text="📈 3D RFM Analysis",
-                font=dict(color='white', size=30),  # Font size disamakan 20
+                font=dict(color='white', size=30),
                 x=0.5,
                 xanchor='center'
             ),
@@ -854,7 +903,7 @@ def create_charts(df):
         fig3.update_layout(
             title=dict(
                 text="📈 3D RFM Analysis", 
-                font=dict(color='white', size=30),  # Font size disamakan 20
+                font=dict(color='white', size=30),
                 x=0.5,
                 xanchor='center'
             ),
@@ -870,7 +919,7 @@ def create_charts(df):
             fig.update_layout(
                 title=dict(
                     text=title, 
-                    font=dict(color='white', size=18),  # Font size sedikit lebih kecil untuk histogram
+                    font=dict(color='white', size=18),
                     x=0.5,
                     xanchor='center'
                 ),
@@ -891,7 +940,7 @@ def create_charts(df):
         fig.update_layout(
             title=dict(
                 text=title, 
-                font=dict(color='white', size=30),  # Font size sedikit lebih kecil untuk histogram
+                font=dict(color='white', size=30),
                 x=0.5,
                 xanchor='center'
             ),
@@ -991,7 +1040,7 @@ def create_charts(df):
         fig7.update_layout(
             title=dict(
                 text="📊 Segment Summary",
-                font=dict(color='white', size=30),  # Font size disamakan 20
+                font=dict(color='white', size=30),
                 x=0.5,
                 xanchor='center'
             ),
@@ -1006,7 +1055,7 @@ def create_charts(df):
         fig7.update_layout(
             title=dict(
                 text="📊 Segment Summary", 
-                font=dict(color='white', size=30),  # Font size disamakan 20
+                font=dict(color='white', size=30),
                 x=0.5,
                 xanchor='center'
             ),
@@ -1485,6 +1534,88 @@ def main():
                 """, unsafe_allow_html=True)
         
         st.markdown('</div>', unsafe_allow_html=True)
+        
+        # Strategy Cards (Existing Code)
+        st.markdown('<div class="section-divider"></div>', unsafe_allow_html=True)
+
+        st.markdown("""
+        <div class="section-header">
+            <div class="section-icon">🎯</div>
+            <div>
+                <div class="section-title">Detailed Segment Strategies</div>
+                <div class="section-subtitle">In-depth action plans for each customer segment with comprehensive tactics and KPIs</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+        # Filtered strategy cards based on segment filter
+        strategy_cards_html = ""
+
+        for cid, p in profs.items():
+            if segment_filter == 'all' or segment_filter == cid:
+                
+                # --- LANGKAH PERBAIKAN: Susun Taktik dan KPI secara UTUH dalam string ---
+                
+                # 1. Build tactics HTML (gunakan span atau div sederhana yang pasti ditutup)
+                tactics_html = "".join([
+                    f'<span class="tactic-chip">{tactic}</span>' for tactic in p['tactics']
+                ])
+                
+                # 2. Build KPIs HTML (gunakan span atau div sederhana yang pasti ditutup)
+                kpis_html = "".join([
+                    f'<span class="kpi-badge">{kpi}</span>' for kpi in p['kpis']
+                ])
+                
+                # 3. Gabungkan semua ke dalam template UTUH dan LENGKAP
+                strategy_cards_html += f"""
+                <div class="strategy-card" style="background: {p['grad']}">
+                    <div class="strategy-header">
+                        <div>
+                            <h3 class="strategy-name">{p['name']}</h3>
+                            <div class="strategy-subtitle">{p['strategy']} Strategy</div>
+                        </div>
+                        <div class="priority-badge">{p['priority']}</div>
+                    </div>
+                    
+                    <div class="segment-content">
+                        <div class="segment-section">
+                            <div class="section-title-small">🎯 Key Tactics</div>
+                            <div class="tactics-grid">
+                                {tactics_html}
+                            </div>
+                        </div>
+                        
+                        <div class="segment-section">
+                            <div class="section-title-small">📊 Target KPIs</div>
+                            <div class="kpis-grid">
+                                {kpis_html}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="segment-footer">
+                        <div class="budget-item">
+                            <div class="budget-label">Budget Allocation</div>
+                            <div class="budget-value">{p['budget']}</div>
+                        </div>
+                        <div class="budget-item">
+                            <div class="budget-label">Expected ROI</div>
+                            <div class="budget-value">{p['roi']}</div>
+                        </div>
+                    </div>
+                </div>
+                """
+                
+        if strategy_cards_html:
+            st.markdown(f'<div class="strategy-grid">{strategy_cards_html}</div>', unsafe_allow_html=True)
+        else:
+            st.markdown("""
+            <div class="empty-state">
+                <div class="empty-icon">🎯</div>
+                <h3>No Strategy Cards Available</h3>
+                <p>Try selecting a different segment filter</p>
+            </div>
+            """, unsafe_allow_html=True)
     
     with tab3:
         if len(filtered_df) > 0:
