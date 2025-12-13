@@ -1,3 +1,4 @@
+
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -131,6 +132,23 @@ st.markdown("""
                   -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0; line-height: 1.2}
     .header-subtitle {color: #94a3b8; font-size: 1.1rem; margin-top: 0.25rem; font-weight: 400; max-width: 800px}
     
+    /* METRICS GRID dengan neumorphism */
+    .metrics-grid {display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin: 1.5rem 0}
+    @media (max-width: 1200px) {.metrics-grid {grid-template-columns: repeat(2, 1fr)}}
+    @media (max-width: 768px) {.metrics-grid {grid-template-columns: 1fr}}
+    .metric-card {background: rgba(30, 41, 59, 0.8); border-radius: 16px; padding: 1.5rem; 
+                  border: 1px solid rgba(255, 255, 255, 0.05); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                  position: relative; overflow: hidden}
+    .metric-card:hover {transform: translateY(-4px); border-color: rgba(102, 126, 234, 0.3); 
+                       box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3)}
+    .metric-card::before {content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; 
+                         background: linear-gradient(90deg, #667eea, #764ba2)}
+    .metric-icon {font-size: 2rem; margin-bottom: 1rem; display: inline-block}
+    .metric-value {font-size: 2rem; font-weight: 800; color: #fff; margin: 0.5rem 0; line-height: 1}
+    .metric-label {font-size: 0.875rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600}
+    .metric-change {font-size: 0.75rem; display: flex; align-items: center; gap: 0.25rem; margin-top: 0.5rem}
+    .change-positive {color: #10b981}
+    .change-negative {color: #ef4444}
     
     /* FILTER SECTION - DIPERBAIKI */
     .filter-section {background: rgba(30, 41, 59, 0.8); border-radius: 16px; padding: 1.5rem; 
@@ -245,8 +263,7 @@ st.markdown("""
     div[data-testid="stExpander"] > details > summary:hover {color: #fff !important}
     div[data-testid="stExpander"] > details > div {padding: 1rem; background: transparent !important}
     
-    /* FILTER CONTENT CONTAINER */
-    .filter-content {padding: 0.5rem 0}
+  
     
     /* CUSTOM LABELS untuk filter */
     .custom-label {display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; color: #94a3b8; font-size: 0.875rem; font-weight: 600}
