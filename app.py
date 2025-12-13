@@ -112,7 +112,7 @@ def init_data(rfm):
 
 profs, colors, rfm = init_data(rfm)
 
-# CSS Custom untuk Streamlit yang lebih modern dengan perbaikan judul
+# CSS Custom untuk Streamlit yang lebih modern dengan perbaikan untuk bubble overflow
 st.markdown("""
 <style>
     * {margin: 0; padding: 0; box-sizing: border-box}
@@ -161,7 +161,8 @@ st.markdown("""
         -webkit-background-clip: text; 
         -webkit-text-fill-color: transparent; 
         margin: 0;
-        word-wrap: break-word;
+        word-wrap: break-word !important;
+        overflow-wrap: break-word !important;
         max-width: 100% !important;
     }
     .header-subtitle {
@@ -170,7 +171,8 @@ st.markdown("""
         margin-top: 0.25rem; 
         font-weight: 400;
         max-width: 100% !important;
-        word-wrap: break-word;
+        word-wrap: break-word !important;
+        overflow-wrap: break-word !important;
     }
     .header-stats {
         display: flex; 
@@ -194,13 +196,19 @@ st.markdown("""
         font-size: 1.25rem; 
         font-weight: 700; 
         color: #fff; 
-        margin-bottom: 0.25rem
+        margin-bottom: 0.25rem;
+        word-wrap: break-word !important;
+        overflow-wrap: break-word !important;
+        max-width: 100% !important;
     }
     .stat-label {
         font-size: 0.75rem; 
         color: #94a3b8; 
         text-transform: uppercase; 
-        letter-spacing: 0.05em
+        letter-spacing: 0.05em;
+        word-wrap: break-word !important;
+        overflow-wrap: break-word !important;
+        max-width: 100% !important;
     }
     
     /* METRICS GRID dengan neumorphism */
@@ -254,14 +262,20 @@ st.markdown("""
         font-weight: 800; 
         color: #fff; 
         margin: 0.5rem 0; 
-        line-height: 1
+        line-height: 1;
+        word-wrap: break-word !important;
+        overflow-wrap: break-word !important;
+        max-width: 100% !important;
     }
     .metric-label {
         font-size: 0.875rem; 
         color: #94a3b8; 
         text-transform: uppercase; 
         letter-spacing: 0.05em; 
-        font-weight: 600
+        font-weight: 600;
+        word-wrap: break-word !important;
+        overflow-wrap: break-word !important;
+        max-width: 100% !important;
     }
     .metric-change {
         font-size: 0.75rem; 
@@ -291,7 +305,10 @@ st.markdown("""
         margin-bottom: 1rem; 
         display: flex; 
         align-items: center; 
-        gap: 0.5rem
+        gap: 0.5rem;
+        word-wrap: break-word !important;
+        overflow-wrap: break-word !important;
+        max-width: 100% !important;
     }
     .filter-grid {
         display: grid; 
@@ -378,7 +395,8 @@ st.markdown("""
         gap: 0.5rem; 
         margin: 0; 
         padding: 0.5rem 0;
-        word-wrap: break-word;
+        word-wrap: break-word !important;
+        overflow-wrap: break-word !important;
         max-width: 100% !important;
     }
     .chart-content {
@@ -386,6 +404,7 @@ st.markdown("""
         min-height: 300px;
         max-width: 100% !important;
         overflow: hidden !important;
+        box-sizing: border-box !important;
     }
     .charts-grid {
         display: grid; 
@@ -405,7 +424,7 @@ st.markdown("""
         overflow: hidden !important;
     }
     
-    /* STRATEGY CARDS */
+    /* STRATEGY CARDS - PERBAIKAN BUBBLE OVERFLOW */
     .strategy-grid {
         display: grid; 
         grid-template-columns: repeat(2, 1fr); 
@@ -446,8 +465,10 @@ st.markdown("""
         font-weight: 800; 
         margin: 0; 
         line-height: 1.2;
-        word-wrap: break-word;
-        max-width: 70% !important;
+        word-wrap: break-word !important;
+        overflow-wrap: break-word !important;
+        hyphens: auto !important;
+        max-width: 100% !important;
     }
     .priority-badge {
         padding: 0.375rem 0.75rem; 
@@ -459,13 +480,16 @@ st.markdown("""
         background: rgba(255, 255, 255, 0.2);
         backdrop-filter: blur(10px);
         white-space: nowrap;
+        flex-shrink: 0;
     }
     .strategy-subtitle {
         font-size: 1rem; 
         color: rgba(255, 255, 255, 0.9); 
         margin-bottom: 1rem; 
         font-weight: 500;
-        word-wrap: break-word;
+        word-wrap: break-word !important;
+        overflow-wrap: break-word !important;
+        hyphens: auto !important;
         max-width: 100% !important;
     }
     .tactics-section {
@@ -486,7 +510,8 @@ st.markdown("""
         text-transform: uppercase; 
         letter-spacing: 0.05em;
         max-width: 100% !important;
-        word-wrap: break-word;
+        word-wrap: break-word !important;
+        overflow-wrap: break-word !important;
     }
     .tactics-grid {
         display: grid; 
@@ -494,10 +519,12 @@ st.markdown("""
         gap: 0.5rem;
         max-width: 100% !important;
         overflow: hidden !important;
+        box-sizing: border-box !important;
     }
     @media (max-width: 768px) {
         .tactics-grid {grid-template-columns: 1fr}
     }
+    /* PERBAIKAN UTAMA: Bubble/Container untuk taktik */
     .tactic-item {
         background: rgba(255, 255, 255, 0.15); 
         border-radius: 8px; 
@@ -505,9 +532,14 @@ st.markdown("""
         font-size: 0.875rem;
         transition: all 0.2s ease; 
         border-left: 3px solid transparent;
-        word-wrap: break-word;
+        word-wrap: break-word !important;
+        overflow-wrap: break-word !important;
+        hyphens: auto !important;
         max-width: 100% !important;
         overflow: hidden !important;
+        box-sizing: border-box !important;
+        white-space: normal !important;
+        line-height: 1.4 !important;
     }
     .tactic-item:hover {
         background: rgba(255, 255, 255, 0.2); 
@@ -521,7 +553,9 @@ st.markdown("""
         margin: 1rem 0;
         max-width: 100% !important;
         overflow: hidden !important;
+        box-sizing: border-box !important;
     }
+    /* PERBAIKAN UTAMA: Bubble/Container untuk KPI */
     .kpi-item {
         background: rgba(255, 255, 255, 0.1); 
         border-radius: 8px; 
@@ -529,9 +563,14 @@ st.markdown("""
         text-align: center;
         font-size: 0.875rem; 
         font-weight: 600;
-        word-wrap: break-word;
+        word-wrap: break-word !important;
+        overflow-wrap: break-word !important;
+        hyphens: auto !important;
         max-width: 100% !important;
         overflow: hidden !important;
+        box-sizing: border-box !important;
+        white-space: normal !important;
+        line-height: 1.4 !important;
     }
     .strategy-footer {
         display: flex; 
@@ -546,18 +585,21 @@ st.markdown("""
         text-align: center;
         max-width: 48% !important;
         overflow: hidden !important;
+        box-sizing: border-box !important;
     }
     .budget-label {
         font-size: 0.75rem; 
         color: rgba(255, 255, 255, 0.7); 
         margin-bottom: 0.25rem;
-        word-wrap: break-word;
+        word-wrap: break-word !important;
+        overflow-wrap: break-word !important;
         max-width: 100% !important;
     }
     .budget-value {
         font-size: 1.5rem; 
         font-weight: 800;
-        word-wrap: break-word;
+        word-wrap: break-word !important;
+        overflow-wrap: break-word !important;
         max-width: 100% !important;
     }
     
@@ -580,7 +622,8 @@ st.markdown("""
         display: flex; 
         align-items: center; 
         gap: 0.5rem;
-        word-wrap: break-word;
+        word-wrap: break-word !important;
+        overflow-wrap: break-word !important;
         max-width: 100% !important;
     }
     .champion-grid {
@@ -613,7 +656,8 @@ st.markdown("""
         font-weight: 800; 
         color: #FFD700; 
         margin-bottom: 0.5rem;
-        word-wrap: break-word;
+        word-wrap: break-word !important;
+        overflow-wrap: break-word !important;
         max-width: 100% !important;
     }
     .champion-tier {
@@ -621,14 +665,17 @@ st.markdown("""
         font-weight: 700; 
         color: #fff; 
         margin-bottom: 0.5rem;
-        word-wrap: break-word;
+        word-wrap: break-word !important;
+        overflow-wrap: break-word !important;
         max-width: 100% !important;
     }
     .champion-desc {
         font-size: 0.875rem; 
         color: rgba(255, 255, 255, 0.8); 
         margin-bottom: 0.5rem;
-        word-wrap: break-word;
+        word-wrap: break-word !important;
+        overflow-wrap: break-word !important;
+        hyphens: auto !important;
         max-width: 100% !important;
     }
     .champion-chars {
@@ -637,9 +684,12 @@ st.markdown("""
         background: rgba(255, 215, 0, 0.1);
         padding: 0.5rem; 
         border-radius: 6px;
-        word-wrap: break-word;
+        word-wrap: break-word !important;
+        overflow-wrap: break-word !important;
+        hyphens: auto !important;
         max-width: 100% !important;
         overflow: hidden !important;
+        box-sizing: border-box !important;
     }
     
     /* INSIGHTS SECTION */
@@ -661,7 +711,8 @@ st.markdown("""
         display: flex; 
         align-items: center; 
         gap: 0.5rem;
-        word-wrap: break-word;
+        word-wrap: break-word !important;
+        overflow-wrap: break-word !important;
         max-width: 100% !important;
     }
     .insights-grid {
@@ -689,7 +740,8 @@ st.markdown("""
         font-weight: 700; 
         color: #4facfe; 
         margin-bottom: 0.75rem;
-        word-wrap: break-word;
+        word-wrap: break-word !important;
+        overflow-wrap: break-word !important;
         max-width: 100% !important;
     }
     .insight-list {
@@ -702,7 +754,9 @@ st.markdown("""
         padding: 0.5rem 0; 
         border-bottom: 1px solid rgba(79, 172, 254, 0.2); 
         color: rgba(255, 255, 255, 0.9);
-        word-wrap: break-word;
+        word-wrap: break-word !important;
+        overflow-wrap: break-word !important;
+        hyphens: auto !important;
         max-width: 100% !important;
     }
     .insight-list li:last-child {
@@ -784,6 +838,27 @@ st.markdown("""
         right: 5px !important;
         left: auto !important;
         max-width: 100% !important;
+    }
+    
+    /* PERBAIKAN TAMBAHAN: Global text wrapping untuk semua elemen teks */
+    .tactic-item, .kpi-item, .strategy-name, .strategy-subtitle,
+    .champion-desc, .champion-chars, .budget-label, .budget-value,
+    .metric-value, .metric-label, .stat-value, .stat-label,
+    .chart-title, .filter-title, .insight-heading, .champion-title,
+    .champion-tier, .tactics-title {
+        word-wrap: break-word !important;
+        overflow-wrap: break-word !important;
+        max-width: 100% !important;
+        overflow: hidden !important;
+        box-sizing: border-box !important;
+        hyphens: auto !important;
+    }
+    
+    /* Force semua card dan container untuk wrap konten */
+    div[class*="card"], div[class*="item"], div[class*="container"] {
+        overflow: hidden !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
     }
 </style>
 """, unsafe_allow_html=True)
