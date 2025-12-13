@@ -112,7 +112,7 @@ def init_data(rfm):
 
 profs, colors, rfm = init_data(rfm)
 
-# CSS Custom untuk Streamlit yang lebih modern - DIPERBAIKI dengan tambahan untuk equal height cards
+# CSS Custom untuk Streamlit yang lebih modern - DIPERBAIKI dengan tambahan untuk Strategy Cards
 st.markdown("""
 <style>
     * {margin: 0; padding: 0; box-sizing: border-box}
@@ -293,9 +293,26 @@ st.markdown("""
     }
     
     
-    /* STRATEGY CARDS */
-    .strategy-grid {display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; margin-bottom: 2rem}
-    @media (max-width: 1200px) {.strategy-grid {grid-template-columns: 1fr}}
+    /* STRATEGY CARDS - DIPERBAIKI */
+    .strategy-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+        gap: 2rem;
+        margin-bottom: 2rem;
+    }
+    
+    @media (max-width: 1200px) {
+        .strategy-grid {
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .strategy-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+    
     .strategy-card {
         border-radius: 20px; 
         padding: 2rem; 
@@ -305,11 +322,16 @@ st.markdown("""
         overflow: hidden;
         transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        cursor: pointer;
+        min-height: 450px;
     }
+    
     .strategy-card:hover {
         transform: translateY(-8px); 
         box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+        border-color: rgba(255, 255, 255, 0.3);
     }
+    
     .strategy-header {display: flex; justify-content: space-between; align-items: start; margin-bottom: 1.25rem}
     .strategy-name {font-size: 1.75rem; font-weight: 900; margin: 0; line-height: 1.2}
     .priority-badge {
@@ -343,32 +365,75 @@ st.markdown("""
         align-items: center;
         gap: 0.5rem;
     }
-    .tactics-grid {display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem}
-    @media (max-width: 768px) {.tactics-grid {grid-template-columns: 1fr}}
+    
+    /* TACTICS GRID dengan badges */
+    .tactics-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.75rem;
+    }
+    
+    @media (max-width: 992px) {
+        .tactics-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+    
     .tactic-item {
         background: rgba(255, 255, 255, 0.1); 
         border-radius: 12px; 
-        padding: 1rem; 
-        font-size: 0.9rem;
+        padding: 0.75rem 1rem; 
+        font-size: 0.85rem;
         transition: all 0.2s ease; 
-        border-left: 4px solid transparent;
+        border-left: 4px solid rgba(255, 255, 255, 0.3);
         border: 1px solid rgba(255, 255, 255, 0.05);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
     }
+    
     .tactic-item:hover {
         background: rgba(255, 255, 255, 0.15); 
         transform: translateX(4px); 
-        border-left-color: rgba(255, 255, 255, 0.5);
+        border-left-color: rgba(255, 255, 255, 0.8);
     }
-    .kpis-grid {display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin: 1.5rem 0}
+    
+    /* KPIS GRID dengan visualisasi mini */
+    .kpis-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.75rem;
+        margin: 1.5rem 0;
+    }
+    
+    @media (max-width: 768px) {
+        .kpis-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .kpis-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+    
     .kpi-item {
         background: rgba(255, 255, 255, 0.08); 
         border-radius: 12px; 
-        padding: 1rem; 
+        padding: 0.75rem; 
         text-align: center;
-        font-size: 0.875rem; 
+        font-size: 0.8rem; 
         font-weight: 700;
         border: 1px solid rgba(255, 255, 255, 0.05);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 0.25rem;
     }
+    
+    /* FOOTER dengan visualisasi mini */
     .strategy-footer {
         display: flex; 
         justify-content: space-between; 
@@ -377,11 +442,87 @@ st.markdown("""
         border-top: 1px solid rgba(255, 255, 255, 0.1);
         gap: 1rem;
     }
-    .budget-item {text-align: center; flex: 1}
-    .budget-label {font-size: 0.8rem; color: rgba(255, 255, 255, 0.7); margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em;}
-    .budget-value {font-size: 1.75rem; font-weight: 900}
     
-    /* CHAMPION BREAKDOWN */
+    .budget-item {
+        text-align: center; 
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .budget-label {
+        font-size: 0.75rem; 
+        color: rgba(255, 255, 255, 0.7); 
+        margin-bottom: 0.75rem; 
+        text-transform: uppercase; 
+        letter-spacing: 0.05em;
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+    }
+    
+    .budget-value {
+        font-size: 1.75rem; 
+        font-weight: 900;
+        margin-bottom: 0.5rem;
+    }
+    
+    /* BUDGET PROGRESS BAR */
+    .budget-progress {
+        width: 100%;
+        height: 6px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 3px;
+        overflow: hidden;
+        margin-top: 0.5rem;
+    }
+    
+    .budget-progress-fill {
+        height: 100%;
+        border-radius: 3px;
+        transition: width 0.5s ease;
+    }
+    
+    /* ROI GAUGE */
+    .roi-gauge {
+        width: 80px;
+        height: 40px;
+        position: relative;
+        margin: 0.5rem auto;
+    }
+    
+    .roi-gauge-background {
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 20px 20px 0 0;
+        overflow: hidden;
+        position: relative;
+    }
+    
+    .roi-gauge-fill {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 0%;
+        border-radius: 20px 20px 0 0;
+        transition: height 1s ease;
+    }
+    
+    .roi-value {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 1rem;
+        font-weight: 900;
+        color: #fff;
+        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+    }
+    
+    /* CHAMPION BREAKDOWN - DIPERBAIKI */
     .champion-section {
         background: linear-gradient(135deg, rgba(255, 215, 0, 0.08) 0%, rgba(255, 140, 0, 0.08) 100%); 
         border: 1px solid rgba(255, 215, 0, 0.2); 
@@ -390,6 +531,7 @@ st.markdown("""
         margin: 2rem 0;
         box-shadow: 0 10px 25px rgba(255, 215, 0, 0.05);
     }
+    
     .champion-title {
         font-size: 1.75rem; 
         font-weight: 900; 
@@ -401,31 +543,77 @@ st.markdown("""
         padding-bottom: 0.75rem;
         border-bottom: 2px solid rgba(255, 215, 0, 0.3);
     }
-    .champion-grid {display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem}
-    @media (max-width: 768px) {.champion-grid {grid-template-columns: 1fr}}
+    
+    .champion-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.5rem;
+        margin-top: 1.5rem;
+    }
+    
+    @media (max-width: 768px) {
+        .champion-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+    
     .champion-card {
         background: rgba(255, 215, 0, 0.08); 
         border: 1px solid rgba(255, 215, 0, 0.2); 
         border-radius: 16px; 
         padding: 1.5rem; 
         transition: all 0.3s ease;
+        cursor: pointer;
     }
+    
     .champion-card:hover {
         background: rgba(255, 215, 0, 0.12); 
         transform: translateY(-4px);
         box-shadow: 0 10px 20px rgba(255, 215, 0, 0.1);
     }
+    
+    .champion-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 1rem;
+    }
+    
     .champion-number {
-        font-size: 1.5rem; 
-        font-weight: 900; 
+        font-size: 1.1rem; 
+        font-weight: 700; 
         color: #FFD700; 
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: rgba(255, 215, 0, 0.1);
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+    }
+    
+    .segment-id {
+        font-size: 0.8rem;
+        color: rgba(255, 215, 0, 0.7);
+        font-weight: 600;
+    }
+    
+    .champion-tier {
+        font-size: 1.25rem; 
+        font-weight: 800; 
+        color: #fff; 
         margin-bottom: 0.75rem;
         display: flex;
         align-items: center;
         gap: 0.5rem;
     }
-    .champion-tier {font-size: 1.1rem; font-weight: 800; color: #fff; margin-bottom: 0.75rem}
-    .champion-desc {font-size: 0.95rem; color: rgba(255, 255, 255, 0.85); margin-bottom: 1rem; line-height: 1.5;}
+    
+    .champion-desc {
+        font-size: 0.95rem; 
+        color: rgba(255, 255, 255, 0.85); 
+        margin-bottom: 1rem; 
+        line-height: 1.5;
+    }
+    
     .champion-chars {
         font-size: 0.8rem; 
         color: rgba(255, 215, 0, 0.9); 
@@ -433,6 +621,9 @@ st.markdown("""
         padding: 0.75rem; 
         border-radius: 10px;
         border: 1px solid rgba(255, 215, 0, 0.2);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
     }
     
     /* INSIGHTS SECTION - DIPERBAIKI */
@@ -444,6 +635,7 @@ st.markdown("""
         margin: 2rem 0;
         box-shadow: 0 10px 25px rgba(79, 172, 254, 0.05);
     }
+    
     .insights-title {
         font-size: 1.75rem; 
         font-weight: 900; 
@@ -574,42 +766,49 @@ st.markdown("""
         overflow: hidden;
         border-width: 1px !important;
     }
+    
     div[data-testid="stSelectbox"] svg {color: #94a3b8 !important}
+    
     div[data-testid="stSlider"] > div {
         background: rgba(30, 41, 59, 0.8); 
         border-radius: 12px; 
         padding: 0.5rem 0.75rem;
         border: 1px solid rgba(255, 255, 255, 0.1);
     }
+    
     div[data-testid="stSlider"] .stSlider > div > div > div {
         background: linear-gradient(90deg, #667eea, #764ba2) !important;
         border-radius: 10px;
     }
+    
     div[data-testid="stSlider"] .stSlider > div > div > div:first-child {
         background: rgba(102, 126, 234, 0.2) !important;
         border-radius: 10px;
     }
+    
     div[data-testid="stExpander"] {
         background: rgba(30, 41, 59, 0.8); 
         border: 1px solid rgba(255, 255, 255, 0.1); 
         border-radius: 12px; 
         margin-top: 1.5rem;
     }
+    
     div[data-testid="stExpander"] > details > summary {
         color: #94a3b8 !important; 
         font-weight: 700; 
         padding: 1.25rem;
         font-size: 1rem;
     }
+    
     div[data-testid="stExpander"] > details > summary:hover {
         color: #fff !important;
         background: rgba(255, 255, 255, 0.05);
     }
+    
     div[data-testid="stExpander"] > details > div {
         padding: 1.5rem; 
         background: transparent !important;
     }
-    
     
     /* CUSTOM LABELS untuk filter */
     .custom-label {
@@ -648,12 +847,11 @@ def create_charts(df):
         insidetextorientation='radial'
     ))
     
-    # PERBAIKAN: Semua judul chart sekarang konsisten
     fig1.update_layout(
         title=dict(
             text="🎯 Customer Distribution",
-            font=dict(color='white', size=30),  # Font size disamakan 20
-            x=0.5,                             # Posisi di tengah
+            font=dict(color='white', size=30),
+            x=0.5,
             xanchor='center'
         ),
         height=400,
@@ -691,7 +889,7 @@ def create_charts(df):
         fig2.update_layout(
             title=dict(
                 text="💰 Revenue by Segment",
-                font=dict(color='white', size=30),  # Font size disamakan 20
+                font=dict(color='white', size=30),
                 x=0.5,
                 xanchor='center'
             ),
@@ -712,7 +910,7 @@ def create_charts(df):
         fig2.update_layout(
             title=dict(
                 text="💰 Revenue by Segment", 
-                font=dict(color='white', size=30),  # Font size disamakan 20
+                font=dict(color='white', size=30),
                 x=0.5,
                 xanchor='center'
             ),
@@ -751,7 +949,7 @@ def create_charts(df):
         fig3.update_layout(
             title=dict(
                 text="📈 3D RFM Analysis",
-                font=dict(color='white', size=30),  # Font size disamakan 20
+                font=dict(color='white', size=30),
                 x=0.5,
                 xanchor='center'
             ),
@@ -782,7 +980,7 @@ def create_charts(df):
         fig3.update_layout(
             title=dict(
                 text="📈 3D RFM Analysis", 
-                font=dict(color='white', size=30),  # Font size disamakan 20
+                font=dict(color='white', size=30),
                 x=0.5,
                 xanchor='center'
             ),
@@ -798,7 +996,7 @@ def create_charts(df):
             fig.update_layout(
                 title=dict(
                     text=title, 
-                    font=dict(color='white', size=18),  # Font size sedikit lebih kecil untuk histogram
+                    font=dict(color='white', size=18),
                     x=0.5,
                     xanchor='center'
                 ),
@@ -819,7 +1017,7 @@ def create_charts(df):
         fig.update_layout(
             title=dict(
                 text=title, 
-                font=dict(color='white', size=30),  # Font size sedikit lebih kecil untuk histogram
+                font=dict(color='white', size=30),
                 x=0.5,
                 xanchor='center'
             ),
@@ -919,7 +1117,7 @@ def create_charts(df):
         fig7.update_layout(
             title=dict(
                 text="📊 Segment Summary",
-                font=dict(color='white', size=30),  # Font size disamakan 20
+                font=dict(color='white', size=30),
                 x=0.5,
                 xanchor='center'
             ),
@@ -934,7 +1132,7 @@ def create_charts(df):
         fig7.update_layout(
             title=dict(
                 text="📊 Segment Summary", 
-                font=dict(color='white', size=30),  # Font size disamakan 20
+                font=dict(color='white', size=30),
                 x=0.5,
                 xanchor='center'
             ),
@@ -1075,9 +1273,6 @@ def main():
     
     st.markdown('</div>', unsafe_allow_html=True)
     
-    # Divider 1
-
-    
     # Section 2: Data Filters dengan section header
     st.markdown("""
     <div class="section-header">
@@ -1213,7 +1408,6 @@ def main():
         st.markdown('</div>', unsafe_allow_html=True)
         st.markdown('</div>', unsafe_allow_html=True)
     
-    # Divider 2
     # Apply filters
     filtered_df = rfm.copy()
     
@@ -1322,35 +1516,45 @@ def main():
             """, unsafe_allow_html=True)
     
     with tab2:
-        # Champion Breakdown Section
+        # Champion Breakdown Section - DIPERBAIKI
         champion_clusters = [c for c in filtered_df['Cluster_KMeans'].unique() 
                             if c in profs and profs[c]['name'] == '🏆 Champions']
         
         if len(champion_clusters) > 0:
-            st.markdown('<div class="champion-section">', unsafe_allow_html=True)
-            st.markdown('<div class="champion-title">🏆 Champion Segments Breakdown</div>', unsafe_allow_html=True)
+            champion_cards_html = '<div class="champion-grid">'
             
-            cols = st.columns(2)
-            for idx, cid in enumerate(sorted(champion_clusters)):
+            for cid in champion_clusters:
                 if cid in champion_details:
                     det = champion_details[cid]
-                    with cols[idx % 2]:
-                        st.markdown(f"""
-                        <div class="champion-card">
-                            <div class="champion-number">Champion C{cid}</div>
-                            <div class="champion-tier">🏅 {det['tier']}</div>
-                            <div class="champion-desc">{det['desc']}</div>
-                            <div class="champion-chars">📊 {det['char']}</div>
+                    # Get the actual segment name from profs
+                    segment_name = profs[cid]['name'] if cid in profs else f"Champion Segment"
+                    
+                    champion_cards_html += f"""
+                    <div class="champion-card">
+                        <div class="champion-header">
+                            <div class="champion-number">
+                                <span>{segment_name}</span>
+                            </div>
+                            <div class="segment-id">Segment ID: C{cid}</div>
                         </div>
-                        """, unsafe_allow_html=True)
+                        <div class="champion-tier">🏅 {det['tier']}</div>
+                        <div class="champion-desc">{det['desc']}</div>
+                        <div class="champion-chars">📊 {det['char']}</div>
+                    </div>
+                    """
             
+            champion_cards_html += '</div>'
+            
+            st.markdown('<div class="champion-section">', unsafe_allow_html=True)
+            st.markdown('<div class="champion-title">🏆 Champion Segments Breakdown</div>', unsafe_allow_html=True)
+            st.markdown(champion_cards_html, unsafe_allow_html=True)
             st.markdown('</div>', unsafe_allow_html=True)
         
-        # Strategy Cards
+        # Strategy Cards - DIPERBAIKI dengan visualisasi mini
         strategy_cards_html = ""
         for cid, p in profs.items():
             if segment_filter == 'all' or segment_filter == cid:
-                # Build tactics HTML
+                # Build tactics HTML dengan badges
                 tactics_html = ""
                 for tactic in p['tactics']:
                     tactics_html += f'<div class="tactic-item">{tactic}</div>'
@@ -1358,10 +1562,21 @@ def main():
                 # Build KPIs HTML
                 kpis_html = ""
                 for kpi in p['kpis']:
-                    kpis_html += f'<div class="kpi-item">{kpi}</div>'
+                    # Tambahkan ikon yang sesuai berdasarkan KPI
+                    icon = "📈" if "Retention" in kpi else "💰" if "Upsell" in kpi else "👥" if "Referral" in kpi else "🎯"
+                    kpis_html += f'<div class="kpi-item">{icon} {kpi}</div>'
+                
+                # Hitung budget percentage untuk progress bar
+                budget_percentage = int(p['budget'].replace('%', ''))
+                budget_color = "#667eea" if budget_percentage <= 15 else "#f093fb" if budget_percentage <= 25 else "#FFD700"
+                
+                # Hitung ROI untuk gauge
+                roi_value = int(p['roi'].replace('%', ''))
+                roi_fill_height = min(100, (roi_value / 500) * 100)  # Normalisasi ke 500%
+                roi_color = "#10b981" if roi_value >= 400 else "#f093fb" if roi_value >= 300 else "#667eea"
                 
                 strategy_cards_html += f"""
-                <div class="strategy-card" style="background: {p['grad']}">
+                <div class="strategy-card" style="background: {p['grad']}" onclick="this.style.transform='translateY(-8px)'; setTimeout(() => {{this.style.transform='translateY(0)'}}, 300)">
                     <div class="strategy-header">
                         <div>
                             <h3 class="strategy-name">{p['name']}</h3>
@@ -1386,12 +1601,20 @@ def main():
                     
                     <div class="strategy-footer">
                         <div class="budget-item">
-                            <div class="budget-label">Budget Allocation</div>
+                            <div class="budget-label">💰 Budget Allocation</div>
                             <div class="budget-value">{p['budget']}</div>
+                            <div class="budget-progress">
+                                <div class="budget-progress-fill" style="width: {budget_percentage}%; background: {budget_color};"></div>
+                            </div>
                         </div>
                         <div class="budget-item">
-                            <div class="budget-label">Expected ROI</div>
-                            <div class="budget-value">{p['roi']}</div>
+                            <div class="budget-label">🚀 Expected ROI</div>
+                            <div class="roi-gauge">
+                                <div class="roi-gauge-background">
+                                    <div class="roi-gauge-fill" style="height: {roi_fill_height}%; background: {roi_color};"></div>
+                                </div>
+                                <div class="roi-value">{p['roi']}</div>
+                            </div>
                         </div>
                     </div>
                 </div>
