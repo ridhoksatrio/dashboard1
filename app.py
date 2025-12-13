@@ -262,28 +262,6 @@ st.markdown("""
     .change-positive {color: #10b981; background: rgba(16, 185, 129, 0.1); padding: 0.25rem 0.5rem; border-radius: 20px;}
     .change-negative {color: #ef4444; background: rgba(239, 68, 68, 0.1); padding: 0.25rem 0.5rem; border-radius: 20px;}
   
-    /* FILTER SECTION - DIPERBAIKI */
-    .filter-section {
-        background: linear-gradient(135deg, rgba(30, 41, 59, 0.9) 0%, rgba(15, 23, 42, 0.8) 100%); 
-        border-radius: 20px; 
-        padding: 2rem; 
-        margin: 2rem 0; 
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-    }
-    .filter-title {
-        font-size: 1.5rem; 
-        font-weight: 800; 
-        color: #fff; 
-        margin-bottom: 1.75rem; 
-        display: flex; 
-        align-items: center; 
-        gap: 0.75rem;
-        padding-bottom: 0.75rem;
-        border-bottom: 2px solid rgba(102, 126, 234, 0.2);
-    }
-    .filter-grid {display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem}
-    @media (max-width: 768px) {.filter-grid {grid-template-columns: 1fr}}
     
     /* FILTER ITEMS - DITAMBAHKAN */
     .filter-column {padding: 0.5rem}
