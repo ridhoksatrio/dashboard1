@@ -278,7 +278,7 @@ def create_charts(df):
         textfont=dict(color='white'),
         insidetextorientation='radial'
     ))
-       fig1.update_layout(
+     fig1.update_layout(
         title=dict(
         text="🎯 Customer Distribution",
         font=dict(color='white', size=24), # Font Size Diperbesar menjadi 24
@@ -295,8 +295,8 @@ def create_charts(df):
             y=-0.2,
             xanchor='center',
             x=0.5
+        )
     )
-)
     
     # Chart 2: Revenue by Segment
     if 'Monetary' in df.columns:
