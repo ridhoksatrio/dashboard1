@@ -172,6 +172,14 @@ st.markdown("""
                                    color: #fff !important; border-color: transparent !important;
                                    box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3) !important}
     
+    /* CHARTS CONTAINER */
+    .chart-container {background: rgba(30, 41, 59, 0.8); border-radius: 16px; padding: 1.5rem; 
+                     border: 1px solid rgba(255, 255, 255, 0.05); margin-bottom: 1.5rem}
+    .chart-title {font-size: 1.125rem; font-weight: 700; color: #fff; margin-bottom: 1rem; 
+                 display: flex; align-items: center; gap: 0.5rem}
+    .charts-grid {display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; margin-bottom: 1.5rem}
+    @media (max-width: 1200px) {.charts-grid {grid-template-columns: 1fr}}
+    .chart-full {grid-column: 1 / -1}
     
     /* STRATEGY CARDS */
     .strategy-grid {display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; margin-bottom: 1.5rem}
@@ -254,6 +262,8 @@ st.markdown("""
     div[data-testid="stExpander"] > details > summary:hover {color: #fff !important}
     div[data-testid="stExpander"] > details > div {padding: 1rem; background: transparent !important}
     
+    /* FILTER CONTENT CONTAINER */
+    .filter-content {padding: 0.5rem 0}
     
     /* CUSTOM LABELS untuk filter */
     .custom-label {display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; color: #94a3b8; font-size: 0.875rem; font-weight: 600}
@@ -279,12 +289,13 @@ def create_charts(df):
         insidetextorientation='radial'
     ))
     
-    # PERBAIKAN INI: Pastikan indentasi konsisten
+    # PERBAIKAN: Semua judul chart sekarang konsisten
     fig1.update_layout(
         title=dict(
             text="🎯 Customer Distribution",
-            font=dict(color='white', size=24), # Font Size Diperbesar menjadi 24
-            x=0.0                            # Posisi Horizontal diatur ke Paling Kiri
+            font=dict(color='white', size=20),  # Font size disamakan 20
+            x=0.5,                             # Posisi di tengah
+            xanchor='center'
         ),
         height=400,
         showlegend=True,
@@ -320,8 +331,9 @@ def create_charts(df):
         fig2.update_layout(
             title=dict(
                 text="💰 Revenue by Segment",
-                font=dict(color='white', size=16),
-                x=0.5
+                font=dict(color='white', size=20),  # Font size disamakan 20
+                x=0.5,
+                xanchor='center'
             ),
             xaxis=dict(
                 title=dict(text="Revenue (£)", font=dict(color='white')),
@@ -338,7 +350,12 @@ def create_charts(df):
     else:
         fig2 = go.Figure()
         fig2.update_layout(
-            title=dict(text="💰 Revenue by Segment", font=dict(color='white', size=16)),
+            title=dict(
+                text="💰 Revenue by Segment", 
+                font=dict(color='white', size=20),  # Font size disamakan 20
+                x=0.5,
+                xanchor='center'
+            ),
             height=400,
             plot_bgcolor='rgba(0,0,0,0)',
             paper_bgcolor='rgba(0,0,0,0)',
@@ -374,8 +391,9 @@ def create_charts(df):
         fig3.update_layout(
             title=dict(
                 text="📈 3D RFM Analysis",
-                font=dict(color='white', size=16),
-                x=0.5
+                font=dict(color='white', size=20),  # Font size disamakan 20
+                x=0.5,
+                xanchor='center'
             ),
             height=600,
             scene=dict(
@@ -402,7 +420,12 @@ def create_charts(df):
     else:
         fig3 = go.Figure()
         fig3.update_layout(
-            title=dict(text="📈 3D RFM Analysis", font=dict(color='white', size=16)),
+            title=dict(
+                text="📈 3D RFM Analysis", 
+                font=dict(color='white', size=20),  # Font size disamakan 20
+                x=0.5,
+                xanchor='center'
+            ),
             height=600,
             plot_bgcolor='rgba(0,0,0,0)',
             paper_bgcolor='rgba(0,0,0,0)'
@@ -413,7 +436,12 @@ def create_charts(df):
         if column not in df.columns:
             fig = go.Figure()
             fig.update_layout(
-                title=dict(text=title, font=dict(color='white', size=14)),
+                title=dict(
+                    text=title, 
+                    font=dict(color='white', size=18),  # Font size sedikit lebih kecil untuk histogram
+                    x=0.5,
+                    xanchor='center'
+                ),
                 height=300,
                 plot_bgcolor='rgba(0,0,0,0)',
                 paper_bgcolor='rgba(0,0,0,0)'
@@ -429,7 +457,12 @@ def create_charts(df):
             marker_line_width=1
         ))
         fig.update_layout(
-            title=dict(text=title, font=dict(color='white', size=14)),
+            title=dict(
+                text=title, 
+                font=dict(color='white', size=18),  # Font size sedikit lebih kecil untuk histogram
+                x=0.5,
+                xanchor='center'
+            ),
             height=300,
             bargap=0.1,
             xaxis=dict(
@@ -526,8 +559,9 @@ def create_charts(df):
         fig7.update_layout(
             title=dict(
                 text="📊 Segment Summary",
-                font=dict(color='white', size=16),
-                x=0.5
+                font=dict(color='white', size=20),  # Font size disamakan 20
+                x=0.5,
+                xanchor='center'
             ),
             height=400,
             margin=dict(t=50, b=20, l=20, r=20),
@@ -538,7 +572,12 @@ def create_charts(df):
     except Exception as e:
         fig7 = go.Figure()
         fig7.update_layout(
-            title=dict(text="📊 Segment Summary", font=dict(color='white', size=16)),
+            title=dict(
+                text="📊 Segment Summary", 
+                font=dict(color='white', size=20),  # Font size disamakan 20
+                x=0.5,
+                xanchor='center'
+            ),
             height=400,
             plot_bgcolor='rgba(0,0,0,0)',
             paper_bgcolor='rgba(0,0,0,0)',
