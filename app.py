@@ -1147,8 +1147,6 @@ def main():
         st.markdown('</div>', unsafe_allow_html=True)
     
     # Divider 2
-    st.markdown('<div class="section-divider-thick"></div>', unsafe_allow_html=True)
-    
     # Apply filters
     filtered_df = rfm.copy()
     
