@@ -557,12 +557,20 @@ st.markdown("""
         font-size: 1.75rem; 
         font-weight: 900; 
         color: #FFD700; 
-        margin-bottom: 1.5rem; 
+        margin-bottom: 1rem; 
         display: flex; 
         align-items: center; 
         gap: 0.75rem;
         padding-bottom: 0.75rem;
         border-bottom: 2px solid rgba(255, 215, 0, 0.3);
+    }
+    
+    .champion-subtitle {
+        font-size: 1.1rem;
+        color: rgba(255, 215, 0, 0.8);
+        margin-bottom: 1.5rem;
+        text-align: center;
+        font-weight: 500;
     }
     
     /* PERBAIKAN PENTING: CSS Grid untuk layout yang benar */
@@ -580,13 +588,15 @@ st.markdown("""
     }
     
     .champion-card {
-        background: rgba(255, 215, 0, 0.08); 
-        border: 1px solid rgba(255, 215, 0, 0.2); 
+        background: linear-gradient(135deg, rgba(255, 215, 0, 0.1) 0%, rgba(255, 140, 0, 0.1) 100%);
+        border: 1px solid rgba(255, 215, 0, 0.3); 
         border-radius: 16px; 
         padding: 1.5rem; 
         transition: all 0.3s ease;
         cursor: pointer;
         height: 100%;
+        display: flex;
+        flex-direction: column;
     }
     
     .champion-card:hover {
@@ -600,28 +610,29 @@ st.markdown("""
         justify-content: space-between;
         align-items: flex-start;
         margin-bottom: 1rem;
+        padding-bottom: 0.75rem;
+        border-bottom: 1px solid rgba(255, 215, 0, 0.2);
     }
     
     .champion-number {
-        font-size: 1.1rem; 
+        font-size: 1.2rem; 
         font-weight: 700; 
         color: #FFD700; 
         display: flex;
         align-items: center;
         gap: 0.5rem;
-        background: rgba(255, 215, 0, 0.1);
-        padding: 0.5rem 1rem;
-        border-radius: 20px;
     }
     
     .segment-id {
-        font-size: 0.8rem;
+        font-size: 0.85rem;
         color: rgba(255, 215, 0, 0.7);
-        font-weight: 600;
+        background: rgba(255, 215, 0, 0.1);
+        padding: 0.25rem 0.75rem;
+        border-radius: 12px;
     }
     
     .champion-tier {
-        font-size: 1.25rem; 
+        font-size: 1.3rem; 
         font-weight: 800; 
         color: #fff; 
         margin-bottom: 0.75rem;
@@ -632,18 +643,19 @@ st.markdown("""
     
     .champion-desc {
         font-size: 0.95rem; 
-        color: rgba(255, 255, 255, 0.85); 
+        color: rgba(255, 255, 255, 0.9); 
         margin-bottom: 1rem; 
         line-height: 1.5;
+        flex-grow: 1;
     }
     
     .champion-chars {
-        font-size: 0.8rem; 
+        font-size: 0.85rem; 
         color: rgba(255, 215, 0, 0.9); 
-        background: rgba(255, 215, 0, 0.1);
+        background: rgba(255, 215, 0, 0.15);
         padding: 0.75rem; 
         border-radius: 10px;
-        border: 1px solid rgba(255, 215, 0, 0.2);
+        border-left: 4px solid rgba(255, 215, 0, 0.5);
         display: flex;
         align-items: center;
         gap: 0.5rem;
@@ -1563,23 +1575,27 @@ def main():
     
     with tab2:
         # Champion Breakdown Section - DIPERBAIKI
-        champion_clusters = [c for c in filtered_df['Cluster_KMeans'].unique() 
-                            if c in profs and profs[c]['name'] == '🏆 Champions']
+        # Filter hanya clusters yang merupakan champion
+        champion_clusters = []
+        for cid, p in profs.items():
+            if p['name'] == '🏆 Champions':
+                champion_clusters.append(cid)
         
-        if len(champion_clusters) > 0:
-            # Bangun HTML untuk champion grid
+        if champion_clusters:
+            st.markdown('<div class="champion-section">', unsafe_allow_html=True)
+            st.markdown('<div class="champion-title">🏆 Champion Segments Breakdown</div>', unsafe_allow_html=True)
+            st.markdown('<div class="champion-subtitle">Understanding the 4 Different Champion Tiers</div>', unsafe_allow_html=True)
+            
+            # Create champion cards HTML
             champion_cards_html = ""
             for cid in champion_clusters:
                 if cid in champion_details:
                     det = champion_details[cid]
-                    # Get the actual segment name from profs
-                    segment_name = profs[cid]['name'] if cid in profs else f"Champion Segment"
-                    
                     champion_cards_html += f"""
                     <div class="champion-card">
                         <div class="champion-header">
                             <div class="champion-number">
-                                <span>{segment_name}</span>
+                                <span>Champion C{cid}</span>
                             </div>
                             <div class="segment-id">Segment ID: C{cid}</div>
                         </div>
@@ -1589,86 +1605,100 @@ def main():
                     </div>
                     """
             
-            # Tampilkan semua champion cards dalam grid yang benar
-            st.markdown('<div class="champion-section">', unsafe_allow_html=True)
-            st.markdown('<div class="champion-title">🏆 Champion Segments Breakdown</div>', unsafe_allow_html=True)
             st.markdown(f'<div class="champion-grid">{champion_cards_html}</div>', unsafe_allow_html=True)
             st.markdown('</div>', unsafe_allow_html=True)
         
-        # Strategy Cards - DIPERBAIKI dengan visualisasi mini
+        # Strategy Cards untuk SEMUA segments - DIPERBAIKI
+        st.markdown("""
+        <div class="section-header">
+            <div class="section-icon">🎯</div>
+            <div>
+                <div class="section-title">Growth Strategies</div>
+                <div class="section-subtitle">Tailored marketing strategies for each customer segment</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        # Buat strategy cards untuk semua segments dalam profs
         strategy_cards_html = ""
-        for cid, p in profs.items():
-            if segment_filter == 'all' or segment_filter == cid:
-                # Build tactics HTML dengan badges
-                tactics_html = ""
-                for tactic in p['tactics']:
-                    tactics_html += f'<div class="tactic-item">{tactic}</div>'
-                
-                # Build KPIs HTML
-                kpis_html = ""
-                for kpi in p['kpis']:
-                    # Tambahkan ikon yang sesuai berdasarkan KPI
-                    icon = "📈" if "Retention" in kpi else "💰" if "Upsell" in kpi else "👥" if "Referral" in kpi else "🎯"
-                    kpis_html += f'<div class="kpi-item">{icon} {kpi}</div>'
-                
-                # Hitung budget percentage untuk progress bar
-                budget_percentage = int(p['budget'].replace('%', ''))
-                budget_color = "#667eea" if budget_percentage <= 15 else "#f093fb" if budget_percentage <= 25 else "#FFD700"
-                
-                # Hitung ROI untuk gauge
-                roi_value = int(p['roi'].replace('%', ''))
-                roi_fill_height = min(100, (roi_value / 500) * 100)  # Normalisasi ke 500%
-                roi_color = "#10b981" if roi_value >= 400 else "#f093fb" if roi_value >= 300 else "#667eea"
-                
-                strategy_cards_html += f"""
-                <div class="strategy-card" style="background: {p['grad']}">
-                    <div class="strategy-header">
-                        <div>
-                            <h3 class="strategy-name">{p['name']}</h3>
-                            <div class="strategy-subtitle">{p['strategy']} Strategy</div>
-                        </div>
+        
+        # Urutkan berdasarkan priority: CRITICAL -> URGENT -> HIGH -> MEDIUM
+        priority_order = {'CRITICAL': 0, 'URGENT': 1, 'HIGH': 2, 'MEDIUM': 3}
+        sorted_profs = sorted(profs.items(), key=lambda x: priority_order.get(x[1]['priority'], 4))
+        
+        for cid, p in sorted_profs:
+            # Skip jika ada filter segment dan tidak cocok
+            if segment_filter != 'all' and segment_filter != cid:
+                continue
+            
+            # Build tactics HTML
+            tactics_html = ""
+            for tactic in p['tactics']:
+                tactics_html += f'<div class="tactic-item">{tactic}</div>'
+            
+            # Build KPIs HTML
+            kpis_html = ""
+            for kpi in p['kpis']:
+                icon = "📈" if "Retention" in kpi else "💰" if "Upsell" in kpi else "👥" if "Referral" in kpi else "🎯"
+                kpis_html += f'<div class="kpi-item">{icon} {kpi}</div>'
+            
+            # Hitung progress untuk budget dan ROI
+            budget_percentage = int(p['budget'].replace('%', ''))
+            budget_color = p['color']
+            
+            roi_value = int(p['roi'].replace('%', ''))
+            roi_fill_height = min(100, (roi_value / 500) * 100)
+            
+            strategy_cards_html += f"""
+            <div class="strategy-card" style="background: {p['grad']}">
+                <div class="strategy-header">
+                    <div>
+                        <h3 class="strategy-name">{p['name']}</h3>
                         <div class="priority-badge">{p['priority']}</div>
                     </div>
-                    
-                    <div class="tactics-section">
-                        <div class="tactics-title">🎯 Key Tactics</div>
-                        <div class="tactics-grid">
-                            {tactics_html}
-                        </div>
+                    <div class="strategy-subtitle">📋 {p['strategy']} Strategy</div>
+                </div>
+                
+                <div class="tactics-section">
+                    <div class="tactics-title">🎯 Key Tactics</div>
+                    <div class="tactics-grid">
+                        {tactics_html}
                     </div>
-                    
-                    <div class="tactics-section">
-                        <div class="tactics-title">📊 Target KPIs</div>
-                        <div class="kpis-grid">
-                            {kpis_html}
-                        </div>
+                </div>
+                
+                <div class="tactics-section">
+                    <div class="tactics-title">📊 Target KPIs</div>
+                    <div class="kpis-grid">
+                        {kpis_html}
                     </div>
-                    
-                    <div class="strategy-footer">
-                        <div class="budget-item">
-                            <div class="budget-label">💰 Budget Allocation</div>
-                            <div class="budget-value">{p['budget']}</div>
-                            <div class="budget-progress-container">
-                                <div class="budget-progress">
-                                    <div class="budget-progress-fill" style="width: {budget_percentage}%; background: {budget_color};"></div>
-                                </div>
-                                <div class="budget-percentage">{p['budget']}</div>
+                </div>
+                
+                <div class="strategy-footer">
+                    <div class="budget-item">
+                        <div class="budget-label">💰 Budget Allocation</div>
+                        <div class="budget-value">{p['budget']}</div>
+                        <div class="budget-progress-container">
+                            <div class="budget-progress">
+                                <div class="budget-progress-fill" style="width: {budget_percentage}%; background: {budget_color};"></div>
                             </div>
+                            <div class="budget-percentage">{p['budget']}</div>
                         </div>
-                        <div class="budget-item">
-                            <div class="budget-label">🚀 Expected ROI</div>
-                            <div class="roi-gauge-container">
-                                <div class="roi-gauge">
-                                    <div class="roi-gauge-background">
-                                        <div class="roi-gauge-fill" style="height: {roi_fill_height}%; background: {roi_color};"></div>
-                                    </div>
-                                    <div class="roi-value">{p['roi']}</div>
+                    </div>
+                    <div class="budget-item">
+                        <div class="budget-label">🚀 ROI Target</div>
+                        <div class="budget-value">{p['roi']}</div>
+                        <div class="roi-gauge-container">
+                            <div class="roi-gauge">
+                                <div class="roi-gauge-background">
+                                    <div class="roi-gauge-fill" style="height: {roi_fill_height}%; background: linear-gradient(to top, {budget_color}, rgba(255,255,255,0.8));"></div>
                                 </div>
+                                <div class="roi-value">{p['roi']}</div>
                             </div>
                         </div>
                     </div>
                 </div>
-                """
+            </div>
+            """
         
         if strategy_cards_html:
             st.markdown(f'<div class="strategy-grid">{strategy_cards_html}</div>', unsafe_allow_html=True)
