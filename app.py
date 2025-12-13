@@ -593,6 +593,7 @@ def create_charts(df):
         showlegend=True,
         plot_bgcolor='rgba(0,0,0,0)',
         paper_bgcolor='rgba(0,0,0,0)',
+        margin=dict(t=50, b=100, l=50, r=50),
         legend=dict(
             font=dict(color='white'),
             orientation='h',
