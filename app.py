@@ -112,7 +112,7 @@ def init_data(rfm):
 
 profs, colors, rfm = init_data(rfm)
 
-# CSS Custom yang SEDERHANA - tanpa wrapper kompleks
+# CSS Custom - TANPA BUBBLE dan JUDUL BESAR
 st.markdown("""
 <style>
     /* RESET DASAR */
@@ -129,89 +129,94 @@ st.markdown("""
         overflow-x: hidden !important;
     }
     
-    /* HEADER SEDERHANA */
+    /* JUDUL BESAR */
     .header-title {
-        font-size: 2rem; 
-        font-weight: 800; 
+        font-size: 3rem !important;  /* DIPERBESAR dari 2rem */
+        font-weight: 900 !important; /* DIPERBESAR */
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
         -webkit-background-clip: text; 
         -webkit-text-fill-color: transparent; 
-        margin-bottom: 0.5rem;
+        margin-bottom: 0.5rem !important;
+        text-align: center !important;
+        padding: 1rem 0 !important;
     }
     
     .header-subtitle {
         color: #94a3b8; 
-        font-size: 1rem; 
-        margin-bottom: 1.5rem;
+        font-size: 1.25rem !important; /* DIPERBESAR dari 1rem */
+        margin-bottom: 2rem !important;
+        text-align: center !important;
     }
     
-    /* KARTU METRIK SEDERHANA */
+    /* METRICS - TANPA BUBBLE */
     .metric-card {
-        background: rgba(30, 41, 59, 0.8); 
-        border-radius: 12px; 
-        padding: 1rem; 
-        border: 1px solid rgba(255, 255, 255, 0.05); 
-        margin-bottom: 1rem;
+        background: transparent !important; /* HILANGKAN BACKGROUND */
+        border: none !important; /* HILANGKAN BORDER */
+        padding: 0.5rem !important;
+        margin-bottom: 1rem !important;
+        text-align: center !important;
     }
     
     .metric-value {
-        font-size: 1.5rem; 
-        font-weight: 800; 
-        color: #fff; 
-        margin: 0.5rem 0;
+        font-size: 2rem !important; /* DIPERBESAR */
+        font-weight: 800 !important; 
+        color: #fff !important; 
+        margin: 0.5rem 0 !important;
     }
     
     .metric-label {
-        font-size: 0.75rem; 
-        color: #94a3b8; 
-        text-transform: uppercase;
+        font-size: 0.875rem !important; 
+        color: #94a3b8 !important; 
+        text-transform: uppercase !important;
     }
     
-    /* FILTER SECTION */
+    /* FILTER SECTION - TANPA BUBBLE */
     .filter-section {
-        background: rgba(30, 41, 59, 0.8); 
-        border-radius: 12px; 
-        padding: 1rem; 
-        margin: 1rem 0;
+        background: transparent !important; /* HILANGKAN BACKGROUND */
+        border: none !important; /* HILANGKAN BORDER */
+        padding: 0 !important; 
+        margin: 1rem 0 !important;
     }
     
-    /* CHART CONTAINER SEDERHANA */
+    /* CHART CONTAINER - TANPA BUBBLE */
     .chart-container {
-        background: rgba(30, 41, 59, 0.8); 
-        border-radius: 12px; 
-        padding: 1rem; 
-        margin-bottom: 1rem;
+        background: transparent !important; /* HILANGKAN BACKGROUND */
+        border: none !important; /* HILANGKAN BORDER */
+        padding: 0 !important; 
+        margin-bottom: 2rem !important;
     }
     
     .chart-title {
-        font-size: 1rem; 
-        font-weight: 700; 
-        color: #fff; 
-        margin-bottom: 1rem;
+        font-size: 1.5rem !important; /* DIPERBESAR */
+        font-weight: 700 !important; 
+        color: #fff !important; 
+        margin-bottom: 1rem !important;
+        text-align: center !important;
     }
     
-    /* STRATEGY CARD SEDERHANA */
+    /* STRATEGY CARD - TANPA BUBBLE */
     .strategy-card {
-        background: rgba(30, 41, 59, 0.8); 
-        border-radius: 12px; 
-        padding: 1rem; 
-        margin-bottom: 1rem;
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: transparent !important; /* HILANGKAN BACKGROUND */
+        border: none !important; /* HILANGKAN BORDER */
+        padding: 0 !important; 
+        margin-bottom: 2rem !important;
     }
     
     .strategy-name {
-        font-size: 1.25rem; 
-        font-weight: 700; 
-        color: #fff; 
-        margin-bottom: 0.5rem;
+        font-size: 1.5rem !important; /* DIPERBESAR */
+        font-weight: 800 !important; 
+        color: #fff !important; 
+        margin-bottom: 0.75rem !important;
+        text-align: center !important;
     }
     
     .tactic-item {
-        background: rgba(255, 255, 255, 0.1); 
-        border-radius: 6px; 
-        padding: 0.5rem; 
-        margin-bottom: 0.5rem;
-        font-size: 0.875rem;
+        background: rgba(255, 255, 255, 0.05) !important; /* SANGAT TRANSPARAN */
+        border-radius: 4px !important; 
+        padding: 0.5rem !important; 
+        margin-bottom: 0.5rem !important;
+        font-size: 0.875rem !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
     }
     
     /* UTILITY */
@@ -224,6 +229,7 @@ st.markdown("""
     /* FIX untuk elemen Streamlit */
     .stTabs [data-baseweb="tab"] {
         border-radius: 8px !important;
+        background: rgba(30, 41, 59, 0.5) !important;
     }
     
     div[data-testid="stSelectbox"] > div {
@@ -233,7 +239,11 @@ st.markdown("""
     /* RESPONSIVE */
     @media (max-width: 768px) {
         .header-title {
-            font-size: 1.5rem !important;
+            font-size: 2.25rem !important;
+        }
+        
+        .header-subtitle {
+            font-size: 1rem !important;
         }
     }
 </style>
@@ -570,11 +580,12 @@ with st.sidebar:
 
 # Layout utama Streamlit
 def main():
-    # Header SEDERHANA - tanpa wrapper
-    st.markdown('<h1 class="header-title">Customer Intelligence Hub</h1>', unsafe_allow_html=True)
+    # Header BESAR - tanpa bubble
+    st.markdown('<h1 class="header-title">CUSTOMER INTELLIGENCE HUB</h1>', unsafe_allow_html=True)
     st.markdown('<div class="header-subtitle">AI-Powered Customer Segmentation for Targeted Marketing</div>', unsafe_allow_html=True)
     
-    # Metrics Grid - SEDERHANA
+    # Metrics Grid - TANPA BUBBLE
+    st.markdown('<div style="margin: 2rem 0;">', unsafe_allow_html=True)
     col1, col2, col3, col4 = st.columns(4)
     
     with col1:
@@ -582,7 +593,7 @@ def main():
         st.markdown(f"""
         <div class="metric-card">
             <div class="metric-value">{total_customers:,}</div>
-            <div class="metric-label">Total Customers</div>
+            <div class="metric-label">TOTAL CUSTOMERS</div>
         </div>
         """, unsafe_allow_html=True)
     
@@ -591,7 +602,7 @@ def main():
         st.markdown(f"""
         <div class="metric-card">
             <div class="metric-value">£{total_rev/1e6:.1f}M</div>
-            <div class="metric-label">Total Revenue</div>
+            <div class="metric-label">TOTAL REVENUE</div>
         </div>
         """, unsafe_allow_html=True)
     
@@ -600,7 +611,7 @@ def main():
         st.markdown(f"""
         <div class="metric-card">
             <div class="metric-value">£{avg_order:.0f}</div>
-            <div class="metric-label">Avg Order Value</div>
+            <div class="metric-label">AVG ORDER VALUE</div>
         </div>
         """, unsafe_allow_html=True)
     
@@ -610,13 +621,15 @@ def main():
         st.markdown(f"""
         <div class="metric-card">
             <div class="metric-value">{champion_pct:.1f}%</div>
-            <div class="metric-label">Champion Ratio</div>
+            <div class="metric-label">CHAMPION RATIO</div>
         </div>
         """, unsafe_allow_html=True)
     
-    # Filters - SEDERHANA
+    st.markdown('</div>', unsafe_allow_html=True)
+    
+    # Filters - TANPA BUBBLE
     st.markdown('<div class="filter-section">', unsafe_allow_html=True)
-    st.markdown('### 🎛️ Smart Filters')
+    st.markdown('## 🎛️ SMART FILTERS')
     
     col1, col2, col3 = st.columns(3)
     with col1:
@@ -694,7 +707,7 @@ def main():
         filtered_df = filtered_df[filtered_df['Priority'] == priority_filter]
     
     # Tabs
-    tab1, tab2, tab3 = st.tabs(["📊 Analytics Dashboard", "🎯 Growth Strategies", "💡 AI Insights"])
+    tab1, tab2, tab3 = st.tabs(["📊 ANALYTICS DASHBOARD", "🎯 GROWTH STRATEGIES", "💡 AI INSIGHTS"])
     
     with tab1:
         if len(filtered_df) > 0:
@@ -702,30 +715,28 @@ def main():
             fig1, fig2, fig3, fig4, fig5, fig6, fig7 = create_charts(filtered_df)
             
             # Row 1: Two charts
+            st.markdown('<div class="chart-container">', unsafe_allow_html=True)
+            st.markdown('<div class="chart-title">🎯 CUSTOMER DISTRIBUTION</div>', unsafe_allow_html=True)
             col1, col2 = st.columns(2)
             with col1:
-                st.markdown('<div class="chart-container">', unsafe_allow_html=True)
-                st.markdown('<div class="chart-title">🎯 Customer Distribution</div>', unsafe_allow_html=True)
                 st.plotly_chart(fig1, use_container_width=True, config={
                     'displayModeBar': True,
                     'responsive': True,
                     'autosizable': True
                 })
-                st.markdown('</div>', unsafe_allow_html=True)
             
             with col2:
-                st.markdown('<div class="chart-container">', unsafe_allow_html=True)
-                st.markdown('<div class="chart-title">💰 Revenue by Segment</div>', unsafe_allow_html=True)
+                st.markdown('<div class="chart-title">💰 REVENUE BY SEGMENT</div>', unsafe_allow_html=True)
                 st.plotly_chart(fig2, use_container_width=True, config={
                     'displayModeBar': True,
                     'responsive': True,
                     'autosizable': True
                 })
-                st.markdown('</div>', unsafe_allow_html=True)
+            st.markdown('</div>', unsafe_allow_html=True)
             
             # Row 2: Full width 3D chart
             st.markdown('<div class="chart-container">', unsafe_allow_html=True)
-            st.markdown('<div class="chart-title">📈 3D RFM Analysis</div>', unsafe_allow_html=True)
+            st.markdown('<div class="chart-title">📈 3D RFM ANALYSIS</div>', unsafe_allow_html=True)
             st.plotly_chart(fig3, use_container_width=True, config={
                 'displayModeBar': True,
                 'responsive': True,
@@ -734,40 +745,34 @@ def main():
             st.markdown('</div>', unsafe_allow_html=True)
             
             # Row 3: Three histograms
+            st.markdown('<div class="chart-container">', unsafe_allow_html=True)
+            st.markdown('<div class="chart-title">📊 DISTRIBUTION ANALYSIS</div>', unsafe_allow_html=True)
             col1, col2, col3 = st.columns(3)
             with col1:
-                st.markdown('<div class="chart-container">', unsafe_allow_html=True)
-                st.markdown('<div class="chart-title">⏰ Recency Distribution</div>', unsafe_allow_html=True)
                 st.plotly_chart(fig4, use_container_width=True, config={
                     'displayModeBar': False,
                     'responsive': True,
                     'autosizable': True
                 })
-                st.markdown('</div>', unsafe_allow_html=True)
             
             with col2:
-                st.markdown('<div class="chart-container">', unsafe_allow_html=True)
-                st.markdown('<div class="chart-title">🔄 Frequency Distribution</div>', unsafe_allow_html=True)
                 st.plotly_chart(fig5, use_container_width=True, config={
                     'displayModeBar': False,
                     'responsive': True,
                     'autosizable': True
                 })
-                st.markdown('</div>', unsafe_allow_html=True)
             
             with col3:
-                st.markdown('<div class="chart-container">', unsafe_allow_html=True)
-                st.markdown('<div class="chart-title">💵 Monetary Distribution</div>', unsafe_allow_html=True)
                 st.plotly_chart(fig6, use_container_width=True, config={
                     'displayModeBar': False,
                     'responsive': True,
                     'autosizable': True
                 })
-                st.markdown('</div>', unsafe_allow_html=True)
+            st.markdown('</div>', unsafe_allow_html=True)
             
             # Row 4: Full width table
             st.markdown('<div class="chart-container">', unsafe_allow_html=True)
-            st.markdown('<div class="chart-title">📊 Segment Summary</div>', unsafe_allow_html=True)
+            st.markdown('<div class="chart-title">📋 SEGMENT SUMMARY</div>', unsafe_allow_html=True)
             st.plotly_chart(fig7, use_container_width=True, config={
                 'displayModeBar': False,
                 'responsive': True,
@@ -776,7 +781,7 @@ def main():
             st.markdown('</div>', unsafe_allow_html=True)
             
             # Data summary
-            with st.expander("📋 Data Summary"):
+            with st.expander("📋 DATA SUMMARY"):
                 st.dataframe(
                     filtered_df.describe(),
                     use_container_width=True
@@ -784,7 +789,7 @@ def main():
         else:
             st.markdown("""
             <div class="empty-state">
-                <h3>No Data Available</h3>
+                <h3>NO DATA AVAILABLE</h3>
                 <p>Try adjusting your filters to see data</p>
             </div>
             """, unsafe_allow_html=True)
@@ -795,7 +800,7 @@ def main():
                             if c in profs and profs[c]['name'] == '🏆 Champions']
         
         if len(champion_clusters) > 0:
-            st.markdown('### 🏆 Champion Segments Breakdown')
+            st.markdown('## 🏆 CHAMPION SEGMENTS BREAKDOWN')
             cols = st.columns(2)
             for idx, cid in enumerate(sorted(champion_clusters)):
                 if cid in champion_details:
@@ -803,17 +808,17 @@ def main():
                     with cols[idx % 2]:
                         st.markdown(f"""
                         <div class="strategy-card">
-                            <div style="font-size: 1.25rem; font-weight: 800; color: #FFD700;">Champion C{cid}</div>
-                            <div style="font-size: 1rem; font-weight: 700; color: #fff;">🏅 {det['tier']}</div>
-                            <div style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.8);">{det['desc']}</div>
-                            <div style="font-size: 0.75rem; color: rgba(255, 215, 0, 0.9); background: rgba(255, 215, 0, 0.1); padding: 0.5rem; border-radius: 6px; margin-top: 0.5rem;">
+                            <div class="strategy-name">CHAMPION C{cid}</div>
+                            <div style="font-size: 1rem; font-weight: 700; color: #FFD700; margin-bottom: 0.5rem;">🏅 {det['tier']}</div>
+                            <div style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.8); margin-bottom: 1rem;">{det['desc']}</div>
+                            <div style="font-size: 0.75rem; color: rgba(255, 215, 0, 0.9); padding: 0.5rem; margin-top: 0.5rem;">
                                 📊 {det['char']}
                             </div>
                         </div>
                         """, unsafe_allow_html=True)
         
         # Strategy Cards
-        st.markdown('### 🎯 Growth Strategies')
+        st.markdown('## 🎯 GROWTH STRATEGIES')
         for cid, p in profs.items():
             if segment_filter == 'all' or segment_filter == cid:
                 # Build tactics HTML
@@ -827,30 +832,30 @@ def main():
                     kpis_html += f'<div class="tactic-item">{kpi}</div>'
                 
                 st.markdown(f"""
-                <div class="strategy-card" style="background: {p['grad']}">
+                <div class="strategy-card">
                     <div class="strategy-name">{p['name']}</div>
-                    <div style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.9); margin-bottom: 1rem;">
-                        {p['strategy']} Strategy • <span style="background: rgba(255, 255, 255, 0.2); padding: 0.25rem 0.5rem; border-radius: 12px; font-size: 0.75rem;">{p['priority']}</span>
+                    <div style="font-size: 1rem; color: rgba(255, 255, 255, 0.9); margin-bottom: 1.5rem;">
+                        {p['strategy']} Strategy • <span style="background: rgba(255, 255, 255, 0.2); padding: 0.25rem 0.75rem; border-radius: 12px; font-size: 0.75rem;">{p['priority']}</span>
                     </div>
                     
-                    <div style="margin: 1rem 0;">
-                        <div style="font-size: 0.875rem; font-weight: 700; color: rgba(255, 255, 255, 0.9); margin-bottom: 0.5rem;">🎯 Key Tactics</div>
+                    <div style="margin: 1.5rem 0;">
+                        <div style="font-size: 1rem; font-weight: 700; color: rgba(255, 255, 255, 0.9); margin-bottom: 0.75rem;">🎯 KEY TACTICS</div>
                         {tactics_html}
                     </div>
                     
-                    <div style="margin: 1rem 0;">
-                        <div style="font-size: 0.875rem; font-weight: 700; color: rgba(255, 255, 255, 0.9); margin-bottom: 0.5rem;">📊 Target KPIs</div>
+                    <div style="margin: 1.5rem 0;">
+                        <div style="font-size: 1rem; font-weight: 700; color: rgba(255, 255, 255, 0.9); margin-bottom: 0.75rem;">📊 TARGET KPIS</div>
                         {kpis_html}
                     </div>
                     
-                    <div style="display: flex; justify-content: space-between; margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid rgba(255, 255, 255, 0.1);">
-                        <div style="text-align: center;">
-                            <div style="font-size: 0.75rem; color: rgba(255, 255, 255, 0.7);">Budget Allocation</div>
-                            <div style="font-size: 1.25rem; font-weight: 800;">{p['budget']}</div>
+                    <div style="display: flex; justify-content: space-between; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid rgba(255, 255, 255, 0.1);">
+                        <div style="text-align: center; flex: 1;">
+                            <div style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.7); margin-bottom: 0.5rem;">BUDGET ALLOCATION</div>
+                            <div style="font-size: 1.5rem; font-weight: 800;">{p['budget']}</div>
                         </div>
-                        <div style="text-align: center;">
-                            <div style="font-size: 0.75rem; color: rgba(255, 255, 255, 0.7);">Expected ROI</div>
-                            <div style="font-size: 1.25rem; font-weight: 800;">{p['roi']}</div>
+                        <div style="text-align: center; flex: 1;">
+                            <div style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.7); margin-bottom: 0.5rem;">EXPECTED ROI</div>
+                            <div style="font-size: 1.5rem; font-weight: 800;">{p['roi']}</div>
                         </div>
                     </div>
                 </div>
@@ -897,15 +902,15 @@ def main():
                 most_frequent_segment = "N/A"
                 most_frequent_value = 0
             
-            st.markdown('### 🧠 AI-Powered Insights & Recommendations')
+            st.markdown('## 🧠 AI-POWERED INSIGHTS & RECOMMENDATIONS')
             
             col1, col2 = st.columns(2)
             
             with col1:
                 st.markdown("""
                 <div class="strategy-card">
-                    <div class="strategy-name">📊 Performance Analysis</div>
-                    <ul style="list-style: none; padding: 0; margin: 0;">
+                    <div class="strategy-name">📊 PERFORMANCE ANALYSIS</div>
+                    <ul style="list-style: none; padding: 0; margin: 1rem 0;">
                 """, unsafe_allow_html=True)
                 
                 insights_list = [
@@ -916,7 +921,7 @@ def main():
                 ]
                 
                 for insight in insights_list:
-                    st.markdown(f"<li style='padding: 0.5rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.1);'>{insight}</li>", unsafe_allow_html=True)
+                    st.markdown(f"<li style='padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.1); font-size: 0.95rem;'>{insight}</li>", unsafe_allow_html=True)
                 
                 st.markdown("""
                     </ul>
@@ -926,20 +931,20 @@ def main():
             with col2:
                 st.markdown("""
                 <div class="strategy-card">
-                    <div class="strategy-name">💡 Strategic Recommendations</div>
-                    <ul style="list-style: none; padding: 0; margin: 0;">
-                        <li style="padding: 0.5rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.1);">🎯 Launch retention programs for high-value segments</li>
-                        <li style="padding: 0.5rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.1);">📧 Implement personalized win-back campaigns</li>
-                        <li style="padding: 0.5rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.1);">🚀 Accelerate nurturing flows for potential customers</li>
-                        <li style="padding: 0.5rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.1);">💎 Create VIP experiences for champion segments</li>
-                        <li style="padding: 0.5rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.1);">📈 Develop cross-sell strategies for loyal customers</li>
-                        <li style="padding: 0.5rem 0;">🔍 Monitor dormant segment reactivation rates</li>
+                    <div class="strategy-name">💡 STRATEGIC RECOMMENDATIONS</div>
+                    <ul style="list-style: none; padding: 0; margin: 1rem 0;">
+                        <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.1); font-size: 0.95rem;">🎯 Launch retention programs for high-value segments</li>
+                        <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.1); font-size: 0.95rem;">📧 Implement personalized win-back campaigns</li>
+                        <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.1); font-size: 0.95rem;">🚀 Accelerate nurturing flows for potential customers</li>
+                        <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.1); font-size: 0.95rem;">💎 Create VIP experiences for champion segments</li>
+                        <li style="padding: 0.75rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.1); font-size: 0.95rem;">📈 Develop cross-sell strategies for loyal customers</li>
+                        <li style="padding: 0.75rem 0; font-size: 0.95rem;">🔍 Monitor dormant segment reactivation rates</li>
                     </ul>
                 </div>
                 """, unsafe_allow_html=True)
             
             # Additional insights
-            with st.expander("📈 Advanced Analytics"):
+            with st.expander("📈 ADVANCED ANALYTICS"):
                 col1, col2 = st.columns(2)
                 
                 with col1:
@@ -983,7 +988,7 @@ def main():
         else:
             st.markdown("""
             <div class="empty-state">
-                <h3>No Insights Available</h3>
+                <h3>NO INSIGHTS AVAILABLE</h3>
                 <p>Try adjusting your filters to see insights</p>
             </div>
             """, unsafe_allow_html=True)
