@@ -1,4 +1,3 @@
-
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -125,130 +124,489 @@ st.markdown("""
     .st-emotion-cache-16txtl3 {padding: 2rem 1.5rem !important}
     
     /* HEADER dengan glassmorphism */
-    .main-header {display: flex; justify-content: center; align-items: center; flex-direction: column; text-align: center; gap: 0.5rem}
-    .header-title {font-size: 2.5rem; font-weight: 800; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
-                  -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0; line-height: 1.2}
-    .header-subtitle {color: #94a3b8; font-size: 1.1rem; margin-top: 0.25rem; font-weight: 400; max-width: 800px}
+    .header-container {
+        background: rgba(15, 23, 42, 0.95); 
+        backdrop-filter: blur(20px); 
+        -webkit-backdrop-filter: blur(20px); 
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1); 
+        padding: 2rem 2.5rem; 
+        position: sticky; 
+        top: 0; 
+        z-index: 1000;
+        margin-bottom: 2rem;
+        border-radius: 0 0 20px 20px;
+    }
+    .main-header {display: flex; justify-content: center; align-items: center; flex-direction: column; text-align: center; gap: 0.75rem}
+    .header-title {font-size: 2.75rem; font-weight: 900; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+                  -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0; line-height: 1.1;
+                  letter-spacing: -0.5px;}
+    .header-subtitle {color: #94a3b8; font-size: 1.15rem; margin-top: 0.5rem; font-weight: 400; max-width: 800px; line-height: 1.5;}
+    
+    /* SECTION DIVIDER - DITAMBAHKAN */
+    .section-divider {
+        height: 1px;
+        background: linear-gradient(90deg, 
+            transparent 0%, 
+            rgba(102, 126, 234, 0.3) 20%, 
+            rgba(102, 126, 234, 0.6) 50%, 
+            rgba(102, 126, 234, 0.3) 80%, 
+            transparent 100%
+        );
+        margin: 2.5rem 0;
+        border: none;
+        width: 100%;
+    }
+    
+    .section-divider-thick {
+        height: 3px;
+        background: linear-gradient(90deg, 
+            transparent 0%, 
+            rgba(102, 126, 234, 0.4) 20%, 
+            rgba(102, 126, 234, 0.8) 50%, 
+            rgba(102, 126, 234, 0.4) 80%, 
+            transparent 100%
+        );
+        margin: 3rem 0;
+        border: none;
+        width: 100%;
+        border-radius: 3px;
+    }
+    
+    /* SECTION HEADERS - DITAMBAHKAN */
+    .section-header {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin: 2.5rem 0 1.5rem 0;
+        padding-bottom: 0.75rem;
+        border-bottom: 2px solid rgba(102, 126, 234, 0.2);
+    }
+    
+    .section-icon {
+        font-size: 1.75rem;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        padding: 0.5rem;
+        border-radius: 12px;
+        background: rgba(102, 126, 234, 0.1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 48px;
+        height: 48px;
+    }
+    
+    .section-title {
+        font-size: 1.5rem;
+        font-weight: 800;
+        color: #fff;
+        margin: 0;
+        letter-spacing: -0.25px;
+    }
+    
+    .section-subtitle {
+        font-size: 1rem;
+        color: #94a3b8;
+        margin-top: 0.25rem;
+        font-weight: 400;
+    }
     
     /* METRICS GRID dengan neumorphism */
-    .metrics-grid {display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin: 1.5rem 0}
+    .metrics-grid {display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; margin: 2rem 0}
     @media (max-width: 1200px) {.metrics-grid {grid-template-columns: repeat(2, 1fr)}}
     @media (max-width: 768px) {.metrics-grid {grid-template-columns: 1fr}}
-    .metric-card {background: rgba(30, 41, 59, 0.8); border-radius: 16px; padding: 1.5rem; 
-                  border: 1px solid rgba(255, 255, 255, 0.05); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-                  position: relative; overflow: hidden}
-    .metric-card:hover {transform: translateY(-4px); border-color: rgba(102, 126, 234, 0.3); 
-                       box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3)}
-    .metric-card::before {content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; 
-                         background: linear-gradient(90deg, #667eea, #764ba2)}
-    .metric-icon {font-size: 2rem; margin-bottom: 1rem; display: inline-block}
-    .metric-value {font-size: 2rem; font-weight: 800; color: #fff; margin: 0.5rem 0; line-height: 1}
-    .metric-label {font-size: 0.875rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600}
-    .metric-change {font-size: 0.75rem; display: flex; align-items: center; gap: 0.25rem; margin-top: 0.5rem}
-    .change-positive {color: #10b981}
-    .change-negative {color: #ef4444}
+    .metric-card {
+        background: linear-gradient(135deg, rgba(30, 41, 59, 0.9) 0%, rgba(15, 23, 42, 0.8) 100%); 
+        border-radius: 20px; 
+        padding: 1.75rem; 
+        border: 1px solid rgba(255, 255, 255, 0.08); 
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative; 
+        overflow: hidden;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    }
+    .metric-card:hover {
+        transform: translateY(-6px); 
+        border-color: rgba(102, 126, 234, 0.4); 
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    }
+    .metric-card::before {
+        content: ''; 
+        position: absolute; 
+        top: 0; 
+        left: 0; 
+        right: 0; 
+        height: 4px; 
+        background: linear-gradient(90deg, #667eea, #764ba2);
+        border-radius: 20px 20px 0 0;
+    }
+    .metric-icon {
+        font-size: 2.25rem; 
+        margin-bottom: 1.25rem; 
+        display: inline-block;
+        background: rgba(255, 255, 255, 0.05);
+        padding: 0.75rem;
+        border-radius: 14px;
+    }
+    .metric-value {font-size: 2.25rem; font-weight: 900; color: #fff; margin: 0.5rem 0; line-height: 1}
+    .metric-label {
+        font-size: 0.875rem; 
+        color: #94a3b8; 
+        text-transform: uppercase; 
+        letter-spacing: 0.05em; 
+        font-weight: 600;
+        margin-top: 0.5rem;
+    }
+    .metric-change {font-size: 0.8rem; display: flex; align-items: center; gap: 0.25rem; margin-top: 0.75rem}
+    .change-positive {color: #10b981; background: rgba(16, 185, 129, 0.1); padding: 0.25rem 0.5rem; border-radius: 20px;}
+    .change-negative {color: #ef4444; background: rgba(239, 68, 68, 0.1); padding: 0.25rem 0.5rem; border-radius: 20px;}
   
+    /* FILTER SECTION - DIPERBAIKI */
+    .filter-section {
+        background: linear-gradient(135deg, rgba(30, 41, 59, 0.9) 0%, rgba(15, 23, 42, 0.8) 100%); 
+        border-radius: 20px; 
+        padding: 2rem; 
+        margin: 2rem 0; 
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    }
+    .filter-title {
+        font-size: 1.5rem; 
+        font-weight: 800; 
+        color: #fff; 
+        margin-bottom: 1.75rem; 
+        display: flex; 
+        align-items: center; 
+        gap: 0.75rem;
+        padding-bottom: 0.75rem;
+        border-bottom: 2px solid rgba(102, 126, 234, 0.2);
+    }
+    .filter-grid {display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem}
+    @media (max-width: 768px) {.filter-grid {grid-template-columns: 1fr}}
     
     /* FILTER ITEMS - DITAMBAHKAN */
     .filter-column {padding: 0.5rem}
-    .filter-label {font-size: 0.875rem; color: #94a3b8; margin-bottom: 0.5rem; font-weight: 600; display: block}
+    .filter-label {font-size: 0.875rem; color: #94a3b8; margin-bottom: 0.75rem; font-weight: 600; display: block}
     
     /* TABS STYLING */
-    .stTabs [data-baseweb="tab-list"] {gap: 0.5rem; margin-bottom: 1.5rem}
-    .stTabs [data-baseweb="tab"] {background: rgba(30, 41, 59, 0.5) !important; border: 1px solid rgba(255, 255, 255, 0.05) !important;
-                                  border-radius: 12px !important; padding: 0.75rem 1.5rem !important; 
-                                  color: #94a3b8 !important; font-weight: 600 !important; transition: all 0.3s ease}
-    .stTabs [data-baseweb="tab"]:hover {background: rgba(30, 41, 59, 0.8) !important; color: #fff !important; 
-                                       border-color: rgba(102, 126, 234, 0.3) !important}
-    .stTabs [aria-selected="true"] {background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important; 
-                                   color: #fff !important; border-color: transparent !important;
-                                   box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3) !important}
+    .stTabs [data-baseweb="tab-list"] {gap: 0.75rem; margin: 2.5rem 0 2rem 0}
+    .stTabs [data-baseweb="tab"] {
+        background: rgba(30, 41, 59, 0.5) !important; 
+        border: 1px solid rgba(255, 255, 255, 0.08) !important;
+        border-radius: 16px !important; 
+        padding: 1rem 2rem !important; 
+        color: #94a3b8 !important; 
+        font-weight: 700 !important; 
+        transition: all 0.3s ease;
+        font-size: 1rem !important;
+    }
+    .stTabs [data-baseweb="tab"]:hover {
+        background: rgba(30, 41, 59, 0.8) !important; 
+        color: #fff !important; 
+        border-color: rgba(102, 126, 234, 0.3) !important;
+        transform: translateY(-2px);
+    }
+    .stTabs [aria-selected="true"] {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important; 
+        color: #fff !important; 
+        border-color: transparent !important;
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3) !important;
+        transform: translateY(-2px);
+    }
     
+    /* CHARTS CONTAINER */
+    .chart-container {
+        background: linear-gradient(135deg, rgba(30, 41, 59, 0.9) 0%, rgba(15, 23, 42, 0.8) 100%); 
+        border-radius: 20px; 
+        padding: 2rem; 
+        border: 1px solid rgba(255, 255, 255, 0.08); 
+        margin-bottom: 2rem;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    }
+    .chart-title {
+        font-size: 1.25rem; 
+        font-weight: 800; 
+        color: #fff; 
+        margin-bottom: 1.5rem; 
+        display: flex; 
+        align-items: center; 
+        gap: 0.75rem;
+        padding-bottom: 0.75rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .charts-grid {display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; margin-bottom: 2rem}
+    @media (max-width: 1200px) {.charts-grid {grid-template-columns: 1fr}}
+    .chart-full {grid-column: 1 / -1}
     
     /* STRATEGY CARDS */
-    .strategy-grid {display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; margin-bottom: 1.5rem}
+    .strategy-grid {display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; margin-bottom: 2rem}
     @media (max-width: 1200px) {.strategy-grid {grid-template-columns: 1fr}}
-    .strategy-card {border-radius: 16px; padding: 1.5rem; color: #fff; 
-                   border: 1px solid rgba(255, 255, 255, 0.1); position: relative; overflow: hidden;
-                   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1)}
-    .strategy-card:hover {transform: translateY(-6px); box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3)}
-    .strategy-header {display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem}
-    .strategy-name {font-size: 1.5rem; font-weight: 800; margin: 0; line-height: 1.2}
-    .priority-badge {padding: 0.375rem 0.75rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700;
-                    text-transform: uppercase; letter-spacing: 0.05em; background: rgba(255, 255, 255, 0.2);
-                    backdrop-filter: blur(10px)}
-    .strategy-subtitle {font-size: 1rem; color: rgba(255, 255, 255, 0.9); margin-bottom: 1rem; font-weight: 500}
-    .tactics-section {background: rgba(255, 255, 255, 0.1); border-radius: 12px; padding: 1rem; margin: 1rem 0;
-                     backdrop-filter: blur(10px)}
-    .tactics-title {font-size: 0.875rem; font-weight: 700; color: rgba(255, 255, 255, 0.9); margin-bottom: 0.75rem;
-                   text-transform: uppercase; letter-spacing: 0.05em}
-    .tactics-grid {display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5rem}
+    .strategy-card {
+        border-radius: 20px; 
+        padding: 2rem; 
+        color: #fff; 
+        border: 1px solid rgba(255, 255, 255, 0.1); 
+        position: relative; 
+        overflow: hidden;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    }
+    .strategy-card:hover {
+        transform: translateY(-8px); 
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+    }
+    .strategy-header {display: flex; justify-content: space-between; align-items: start; margin-bottom: 1.25rem}
+    .strategy-name {font-size: 1.75rem; font-weight: 900; margin: 0; line-height: 1.2}
+    .priority-badge {
+        padding: 0.5rem 1rem; 
+        border-radius: 20px; 
+        font-size: 0.75rem; 
+        font-weight: 800;
+        text-transform: uppercase; 
+        letter-spacing: 0.05em; 
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    .strategy-subtitle {font-size: 1.1rem; color: rgba(255, 255, 255, 0.9); margin-bottom: 1.5rem; font-weight: 500}
+    .tactics-section {
+        background: rgba(255, 255, 255, 0.08); 
+        border-radius: 16px; 
+        padding: 1.25rem; 
+        margin: 1.5rem 0;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .tactics-title {
+        font-size: 0.875rem; 
+        font-weight: 800; 
+        color: rgba(255, 255, 255, 0.9); 
+        margin-bottom: 1rem;
+        text-transform: uppercase; 
+        letter-spacing: 0.05em;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    .tactics-grid {display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem}
     @media (max-width: 768px) {.tactics-grid {grid-template-columns: 1fr}}
-    .tactic-item {background: rgba(255, 255, 255, 0.15); border-radius: 8px; padding: 0.75rem; font-size: 0.875rem;
-                 transition: all 0.2s ease; border-left: 3px solid transparent}
-    .tactic-item:hover {background: rgba(255, 255, 255, 0.2); transform: translateX(4px); 
-                       border-left-color: rgba(255, 255, 255, 0.5)}
-    .kpis-grid {display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; margin: 1rem 0}
-    .kpi-item {background: rgba(255, 255, 255, 0.1); border-radius: 8px; padding: 0.75rem; text-align: center;
-              font-size: 0.875rem; font-weight: 600}
-    .strategy-footer {display: flex; justify-content: space-between; margin-top: 1.5rem; padding-top: 1rem;
-                     border-top: 1px solid rgba(255, 255, 255, 0.1)}
-    .budget-item {text-align: center}
-    .budget-label {font-size: 0.75rem; color: rgba(255, 255, 255, 0.7); margin-bottom: 0.25rem}
-    .budget-value {font-size: 1.5rem; font-weight: 800}
+    .tactic-item {
+        background: rgba(255, 255, 255, 0.1); 
+        border-radius: 12px; 
+        padding: 1rem; 
+        font-size: 0.9rem;
+        transition: all 0.2s ease; 
+        border-left: 4px solid transparent;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .tactic-item:hover {
+        background: rgba(255, 255, 255, 0.15); 
+        transform: translateX(4px); 
+        border-left-color: rgba(255, 255, 255, 0.5);
+    }
+    .kpis-grid {display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin: 1.5rem 0}
+    .kpi-item {
+        background: rgba(255, 255, 255, 0.08); 
+        border-radius: 12px; 
+        padding: 1rem; 
+        text-align: center;
+        font-size: 0.875rem; 
+        font-weight: 700;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .strategy-footer {
+        display: flex; 
+        justify-content: space-between; 
+        margin-top: 2rem; 
+        padding-top: 1.5rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        gap: 1rem;
+    }
+    .budget-item {text-align: center; flex: 1}
+    .budget-label {font-size: 0.8rem; color: rgba(255, 255, 255, 0.7); margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em;}
+    .budget-value {font-size: 1.75rem; font-weight: 900}
     
     /* CHAMPION BREAKDOWN */
-    .champion-section {background: linear-gradient(135deg, rgba(255, 215, 0, 0.1) 0%, rgba(255, 140, 0, 0.1) 100%); 
-                      border: 1px solid rgba(255, 215, 0, 0.2); border-radius: 16px; padding: 1.5rem; margin: 1.5rem 0}
-    .champion-title {font-size: 1.5rem; font-weight: 800; color: #FFD700; margin-bottom: 1rem; 
-                    display: flex; align-items: center; gap: 0.5rem}
-    .champion-grid {display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem}
+    .champion-section {
+        background: linear-gradient(135deg, rgba(255, 215, 0, 0.08) 0%, rgba(255, 140, 0, 0.08) 100%); 
+        border: 1px solid rgba(255, 215, 0, 0.2); 
+        border-radius: 20px; 
+        padding: 2rem; 
+        margin: 2rem 0;
+        box-shadow: 0 10px 25px rgba(255, 215, 0, 0.05);
+    }
+    .champion-title {
+        font-size: 1.75rem; 
+        font-weight: 900; 
+        color: #FFD700; 
+        margin-bottom: 1.5rem; 
+        display: flex; 
+        align-items: center; 
+        gap: 0.75rem;
+        padding-bottom: 0.75rem;
+        border-bottom: 2px solid rgba(255, 215, 0, 0.3);
+    }
+    .champion-grid {display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem}
     @media (max-width: 768px) {.champion-grid {grid-template-columns: 1fr}}
-    .champion-card {background: rgba(255, 215, 0, 0.1); border: 1px solid rgba(255, 215, 0, 0.2); 
-                   border-radius: 12px; padding: 1rem; transition: all 0.3s ease}
-    .champion-card:hover {background: rgba(255, 215, 0, 0.15); transform: translateY(-2px)}
-    .champion-number {font-size: 1.25rem; font-weight: 800; color: #FFD700; margin-bottom: 0.5rem}
-    .champion-tier {font-size: 1rem; font-weight: 700; color: #fff; margin-bottom: 0.5rem}
-    .champion-desc {font-size: 0.875rem; color: rgba(255, 255, 255, 0.8); margin-bottom: 0.5rem}
-    .champion-chars {font-size: 0.75rem; color: rgba(255, 215, 0, 0.9); background: rgba(255, 215, 0, 0.1);
-                    padding: 0.5rem; border-radius: 6px}
+    .champion-card {
+        background: rgba(255, 215, 0, 0.08); 
+        border: 1px solid rgba(255, 215, 0, 0.2); 
+        border-radius: 16px; 
+        padding: 1.5rem; 
+        transition: all 0.3s ease;
+    }
+    .champion-card:hover {
+        background: rgba(255, 215, 0, 0.12); 
+        transform: translateY(-4px);
+        box-shadow: 0 10px 20px rgba(255, 215, 0, 0.1);
+    }
+    .champion-number {
+        font-size: 1.5rem; 
+        font-weight: 900; 
+        color: #FFD700; 
+        margin-bottom: 0.75rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    .champion-tier {font-size: 1.1rem; font-weight: 800; color: #fff; margin-bottom: 0.75rem}
+    .champion-desc {font-size: 0.95rem; color: rgba(255, 255, 255, 0.85); margin-bottom: 1rem; line-height: 1.5;}
+    .champion-chars {
+        font-size: 0.8rem; 
+        color: rgba(255, 215, 0, 0.9); 
+        background: rgba(255, 215, 0, 0.1);
+        padding: 0.75rem; 
+        border-radius: 10px;
+        border: 1px solid rgba(255, 215, 0, 0.2);
+    }
     
     /* INSIGHTS SECTION */
-    .insights-section {background: linear-gradient(135deg, rgba(79, 172, 254, 0.1) 0%, rgba(0, 242, 254, 0.1) 100%);
-                      border: 1px solid rgba(79, 172, 254, 0.2); border-radius: 16px; padding: 1.5rem; margin: 1.5rem 0}
-    .insights-title {font-size: 1.5rem; font-weight: 800; color: #4facfe; margin-bottom: 1rem;
-                    display: flex; align-items: center; gap: 0.5rem}
-    .insights-grid {display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem}
+    .insights-section {
+        background: linear-gradient(135deg, rgba(79, 172, 254, 0.08) 0%, rgba(0, 242, 254, 0.08) 100%);
+        border: 1px solid rgba(79, 172, 254, 0.2); 
+        border-radius: 20px; 
+        padding: 2rem; 
+        margin: 2rem 0;
+        box-shadow: 0 10px 25px rgba(79, 172, 254, 0.05);
+    }
+    .insights-title {
+        font-size: 1.75rem; 
+        font-weight: 900; 
+        color: #4facfe; 
+        margin-bottom: 1.5rem;
+        display: flex; 
+        align-items: center; 
+        gap: 0.75rem;
+        padding-bottom: 0.75rem;
+        border-bottom: 2px solid rgba(79, 172, 254, 0.3);
+    }
+    .insights-grid {display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem}
     @media (max-width: 768px) {.insights-grid {grid-template-columns: 1fr}}
-    .insight-card {background: rgba(79, 172, 254, 0.1); border: 1px solid rgba(79, 172, 254, 0.2); 
-                  border-radius: 12px; padding: 1rem}
-    .insight-heading {font-size: 1.125rem; font-weight: 700; color: #4facfe; margin-bottom: 0.75rem}
-    .insight-list {list-style: none; padding: 0}
-    .insight-list li {padding: 0.5rem 0; border-bottom: 1px solid rgba(79, 172, 254, 0.2); color: rgba(255, 255, 255, 0.9)}
+    .insight-card {
+        background: rgba(79, 172, 254, 0.08); 
+        border: 1px solid rgba(79, 172, 254, 0.2); 
+        border-radius: 16px; 
+        padding: 1.5rem;
+    }
+    .insight-heading {
+        font-size: 1.25rem; 
+        font-weight: 800; 
+        color: #4facfe; 
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    .insight-list {list-style: none; padding: 0; margin: 0}
+    .insight-list li {
+        padding: 0.75rem 0; 
+        border-bottom: 1px solid rgba(79, 172, 254, 0.2); 
+        color: rgba(255, 255, 255, 0.9);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
     .insight-list li:last-child {border-bottom: none}
     
     /* FOOTER */
-    .footer {text-align: center; padding: 1.5rem; margin-top: 2rem; color: #94a3b8; font-size: 0.875rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.05)}
+    .footer {
+        text-align: center; 
+        padding: 2rem; 
+        margin-top: 3rem; 
+        color: #94a3b8; 
+        font-size: 0.9rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        background: rgba(15, 23, 42, 0.8);
+        border-radius: 20px 20px 0 0;
+    }
     
     /* UTILITY CLASSES */
-    .empty-state {text-align: center; padding: 3rem; color: #94a3b8}
-    .empty-icon {font-size: 3rem; margin-bottom: 1rem; opacity: 0.5}
+    .empty-state {text-align: center; padding: 4rem; color: #94a3b8}
+    .empty-icon {font-size: 3.5rem; margin-bottom: 1.5rem; opacity: 0.5}
     
     /* STREAMLIT WIDGET OVERRIDES - DIPERBAIKI */
-    div[data-testid="stSelectbox"] > div {background: rgba(30, 41, 59, 0.8); border-color: rgba(255, 255, 255, 0.1) !important; border-radius: 8px !important; overflow: hidden}
+    div[data-testid="stSelectbox"] > div {
+        background: rgba(30, 41, 59, 0.8); 
+        border-color: rgba(255, 255, 255, 0.1) !important; 
+        border-radius: 12px !important; 
+        overflow: hidden;
+        border-width: 1px !important;
+    }
     div[data-testid="stSelectbox"] svg {color: #94a3b8 !important}
-    div[data-testid="stSlider"] > div {background: rgba(30, 41, 59, 0.8); border-radius: 8px; padding: 1rem 0.5rem}
-    div[data-testid="stSlider"] .stSlider > div > div > div {background: linear-gradient(90deg, #667eea, #764ba2) !important}
-    div[data-testid="stSlider"] .stSlider > div > div > div:first-child {background: rgba(102, 126, 234, 0.2) !important}
-    div[data-testid="stExpander"] {background: rgba(30, 41, 59, 0.8); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; margin-top: 1rem}
-    div[data-testid="stExpander"] > details > summary {color: #94a3b8 !important; font-weight: 600; padding: 1rem}
-    div[data-testid="stExpander"] > details > summary:hover {color: #fff !important}
-    div[data-testid="stExpander"] > details > div {padding: 1rem; background: transparent !important}
+    div[data-testid="stSlider"] > div {
+        background: rgba(30, 41, 59, 0.8); 
+        border-radius: 12px; 
+        padding: 1rem 0.75rem;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    div[data-testid="stSlider"] .stSlider > div > div > div {
+        background: linear-gradient(90deg, #667eea, #764ba2) !important;
+        border-radius: 10px;
+    }
+    div[data-testid="stSlider"] .stSlider > div > div > div:first-child {
+        background: rgba(102, 126, 234, 0.2) !important;
+        border-radius: 10px;
+    }
+    div[data-testid="stExpander"] {
+        background: rgba(30, 41, 59, 0.8); 
+        border: 1px solid rgba(255, 255, 255, 0.1); 
+        border-radius: 12px; 
+        margin-top: 1.5rem;
+    }
+    div[data-testid="stExpander"] > details > summary {
+        color: #94a3b8 !important; 
+        font-weight: 700; 
+        padding: 1.25rem;
+        font-size: 1rem;
+    }
+    div[data-testid="stExpander"] > details > summary:hover {
+        color: #fff !important;
+        background: rgba(255, 255, 255, 0.05);
+    }
+    div[data-testid="stExpander"] > details > div {
+        padding: 1.5rem; 
+        background: transparent !important;
+    }
     
+    /* FILTER CONTENT CONTAINER */
+    .filter-content {padding: 0.5rem 0}
     
     /* CUSTOM LABELS untuk filter */
-    .custom-label {display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; color: #94a3b8; font-size: 0.875rem; font-weight: 600}
+    .custom-label {
+        display: flex; 
+        align-items: center; 
+        gap: 0.75rem; 
+        margin-bottom: 0.75rem; 
+        color: #94a3b8; 
+        font-size: 0.9rem; 
+        font-weight: 700;
+    }
+    
+    /* SPACING UTILITIES */
+    .spacer-sm {margin: 1rem 0}
+    .spacer-md {margin: 2rem 0}
+    .spacer-lg {margin: 3rem 0}
 </style>
 """, unsafe_allow_html=True)
 
@@ -613,12 +971,23 @@ with st.sidebar:
 
 # Layout utama Streamlit
 def main():
-    # Header - sudah dirapihkan tanpa stats di kanan
+    # Header
     st.markdown("""
     <div class="header-container">
         <div class="main-header">
             <h1 class="header-title">Customer Intelligence Hub</h1>
             <div class="header-subtitle">AI-Powered Customer Segmentation for Targeted Marketing</div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Section 1: Key Metrics dengan section header
+    st.markdown("""
+    <div class="section-header">
+        <div class="section-icon">📊</div>
+        <div>
+            <div class="section-title">Key Performance Metrics</div>
+            <div class="section-subtitle">Real-time insights into customer behavior and business performance</div>
         </div>
     </div>
     """, unsafe_allow_html=True)
@@ -686,12 +1055,23 @@ def main():
     
     st.markdown('</div>', unsafe_allow_html=True)
     
-    # Filters - DIPERBAIKI: Konten sekarang di dalam bubble
+    # Divider 1
+    st.markdown('<div class="section-divider"></div>', unsafe_allow_html=True)
+    
+    # Section 2: Data Filters dengan section header
+    st.markdown("""
+    <div class="section-header">
+        <div class="section-icon">🎛️</div>
+        <div>
+            <div class="section-title">Smart Filters</div>
+            <div class="section-subtitle">Refine and segment your customer data with precision controls</div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Filters
     with st.container():
         st.markdown('<div class="filter-section">', unsafe_allow_html=True)
-        
-        # Title
-        st.markdown('<div class="filter-title">🎛️ Smart Filters</div>', unsafe_allow_html=True)
         
         # Filter grid
         col1, col2, col3 = st.columns(3)
@@ -813,6 +1193,9 @@ def main():
         st.markdown('</div>', unsafe_allow_html=True)
         st.markdown('</div>', unsafe_allow_html=True)
     
+    # Divider 2
+    st.markdown('<div class="section-divider-thick"></div>', unsafe_allow_html=True)
+    
     # Apply filters
     filtered_df = rfm.copy()
     
@@ -846,6 +1229,17 @@ def main():
             (filtered_df['Recency'] >= recency_filter[0]) & 
             (filtered_df['Recency'] <= recency_filter[1])
         ]
+    
+    # Tabs Section dengan section header
+    st.markdown("""
+    <div class="section-header">
+        <div class="section-icon">📋</div>
+        <div>
+            <div class="section-title">Dashboard Analytics</div>
+            <div class="section-subtitle">Explore different aspects of your customer data through interactive tabs</div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
     
     # Tabs
     tab1, tab2, tab3 = st.tabs(["📊 Analytics Dashboard", "🎯 Growth Strategies", "💡 AI Insights"])
@@ -1132,12 +1526,25 @@ def main():
             </div>
             """, unsafe_allow_html=True)
     
+    # Divider 3
+    st.markdown('<div class="section-divider-thick"></div>', unsafe_allow_html=True)
+    
     # Footer
     st.markdown("""
     <div class="footer">
-        Customer Intelligence Hub v2.1 • Powered by AI Segmentation • Data Updated Daily • 
-        <a href="#" style="color: #667eea; text-decoration: none;">Export Report</a> • 
-        <a href="#" style="color: #667eea; text-decoration: none;">Schedule Delivery</a>
+        <div style="margin-bottom: 1rem;">
+            <span style="font-size: 1.1rem; font-weight: 700; color: #fff;">Customer Intelligence Hub v2.2</span> • 
+            <span style="color: #94a3b8;">Powered by AI Segmentation</span> • 
+            <span style="color: #94a3b8;">Data Updated Daily</span>
+        </div>
+        <div>
+            <a href="#" style="color: #667eea; text-decoration: none; margin: 0 1rem; padding: 0.5rem 1rem; background: rgba(102, 126, 234, 0.1); border-radius: 8px;">📥 Export Report</a> • 
+            <a href="#" style="color: #667eea; text-decoration: none; margin: 0 1rem; padding: 0.5rem 1rem; background: rgba(102, 126, 234, 0.1); border-radius: 8px;">📅 Schedule Delivery</a> • 
+            <a href="#" style="color: #667eea; text-decoration: none; margin: 0 1rem; padding: 0.5rem 1rem; background: rgba(102, 126, 234, 0.1); border-radius: 8px;">🔄 Live Sync</a>
+        </div>
+        <div style="margin-top: 1.5rem; color: #64748b; font-size: 0.8rem;">
+            © 2024 Customer Intelligence Hub. All rights reserved. | v2.2.1
+        </div>
     </div>
     """, unsafe_allow_html=True)
 
