@@ -1340,7 +1340,7 @@ def main():
             </div>
             """, unsafe_allow_html=True)
     
-with tab3:
+        with tab3:
     if len(filtered_df) > 0:
         # Calculate advanced insights
         if 'Cluster_Label' in filtered_df.columns:
