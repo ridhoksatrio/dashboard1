@@ -1575,174 +1575,76 @@ def main():
     
     with tab2:
     # Champion Breakdown Section - DIPERBAIKI dengan cara yang lebih sederhana
+        st.markdown('<div class="champion-section">', unsafe_allow_html=True)
+        st.markdown('<div class="champion-title">🏆 Champion Segments Breakdown</div>', unsafe_allow_html=True)
+        st.markdown('<div class="champion-subtitle">Understanding the 4 Different Champion Tiers</div>', unsafe_allow_html=True)
+    
+    # Buat layout 2x2 untuk champion cards
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        # Champion C1
         st.markdown("""
-        <div class="champion-section">
-        <div class="champion-title">🏆 Champion Segments Breakdown</div>
-        <div class="champion-subtitle">Understanding the 4 Different Champion Tiers</div>
-        <div class="champion-grid">
-            <div class="champion-card">
-                <div class="champion-header">
-                    <div class="champion-number">
-                        <span>Champion C1</span>
-                    </div>
-                    <div class="segment-id">Segment ID: C1</div>
+        <div class="champion-card">
+            <div class="champion-header">
+                <div class="champion-number">
+                    <span>Champion C1</span>
                 </div>
-                <div class="champion-tier">🏅 Platinum Elite</div>
-                <div class="champion-desc">Super frequent buyers with highest engagement</div>
-                <div class="champion-chars">📊 11d recency, 15.6 orders, £5,425 spend</div>
+                <div class="segment-id">Segment ID: C1</div>
             </div>
-            
-            <div class="champion-card">
-                <div class="champion-header">
-                    <div class="champion-number">
-                        <span>Champion C3</span>
-                    </div>
-                    <div class="segment-id">Segment ID: C3</div>
-                </div>
-                <div class="champion-tier">🏅 Ultra VIP</div>
-                <div class="champion-desc">Extreme high-value with massive order frequency</div>
-                <div class="champion-chars">📊 8d recency, 38.9 orders, £40,942 spend</div>
-            </div>
-            
-            <div class="champion-card">
-                <div class="champion-header">
-                    <div class="champion-number">
-                        <span>Champion C4</span>
-                    </div>
-                    <div class="segment-id">Segment ID: C4</div>
-                </div>
-                <div class="champion-tier">🏅 Gold Tier</div>
-                <div class="champion-desc">Consistent champions with solid performance</div>
-                <div class="champion-chars">📊 1d recency, 10.9 orders, £3,981 spend</div>
-            </div>
-            
-            <div class="champion-card">
-                <div class="champion-header">
-                    <div class="champion-number">
-                        <span>Champion C6</span>
-                    </div>
-                    <div class="segment-id">Segment ID: C6</div>
-                </div>
-                <div class="champion-tier">🏅 Diamond Elite</div>
-                <div class="champion-desc">Ultra frequent buyers with exceptional loyalty</div>
-                <div class="champion-chars">📊 1d recency, 126.8 orders, £33,796 spend</div>
-            </div>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    # Strategy Cards - DIPERBAIKI dengan struktur yang benar
-    st.markdown("""
-    <div class="section-header">
-        <div class="section-icon">🎯</div>
-        <div>
-            <div class="section-title">Growth Strategies</div>
-            <div class="section-subtitle">Tailored marketing strategies for each customer segment</div>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    # Buat strategy cards untuk semua segments dalam profs - DIPERBAIKI STRUKTUR
-    strategy_cards_html = ""
-    
-    # Urutkan berdasarkan priority: CRITICAL -> URGENT -> HIGH -> MEDIUM
-    priority_order = {'CRITICAL': 0, 'URGENT': 1, 'HIGH': 2, 'MEDIUM': 3}
-    
-    # Filter hanya segments yang unik berdasarkan nama
-    unique_segments = {}
-    for cid, p in profs.items():
-        if p['name'] not in unique_segments:
-            unique_segments[p['name']] = (cid, p)
-    
-    # Urutkan segments yang unik
-    sorted_unique_segments = sorted(
-        unique_segments.values(), 
-        key=lambda x: priority_order.get(x[1]['priority'], 4)
-    )
-    
-    for cid, p in sorted_unique_segments:
-        # Build tactics HTML dengan struktur yang benar
-        tactics_html = ""
-        for tactic in p['tactics']:
-            tactics_html += f'<div class="tactic-item">{tactic}</div>'
-        
-        # Build KPIs HTML
-        kpis_html = ""
-        for kpi in p['kpis']:
-            # Tambahkan ikon yang sesuai berdasarkan KPI
-            icon = "📈" if "Retention" in kpi else "💰" if "Upsell" in kpi else "👥" if "Referral" in kpi else "🎯"
-            kpis_html += f'<div class="kpi-item">{icon} {kpi}</div>'
-        
-        # Hitung progress untuk budget dan ROI
-        budget_percentage = int(p['budget'].replace('%', ''))
-        budget_color = p['color']
-        
-        roi_value = int(p['roi'].replace('%', ''))
-        roi_fill_height = min(100, (roi_value / 500) * 100)
-        
-        # Buat strategy card HTML dengan struktur yang lengkap
-        strategy_cards_html += f"""
-        <div class="strategy-card" style="background: {p['grad']}">
-            <div class="strategy-header">
-                <div>
-                    <h3 class="strategy-name">{p['name']}</h3>
-                    <div class="priority-badge">{p['priority']}</div>
-                </div>
-                <div class="strategy-subtitle">📋 {p['strategy']} Strategy</div>
-            </div>
-            
-            <div class="tactics-section">
-                <div class="tactics-title">🎯 Key Tactics</div>
-                <div class="tactics-grid">
-                    {tactics_html}
-                </div>
-            </div>
-            
-            <div class="tactics-section">
-                <div class="tactics-title">📊 Target KPIs</div>
-                <div class="kpis-grid">
-                    {kpis_html}
-                </div>
-            </div>
-            
-            <div class="strategy-footer">
-                <div class="budget-item">
-                    <div class="budget-label">💰 Budget Allocation</div>
-                    <div class="budget-value">{p['budget']}</div>
-                    <div class="budget-progress-container">
-                        <div class="budget-progress">
-                            <div class="budget-progress-fill" style="width: {budget_percentage}%; background: {budget_color};"></div>
-                        </div>
-                        <div class="budget-percentage">{p['budget']}</div>
-                    </div>
-                </div>
-                <div class="budget-item">
-                    <div class="budget-label">🚀 ROI Target</div>
-                    <div class="budget-value">{p['roi']}</div>
-                    <div class="roi-gauge-container">
-                        <div class="roi-gauge">
-                            <div class="roi-gauge-background">
-                                <div class="roi-gauge-fill" style="height: {roi_fill_height}%; background: linear-gradient(to top, {budget_color}, rgba(255,255,255,0.8));"></div>
-                            </div>
-                            <div class="roi-value">{p['roi']}</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        """
-    
-    # Tampilkan semua strategy cards sekaligus
-    if strategy_cards_html:
-        st.markdown(f'<div class="strategy-grid">{strategy_cards_html}</div>', unsafe_allow_html=True)
-    else:
-        st.markdown("""
-        <div class="empty-state">
-            <div class="empty-icon">🎯</div>
-            <h3>No Strategy Cards Available</h3>
-            <p>Try selecting a different segment filter</p>
+            <div class="champion-tier">🏅 Platinum Elite</div>
+            <div class="champion-desc">Super frequent buyers with highest engagement</div>
+            <div class="champion-chars">📊 11d recency, 15.6 orders, £5,425 spend</div>
         </div>
         """, unsafe_allow_html=True)
+        
+        # Champion C4
+        st.markdown("""
+        <div class="champion-card">
+            <div class="champion-header">
+                <div class="champion-number">
+                    <span>Champion C4</span>
+                </div>
+                <div class="segment-id">Segment ID: C4</div>
+            </div>
+            <div class="champion-tier">🏅 Gold Tier</div>
+            <div class="champion-desc">Consistent champions with solid performance</div>
+            <div class="champion-chars">📊 1d recency, 10.9 orders, £3,981 spend</div>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col2:
+        # Champion C3
+        st.markdown("""
+        <div class="champion-card">
+            <div class="champion-header">
+                <div class="champion-number">
+                    <span>Champion C3</span>
+                </div>
+                <div class="segment-id">Segment ID: C3</div>
+            </div>
+            <div class="champion-tier">🏅 Ultra VIP</div>
+            <div class="champion-desc">Extreme high-value with massive order frequency</div>
+            <div class="champion-chars">📊 8d recency, 38.9 orders, £40,942 spend</div>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        # Champion C6
+        st.markdown("""
+        <div class="champion-card">
+            <div class="champion-header">
+                <div class="champion-number">
+                    <span>Champion C6</span>
+                </div>
+                <div class="segment-id">Segment ID: C6</div>
+            </div>
+            <div class="champion-tier">🏅 Diamond Elite</div>
+            <div class="champion-desc">Ultra frequent buyers with exceptional loyalty</div>
+            <div class="champion-chars">📊 1d recency, 126.8 orders, £33,796 spend</div>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    st.markdown('</div>', unsafe_allow_html=True)
     
     # Strategy Cards - DIPERBAIKI dengan cara yang lebih sederhana
     st.markdown("""
