@@ -123,6 +123,13 @@ st.markdown("""
     .st-emotion-cache-1cypcdb {background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%) !important; border-right: 1px solid #334155}
     .st-emotion-cache-16txtl3 {padding: 2rem 1.5rem !important}
     
+    /* HEADER dengan glassmorphism */
+    .header-container {background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); 
+                      border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding: 1.5rem 2rem; position: sticky; top: 0; z-index: 1000}
+    .main-header {display: flex; justify-content: center; align-items: center; flex-direction: column; text-align: center; gap: 0.5rem}
+    .header-title {font-size: 2.5rem; font-weight: 800; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+                  -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0; line-height: 1.2}
+    .header-subtitle {color: #94a3b8; font-size: 1.1rem; margin-top: 0.25rem; font-weight: 400; max-width: 800px}
     
     /* METRICS GRID dengan neumorphism */
     .metrics-grid {display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin: 1.5rem 0}
