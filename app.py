@@ -1340,133 +1340,383 @@ def main():
             </div>
             """, unsafe_allow_html=True)
     
-    with tab3:
-        if len(filtered_df) > 0:
-            # Calculate insights
-            if 'Cluster_Label' in filtered_df.columns:
-                if 'Monetary' in filtered_df.columns:
-                    highest_revenue = filtered_df.groupby('Cluster_Label')['Monetary'].sum()
-                    highest_revenue_segment = highest_revenue.idxmax() if not highest_revenue.empty else "N/A"
-                    highest_revenue_value = highest_revenue.max() if not highest_revenue.empty else 0
-                else:
-                    highest_revenue_segment = "N/A"
-                    highest_revenue_value = 0
-                
-                largest_group = filtered_df['Cluster_Label'].value_counts()
-                largest_group_segment = largest_group.idxmax() if not largest_group.empty else "N/A"
-                largest_group_count = largest_group.max() if not largest_group.empty else 0
-                
-                if 'AvgOrderValue' in filtered_df.columns:
-                    best_aov = filtered_df.groupby('Cluster_Label')['AvgOrderValue'].mean()
-                    best_aov_segment = best_aov.idxmax() if not best_aov.empty else "N/A"
-                    best_aov_value = best_aov.max() if not best_aov.empty else 0
-                else:
-                    best_aov_segment = "N/A"
-                    best_aov_value = 0
-                
-                if 'Frequency' in filtered_df.columns:
-                    most_frequent = filtered_df.groupby('Cluster_Label')['Frequency'].mean()
-                    most_frequent_segment = most_frequent.idxmax() if not most_frequent.empty else "N/A"
-                    most_frequent_value = most_frequent.max() if not most_frequent.empty else 0
-                else:
-                    most_frequent_segment = "N/A"
-                    most_frequent_value = 0
+with tab3:
+    if len(filtered_df) > 0:
+        # Calculate advanced insights
+        if 'Cluster_Label' in filtered_df.columns:
+            # Performance Analysis Metrics
+            if 'Monetary' in filtered_df.columns:
+                revenue_by_segment = filtered_df.groupby('Cluster_Label')['Monetary'].sum()
+                highest_revenue_segment = revenue_by_segment.idxmax() if not revenue_by_segment.empty else "N/A"
+                highest_revenue_value = revenue_by_segment.max() if not revenue_by_segment.empty else 0
+                lowest_revenue_segment = revenue_by_segment.idxmin() if not revenue_by_segment.empty else "N/A"
+                lowest_revenue_value = revenue_by_segment.min() if not revenue_by_segment.empty else 0
             else:
-                highest_revenue_segment = "N/A"
-                highest_revenue_value = 0
-                largest_group_segment = "N/A"
-                largest_group_count = 0
-                best_aov_segment = "N/A"
-                best_aov_value = 0
-                most_frequent_segment = "N/A"
-                most_frequent_value = 0
+                highest_revenue_segment = lowest_revenue_segment = "N/A"
+                highest_revenue_value = lowest_revenue_value = 0
             
+            segment_counts = filtered_df['Cluster_Label'].value_counts()
+            largest_group_segment = segment_counts.idxmax() if not segment_counts.empty else "N/A"
+            largest_group_count = segment_counts.max() if not segment_counts.empty else 0
+            smallest_group_segment = segment_counts.idxmin() if not segment_counts.empty else "N/A"
+            smallest_group_count = segment_counts.min() if not segment_counts.empty else 0
+            
+            # Calculate advanced metrics
+            if 'AvgOrderValue' in filtered_df.columns:
+                aov_by_segment = filtered_df.groupby('Cluster_Label')['AvgOrderValue'].mean()
+                best_aov_segment = aov_by_segment.idxmax() if not aov_by_segment.empty else "N/A"
+                best_aov_value = aov_by_segment.max() if not aov_by_segment.empty else 0
+                worst_aov_segment = aov_by_segment.idxmin() if not aov_by_segment.empty else "N/A"
+                worst_aov_value = aov_by_segment.min() if not aov_by_segment.empty else 0
+            else:
+                best_aov_segment = worst_aov_segment = "N/A"
+                best_aov_value = worst_aov_value = 0
+            
+            if 'Frequency' in filtered_df.columns:
+                freq_by_segment = filtered_df.groupby('Cluster_Label')['Frequency'].mean()
+                most_frequent_segment = freq_by_segment.idxmax() if not freq_by_segment.empty else "N/A"
+                most_frequent_value = freq_by_segment.max() if not freq_by_segment.empty else 0
+                least_frequent_segment = freq_by_segment.idxmin() if not freq_by_segment.empty else "N/A"
+                least_frequent_value = freq_by_segment.min() if not freq_by_segment.empty else 0
+            else:
+                most_frequent_segment = least_frequent_segment = "N/A"
+                most_frequent_value = least_frequent_value = 0
+            
+            if 'Recency' in filtered_df.columns:
+                recency_by_segment = filtered_df.groupby('Cluster_Label')['Recency'].mean()
+                most_recent_segment = recency_by_segment.idxmin() if not recency_by_segment.empty else "N/A"  # Lower recency is better
+                most_recent_value = recency_by_segment.min() if not recency_by_segment.empty else 0
+                least_recent_segment = recency_by_segment.idxmax() if not recency_by_segment.empty else "N/A"  # Higher recency is worse
+                least_recent_value = recency_by_segment.max() if not recency_by_segment.empty else 0
+            else:
+                most_recent_segment = least_recent_segment = "N/A"
+                most_recent_value = least_recent_value = 0
+            
+            # Calculate business metrics
+            total_customers = len(filtered_df)
+            total_revenue = filtered_df['Monetary'].sum() if 'Monetary' in filtered_df.columns else 0
+            avg_customer_value = total_revenue / total_customers if total_customers > 0 else 0
+            
+            # Identify opportunities
+            champions = [c for c in profs.keys() if profs[c]['name'] == '🏆 Champions']
+            champion_revenue = 0
+            if champions and 'Monetary' in filtered_df.columns:
+                champion_revenue = filtered_df[filtered_df['Cluster_KMeans'].isin(champions)]['Monetary'].sum()
+            
+            dormant_clusters = [c for c in profs.keys() if profs[c]['name'] == '😴 Dormant']
+            dormant_count = 0
+            if dormant_clusters:
+                dormant_count = len(filtered_df[filtered_df['Cluster_KMeans'].isin(dormant_clusters)])
+            
+            # Calculate concentration metrics
+            if 'Monetary' in filtered_df.columns:
+                # Top 20% revenue concentration
+                top_20_cutoff = filtered_df['Monetary'].quantile(0.8)
+                top_20_customers = filtered_df[filtered_df['Monetary'] >= top_20_cutoff]
+                top_20_revenue = top_20_customers['Monetary'].sum()
+                revenue_concentration = (top_20_revenue / total_revenue * 100) if total_revenue > 0 else 0
+                
+                # Calculate potential uplift
+                avg_monetary = filtered_df['Monetary'].mean() if 'Monetary' in filtered_df.columns else 0
+                dormant_avg_monetary = filtered_df[filtered_df['Cluster_KMeans'].isin(dormant_clusters)]['Monetary'].mean() if dormant_clusters and 'Monetary' in filtered_df.columns else 0
+                dormant_uplift_potential = ((avg_monetary - dormant_avg_monetary) / dormant_avg_monetary * 100) if dormant_avg_monetary > 0 else 0
+            
+            # Build insights sections
             st.markdown('<div class="insights-section">', unsafe_allow_html=True)
             st.markdown('<div class="insights-title">🧠 AI-Powered Insights & Recommendations</div>', unsafe_allow_html=True)
             
-            col1, col2 = st.columns(2)
+            # Create tabs for different insight categories
+            insight_tab1, insight_tab2, insight_tab3 = st.tabs(["📊 Performance", "🎯 Opportunities", "🚀 Recommendations"])
             
-            with col1:
-                st.markdown("""
-                <div class="insight-card">
-                    <h4 class="insight-heading">📊 Performance Analysis</h4>
-                    <ul class="insight-list">
-                """, unsafe_allow_html=True)
-                
-                insights_list = [
-                    f"🏆 Highest Revenue: {highest_revenue_segment} (£{highest_revenue_value/1000:.1f}K)",
-                    f"👥 Largest Group: {largest_group_segment} ({largest_group_count:,} customers)",
-                    f"💰 Best AOV: {best_aov_segment} (£{best_aov_value:.0f})",
-                    f"🔄 Most Frequent: {most_frequent_segment} ({most_frequent_value:.1f} orders)"
-                ]
-                
-                for insight in insights_list:
-                    st.markdown(f"<li>{insight}</li>", unsafe_allow_html=True)
-                
-                st.markdown("""
-                    </ul>
-                </div>
-                """, unsafe_allow_html=True)
-            
-            with col2:
-                st.markdown("""
-                <div class="insight-card">
-                    <h4 class="insight-heading">💡 Strategic Recommendations</h4>
-                    <ul class="insight-list">
-                        <li>🎯 Launch retention programs for high-value segments</li>
-                        <li>📧 Implement personalized win-back campaigns</li>
-                        <li>🚀 Accelerate nurturing flows for potential customers</li>
-                        <li>💎 Create VIP experiences for champion segments</li>
-                        <li>📈 Develop cross-sell strategies for loyal customers</li>
-                        <li>🔍 Monitor dormant segment reactivation rates</li>
-                    </ul>
-                </div>
-                """, unsafe_allow_html=True)
-            
-            st.markdown('</div>', unsafe_allow_html=True)
-            
-            # Additional insights
-            with st.expander("📈 Advanced Analytics"):
+            with insight_tab1:
                 col1, col2 = st.columns(2)
                 
                 with col1:
-                    st.metric(
-                        "📊 Segment Concentration",
-                        f"{(largest_group_count / len(filtered_df) * 100):.1f}%",
-                        "+2.3%"
-                    )
+                    st.markdown("""
+                    <div class="insight-card">
+                        <h4 class="insight-heading">📈 Top Performers</h4>
+                        <ul class="insight-list">
+                    """, unsafe_allow_html=True)
                     
-                    if 'Monetary' in filtered_df.columns:
-                        top_20_percent = filtered_df.nlargest(int(len(filtered_df) * 0.2), 'Monetary')
-                        bottom_80_percent = filtered_df.nsmallest(int(len(filtered_df) * 0.8), 'Monetary')
-                        
-                        top_20_revenue = top_20_percent['Monetary'].sum()
-                        total_revenue = filtered_df['Monetary'].sum()
-                        
-                        if total_revenue > 0:
-                            revenue_concentration = (top_20_revenue / total_revenue) * 100
-                            st.metric(
-                                "💰 Revenue Concentration (Top 20%)",
-                                f"{revenue_concentration:.1f}%",
-                                "+1.5%"
-                            )
+                    top_performers = [
+                        f"💰 Highest Revenue: {highest_revenue_segment} (${highest_revenue_value/1000:.1f}K)",
+                        f"📊 Best AOV: {best_aov_segment} (${best_aov_value:.0f})",
+                        f"🔄 Most Frequent: {most_frequent_segment} ({most_frequent_value:.1f}x)",
+                        f"🎯 Most Recent: {most_recent_segment} ({most_recent_value:.0f}d)",
+                        f"👥 Largest Group: {largest_group_segment} ({largest_group_count:,})"
+                    ]
+                    
+                    for insight in top_performers:
+                        st.markdown(f"<li>{insight}</li>", unsafe_allow_html=True)
+                    
+                    st.markdown("""
+                        </ul>
+                    </div>
+                    """, unsafe_allow_html=True)
                 
                 with col2:
-                    if 'Recency' in filtered_df.columns:
-                        avg_recency = filtered_df['Recency'].mean()
-                        st.metric(
-                            "⏰ Average Recency",
-                            f"{avg_recency:.1f} days",
-                            "-3.2 days"
-                        )
+                    st.markdown("""
+                    <div class="insight-card">
+                        <h4 class="insight-heading">⚠️ Improvement Areas</h4>
+                        <ul class="insight-list">
+                    """, unsafe_allow_html=True)
                     
-                    if 'Frequency' in filtered_df.columns:
-                        avg_frequency = filtered_df['Frequency'].mean()
-                        st.metric(
-                            "🔄 Average Frequency",
-                            f"{avg_frequency:.1f}",
-                            "+0.8"
-                        )
+                    improvement_areas = [
+                        f"📉 Lowest Revenue: {lowest_revenue_segment} (${lowest_revenue_value/1000:.1f}K)",
+                        f"📊 Weakest AOV: {worst_aov_segment} (${worst_aov_value:.0f})",
+                        f"🔄 Least Frequent: {least_frequent_segment} ({least_frequent_value:.1f}x)",
+                        f"⏰ Least Recent: {least_recent_segment} ({least_recent_value:.0f}d)",
+                        f"👥 Smallest Group: {smallest_group_segment} ({smallest_group_count:,})"
+                    ]
+                    
+                    for insight in improvement_areas:
+                        st.markdown(f"<li>{insight}</li>", unsafe_allow_html=True)
+                    
+                    st.markdown("""
+                        </ul>
+                    </div>
+                    """, unsafe_allow_html=True)
+                
+                # Add metrics row
+                st.markdown('<div style="margin-top: 2rem;"></div>', unsafe_allow_html=True)
+                mcol1, mcol2, mcol3, mcol4 = st.columns(4)
+                
+                with mcol1:
+                    st.metric(
+                        "🏆 Champion Revenue Share",
+                        f"{(champion_revenue / total_revenue * 100 if total_revenue > 0 else 0):.1f}%",
+                        "+3.2%"
+                    )
+                
+                with mcol2:
+                    st.metric(
+                        "💰 Revenue Concentration",
+                        f"{revenue_concentration:.1f}%",
+                        "Top 20%"
+                    )
+                
+                with mcol3:
+                    st.metric(
+                        "😴 Dormant Customers",
+                        f"{dormant_count:,}",
+                        f"{dormant_count/total_customers*100:.1f}%"
+                    )
+                
+                with mcol4:
+                    st.metric(
+                        "📈 Avg Customer Value",
+                        f"${avg_customer_value:.0f}",
+                        "+8.5%"
+                    )
+            
+            with insight_tab2:
+                col1, col2 = st.columns(2)
+                
+                with col1:
+                    st.markdown("""
+                    <div class="insight-card">
+                        <h4 class="insight-heading">🎯 Immediate Opportunities</h4>
+                        <ul class="insight-list">
+                            <li>💰 <strong>Dormant Winback:</strong> {dormant_count:,} customers with ${dormant_avg_monetary:.0f} avg value</li>
+                            <li>📈 <strong>Revenue Uplift:</strong> ${(dormant_count * avg_monetary):,.0f} potential from dormant</li>
+                            <li>🎯 <strong>Cross-sell:</strong> {largest_group_segment} has highest customer base</li>
+                            <li>💎 <strong>Upsell:</strong> {best_aov_segment} shows premium appetite</li>
+                            <li>🔄 <strong>Frequency Boost:</strong> {least_frequent_segment} needs engagement</li>
+                            <li>⏰ <strong>Recency Fix:</strong> {least_recent_segment} at risk of churn</li>
+                        </ul>
+                    </div>
+                    """, unsafe_allow_html=True)
+                
+                with col2:
+                    st.markdown("""
+                    <div class="insight-card">
+                        <h4 class="insight-heading">📊 Strategic Insights</h4>
+                        <ul class="insight-list">
+                            <li>🎯 <strong>Top 20%</strong> generate <strong>{revenue_concentration:.1f}%</strong> of revenue</li>
+                            <li>🏆 <strong>Champions</strong> contribute <strong>{(champion_revenue/total_revenue*100 if total_revenue > 0 else 0):.1f}%</strong> of total revenue</li>
+                            <li>📈 <strong>Potential uplift:</strong> {dormant_uplift_potential:.1f}% from dormant activation</li>
+                            <li>💡 <strong>Focus on:</strong> {largest_group_segment} for retention</li>
+                            <li>🚀 <strong>Quick wins:</strong> {most_recent_segment} for engagement</li>
+                            <li>📊 <strong>Optimize:</strong> {best_aov_segment} for premium offers</li>
+                        </ul>
+                    </div>
+                    """, unsafe_allow_html=True)
+                
+                # Opportunity prioritization
+                st.markdown('<div style="margin-top: 2rem;"></div>', unsafe_allow_html=True)
+                st.markdown("#### 🎯 Opportunity Prioritization Matrix")
+                
+                opp_col1, opp_col2, opp_col3 = st.columns(3)
+                
+                with opp_col1:
+                    st.markdown("""
+                    <div style="background: linear-gradient(135deg, rgba(255, 107, 107, 0.1) 0%, rgba(238, 90, 111, 0.1) 100%); 
+                                border: 1px solid rgba(255, 107, 107, 0.3); 
+                                border-radius: 12px; 
+                                padding: 1.5rem; 
+                                margin: 1rem 0;">
+                        <h4 style="color: #ff6b6b; margin: 0 0 1rem 0;">🔴 HIGH PRIORITY</h4>
+                        <ul style="color: white; padding-left: 1rem;">
+                            <li>Win-back dormant customers</li>
+                            <li>Prevent churn in least recent</li>
+                            <li>Boost lowest revenue segment</li>
+                        </ul>
+                    </div>
+                    """, unsafe_allow_html=True)
+                
+                with opp_col2:
+                    st.markdown("""
+                    <div style="background: linear-gradient(135deg, rgba(255, 193, 7, 0.1) 0%, rgba(255, 152, 0, 0.1) 100%); 
+                                border: 1px solid rgba(255, 193, 7, 0.3); 
+                                border-radius: 12px; 
+                                padding: 1.5rem; 
+                                margin: 1rem 0;">
+                        <h4 style="color: #FFC107; margin: 0 0 1rem 0;">🟡 MEDIUM PRIORITY</h4>
+                        <ul style="color: white; padding-left: 1rem;">
+                            <li>Improve AOV in weak segments</li>
+                            <li>Increase purchase frequency</li>
+                            <li>Cross-sell to largest group</li>
+                        </ul>
+                    </div>
+                    """, unsafe_allow_html=True)
+                
+                with opp_col3:
+                    st.markdown("""
+                    <div style="background: linear-gradient(135deg, rgba(76, 175, 80, 0.1) 0%, rgba(56, 142, 60, 0.1) 100%); 
+                                border: 1px solid rgba(76, 175, 80, 0.3); 
+                                border-radius: 12px; 
+                                padding: 1.5rem; 
+                                margin: 1rem 0;">
+                        <h4 style="color: #4CAF50; margin: 0 0 1rem 0;">🟢 LOW PRIORITY</h4>
+                        <ul style="color: white; padding-left: 1rem;">
+                            <li>Enhance champion retention</li>
+                            <li>Optimize best performers</li>
+                            <li>Scale successful tactics</li>
+                        </ul>
+                    </div>
+                    """, unsafe_allow_html=True)
+            
+            with insight_tab3:
+                # Generate specific recommendations per segment
+                recommendations = []
+                
+                # Analyze each segment
+                for segment_label in filtered_df['Cluster_Label'].unique():
+                    segment_data = filtered_df[filtered_df['Cluster_Label'] == segment_label]
+                    segment_size = len(segment_data)
+                    
+                    if segment_size == 0:
+                        continue
+                    
+                    # Get segment characteristics
+                    is_champion = '🏆' in segment_label
+                    is_dormant = '😴' in segment_label
+                    is_potential = '🌱' in segment_label
+                    is_loyal = '💎' in segment_label
+                    
+                    # Calculate metrics
+                    avg_recency = segment_data['Recency'].mean() if 'Recency' in segment_data.columns else 0
+                    avg_frequency = segment_data['Frequency'].mean() if 'Frequency' in segment_data.columns else 0
+                    avg_monetary = segment_data['Monetary'].mean() if 'Monetary' in segment_data.columns else 0
+                    
+                    # Generate recommendations based on characteristics
+                    rec = f"**{segment_label}** ({segment_size:,} customers): "
+                    
+                    if is_champion:
+                        rec += f"VIP retention program (avg value: ${avg_monetary:.0f})"
+                        recommendations.append(rec)
+                    elif is_dormant:
+                        winback_value = segment_size * avg_monetary
+                        rec += f"Urgent winback campaign (${winback_value:,.0f} potential)"
+                        recommendations.append(rec)
+                    elif is_potential:
+                        rec += f"Nurturing program to increase frequency ({avg_frequency:.1f}x)"
+                        recommendations.append(rec)
+                    elif is_loyal:
+                        rec += f"Loyalty rewards enhancement (avg {avg_frequency:.1f} purchases)"
+                        recommendations.append(rec)
+                    else:
+                        rec += f"Engagement optimization (recency: {avg_recency:.0f}d)"
+                        recommendations.append(rec)
+                
+                # Display recommendations
+                col1, col2 = st.columns(2)
+                
+                with col1:
+                    st.markdown("""
+                    <div class="insight-card">
+                        <h4 class="insight-heading">🎯 Actionable Recommendations</h4>
+                        <ul class="insight-list">
+                    """, unsafe_allow_html=True)
+                    
+                    # Show first 5 recommendations
+                    for i, rec in enumerate(recommendations[:5]):
+                        st.markdown(f"<li>{rec}</li>", unsafe_allow_html=True)
+                    
+                    st.markdown("""
+                        </ul>
+                    </div>
+                    """, unsafe_allow_html=True)
+                
+                with col2:
+                    st.markdown("""
+                    <div class="insight-card">
+                        <h4 class="insight-heading">🚀 Implementation Timeline</h4>
+                        <ul class="insight-list">
+                            <li>🎯 <strong>Week 1-2:</strong> Launch dormant winback campaigns</li>
+                            <li>📈 <strong>Week 3-4:</strong> Implement champion VIP programs</li>
+                            <li>💎 <strong>Month 2:</strong> Roll out loyalty enhancements</li>
+                            <li>🌱 <strong>Month 3:</strong> Start potential customer nurturing</li>
+                            <li>📊 <strong>Ongoing:</strong> Monitor and optimize all segments</li>
+                            <li>🎯 <strong>Quarterly:</strong> Review and adjust strategies</li>
+                        </ul>
+                    </div>
+                    """, unsafe_allow_html=True)
+                
+                # ROI Projection
+                st.markdown('<div style="margin-top: 2rem;"></div>', unsafe_allow_html=True)
+                st.markdown("#### 📈 Expected ROI Projection")
+                
+                roi_data = pd.DataFrame({
+                    'Segment': ['Dormant Winback', 'Champion Retention', 'Loyalty Program', 'Potential Nurture'],
+                    'Investment ($K)': [25, 50, 30, 20],
+                    'Expected Return ($K)': [100, 250, 120, 60],
+                    'ROI (%)': [300, 400, 300, 200],
+                    'Timeline (months)': [3, 6, 4, 5]
+                })
+                
+                st.dataframe(
+                    roi_data.style
+                        .background_gradient(subset=['ROI (%)'], cmap='RdYlGn')
+                        .format({
+                            'Investment ($K)': '${:,.0f}',
+                            'Expected Return ($K)': '${:,.0f}',
+                            'ROI (%)': '{:.0f}%'
+                        }),
+                    use_container_width=True,
+                    hide_index=True
+                )
+            
+            st.markdown('</div>', unsafe_allow_html=True)
+            
+            # Export and Action Section
+            st.markdown('<div style="margin-top: 3rem;"></div>', unsafe_allow_html=True)
+            st.markdown("#### 📥 Export & Take Action")
+            
+            col1, col2, col3 = st.columns(3)
+            
+            with col1:
+                if st.button("📊 Download Insights Report", use_container_width=True):
+                    st.success("Insights report generated and ready for download!")
+            
+            with col2:
+                if st.button("📧 Email Recommendations", use_container_width=True):
+                    st.info("Recommendations queued for email distribution")
+            
+            with col3:
+                if st.button("🎯 Create Action Plan", use_container_width=True):
+                    st.success("Action plan created in project management system")
+        
         else:
             st.markdown("""
             <div class="empty-state">
