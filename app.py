@@ -511,7 +511,7 @@ st.markdown("""
     div[data-testid="stSlider"] > div {
         background: rgba(30, 41, 59, 0.8); 
         border-radius: 12px; 
-        padding: 1rem 0.75rem;
+        padding: 0.5rem 0.75rem;
         border: 1px solid rgba(255, 255, 255, 0.1);
     }
     div[data-testid="stSlider"] .stSlider > div > div > div {
