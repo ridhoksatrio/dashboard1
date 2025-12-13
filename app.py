@@ -1,4 +1,3 @@
-
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -127,15 +126,10 @@ st.markdown("""
     /* HEADER dengan glassmorphism */
     .header-container {background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); 
                       border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding: 1.5rem 2rem; position: sticky; top: 0; z-index: 1000}
-    .main-header {display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem}
-    .header-title {font-size: 2rem; font-weight: 800; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
-                  -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0}
-    .header-subtitle {color: #94a3b8; font-size: 1rem; margin-top: 0.25rem; font-weight: 400}
-    .header-stats {display: flex; gap: 1.5rem; flex-wrap: wrap}
-    .stat-item {display: flex; flex-direction: column; align-items: center; padding: 0.75rem 1.25rem; 
-                background: rgba(30, 41, 59, 0.7); border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.05)}
-    .stat-value {font-size: 1.25rem; font-weight: 700; color: #fff; margin-bottom: 0.25rem}
-    .stat-label {font-size: 0.75rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em}
+    .main-header {display: flex; justify-content: center; align-items: center; flex-direction: column; text-align: center; gap: 0.5rem}
+    .header-title {font-size: 2.5rem; font-weight: 800; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+                  -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0; line-height: 1.2}
+    .header-subtitle {color: #94a3b8; font-size: 1.1rem; margin-top: 0.25rem; font-weight: 400; max-width: 800px}
     
     /* METRICS GRID dengan neumorphism */
     .metrics-grid {display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin: 1.5rem 0}
@@ -590,35 +584,15 @@ with st.sidebar:
 
 # Layout utama Streamlit
 def main():
-    # Header
+    # Header - sudah dirapihkan tanpa stats di kanan
     st.markdown("""
     <div class="header-container">
         <div class="main-header">
-            <div>
-                <h1 class="header-title">Customer Intelligence Hub</h1>
-                <div class="header-subtitle">AI-Powered Customer Segmentation for Targeted Marketing</div>
-            </div>
-            <div class="header-stats">
-                <div class="stat-item">
-                    <div class="stat-value">{:,}</div>
-                    <div class="stat-label">Customers</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-value">{}</div>
-                    <div class="stat-label">Segments</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-value">£{:.1f}M</div>
-                    <div class="stat-label">Revenue</div>
-                </div>
-            </div>
+            <h1 class="header-title">Customer Intelligence Hub</h1>
+            <div class="header-subtitle">AI-Powered Customer Segmentation for Targeted Marketing</div>
         </div>
     </div>
-    """.format(
-        len(rfm),
-        rfm['Cluster_KMeans'].nunique(),
-        rfm['Monetary'].sum()/1e6 if 'Monetary' in rfm.columns else 0
-    ), unsafe_allow_html=True)
+    """, unsafe_allow_html=True)
     
     # Metrics Grid
     st.markdown('<div class="metrics-grid">', unsafe_allow_html=True)
