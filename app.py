@@ -598,7 +598,7 @@ def create_charts(df):
             font=dict(color='white'),
             orientation='h',
             yanchor='bottom',
-            y=-0.2,
+            y=-1,
             xanchor='center',
             x=0.5
         )
