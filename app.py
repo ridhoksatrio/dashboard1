@@ -585,7 +585,7 @@ def create_charts(df):
     fig1.update_layout(
         title=dict(
             text="🎯 Customer Distribution",
-            font=dict(color='white', size=20),  # Font size disamakan 20
+            font=dict(color='white', size=30),  # Font size disamakan 20
             x=0.5,                             # Posisi di tengah
             xanchor='center'
         ),
