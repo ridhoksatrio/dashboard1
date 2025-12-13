@@ -1322,129 +1322,205 @@ def main():
             """, unsafe_allow_html=True)
     
     with tab2:
-        # Champion Breakdown Section
-        champion_clusters = [c for c in filtered_df['Cluster_KMeans'].unique() 
-                            if c in profs and profs[c]['name'] == '🏆 Champions']
+    # Champion Breakdown Section
+    champion_clusters = [c for c in filtered_df['Cluster_KMeans'].unique() 
+                        if c in profs and profs[c]['name'] == '🏆 Champions']
+    
+    if len(champion_clusters) > 0:
+        st.markdown('<div class="champion-section">', unsafe_allow_html=True)
+        st.markdown('<div class="champion-title">🏆 Champion Segments Breakdown</div>', unsafe_allow_html=True)
         
-        if len(champion_clusters) > 0:
-            st.markdown('<div class="champion-section">', unsafe_allow_html=True)
-            st.markdown('<div class="champion-title">🏆 Champion Segments Breakdown</div>', unsafe_allow_html=True)
-            
-            cols = st.columns(2)
-            for idx, cid in enumerate(sorted(champion_clusters)):
-                if cid in champion_details:
-                    det = champion_details[cid]
-                    with cols[idx % 2]:
-                        st.markdown(f"""
-                        <div class="champion-card">
-                            <div class="champion-number">Champion C{cid}</div>
-                            <div class="champion-tier">🏅 {det['tier']}</div>
-                            <div class="champion-desc">{det['desc']}</div>
-                            <div class="champion-chars">📊 {det['char']}</div>
-                        </div>
-                        """, unsafe_allow_html=True)
-            
-            st.markdown('</div>', unsafe_allow_html=True)
+        cols = st.columns(2)
+        for idx, cid in enumerate(sorted(champion_clusters)):
+            if cid in champion_details:
+                det = champion_details[cid]
+                with cols[idx % 2]:
+                    st.markdown(f"""
+                    <div class="champion-card">
+                        <div class="champion-number">Champion C{cid}</div>
+                        <div class="champion-tier">🏅 {det['tier']}</div>
+                        <div class="champion-desc">{det['desc']}</div>
+                        <div class="champion-chars">📊 {det['char']}</div>
+                    </div>
+                    """, unsafe_allow_html=True)
         
-        # NEW SECTION: All Segments Overview
-        st.markdown('<div class="section-divider"></div>', unsafe_allow_html=True)
-        
-        st.markdown("""
-        <div class="section-header">
-            <div class="section-icon">📋</div>
-            <div>
-                <div class="section-title">Segment Strategies Overview</div>
-                <div class="section-subtitle">Comprehensive view of all customer segments with detailed strategies, tactics, and KPIs</div>
-            </div>
+        st.markdown('</div>', unsafe_allow_html=True)
+    
+    # NEW SECTION: All Segments Overview
+    st.markdown('<div class="section-divider"></div>', unsafe_allow_html=True)
+    
+    st.markdown("""
+    <div class="section-header">
+        <div class="section-icon">📋</div>
+        <div>
+            <div class="section-title">Segment Strategies Overview</div>
+            <div class="section-subtitle">Comprehensive view of all customer segments with detailed strategies, tactics, and KPIs</div>
         </div>
-        """, unsafe_allow_html=True)
-        
-        # Create overview cards data from strats dictionary
-        overview_cards_data = []
-        
-        # Collect all segment data from strats
-        for seg_key, seg_data in strats.items():
-            overview_cards_data.append({
-                'key': seg_key,
-                'data': seg_data
-            })
-        
-        # Sort by priority (CRITICAL, URGENT, HIGH, MEDIUM)
-        priority_order = {'CRITICAL': 0, 'URGENT': 1, 'HIGH': 2, 'MEDIUM': 3}
-        overview_cards_data.sort(key=lambda x: priority_order.get(x['data']['priority'], 4))
-        
-        # Create columns for the grid
-        cols = st.columns(3)
-        
-        # Display segment cards in a grid
-        for idx, card in enumerate(overview_cards_data):
-            seg_key = card['key']
-            seg_data = card['data']
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Create columns for the grid (3 columns)
+    cols = st.columns(3)
+    
+    # Display segment cards in a grid - DIPERBAIKI: menggunakan strats langsung
+    for idx, (seg_key, seg_data) in enumerate(strats.items()):
+        with cols[idx % 3]:
+            # Create HTML for the card
+            card_html = f"""
+            <div class="segment-overview-card" style="background: {seg_data['grad']}">
+                <div class="segment-overview-header">
+                    <div class="segment-title-section">
+                        <div class="segment-icon">{seg_data['name'].split()[0]}</div>
+                        <div>
+                            <h3 class="segment-name">{seg_data['name']}</h3>
+                            <div class="segment-priority">
+                                <span class="priority-dot priority-{seg_data['priority'].lower()}"></span>
+                                {seg_data['priority']}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="segment-strategy">
+                        <span class="strategy-label">📋 {seg_data['strategy']} Strategy</span>
+                    </div>
+                </div>
+                
+                <div class="segment-content">
+                    <div class="segment-section">
+                        <div class="section-title-small">🎯 Key Tactics</div>
+                        <div class="tactics-grid">
+            """
             
-            with cols[idx % 3]:
-                # Create HTML for the card
-                card_html = f"""
-                <div class="segment-overview-card" style="background: {seg_data['grad']}">
-                    <div class="segment-overview-header">
-                        <div class="segment-title-section">
-                            <div class="segment-icon">{seg_data['name'].split()[0]}</div>
-                            <div>
-                                <h3 class="segment-name">{seg_data['name']}</h3>
-                                <div class="segment-priority">
-                                    <span class="priority-dot priority-{seg_data['priority'].lower()}"></span>
-                                    {seg_data['priority']}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="segment-strategy">
-                            <span class="strategy-label">📋 {seg_data['strategy']} Strategy</span>
+            # Add tactics (show only first 3)
+            for tactic in seg_data['tactics'][:3]:
+                card_html += f'<span class="tactic-chip">{tactic}</span>'
+            
+            card_html += """
                         </div>
                     </div>
                     
-                    <div class="segment-content">
-                        <div class="segment-section">
-                            <div class="section-title-small">🎯 Key Tactics</div>
-                            <div class="tactics-grid">
-                """
-                
-                # Add tactics (first 3)
-                for tactic in seg_data['tactics'][:3]:
-                    card_html += f'<span class="tactic-chip">{tactic}</span>'
-                
-                card_html += """
-                            </div>
-                        </div>
-                        
-                        <div class="segment-section">
-                            <div class="section-title-small">📊 Target KPIs</div>
-                            <div class="kpis-grid">
-                """
-                
-                # Add KPIs
-                for kpi in seg_data['kpis']:
-                    card_html += f'<span class="kpi-badge">{kpi}</span>'
-                
-                card_html += f"""
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="segment-footer">
-                        <div class="budget-roi-container">
-                            <div class="metric-box">
-                                <div class="metric-label">💰 Budget Allocation</div>
-                                <div class="metric-value-large">{seg_data['budget']}</div>
-                            </div>
-                            <div class="metric-box">
-                                <div class="metric-label">📈 ROI Target</div>
-                                <div class="metric-value-large">{seg_data['roi']}</div>
-                            </div>
+                    <div class="segment-section">
+                        <div class="section-title-small">📊 Target KPIs</div>
+                        <div class="kpis-grid">
+            """
+            
+            # Add KPIs
+            for kpi in seg_data['kpis']:
+                card_html += f'<span class="kpi-badge">{kpi}</span>'
+            
+            card_html += f"""
                         </div>
                     </div>
                 </div>
-                """
                 
-                st.markdown(card_html, unsafe_allow_html=True)
+                <div class="segment-footer">
+                    <div class="budget-roi-container">
+                        <div class="metric-box">
+                            <div class="metric-label">💰 Budget Allocation</div>
+                            <div class="metric-value-large">{seg_data['budget']}</div>
+                        </div>
+                        <div class="metric-box">
+                            <div class="metric-label">📈 ROI Target</div>
+                            <div class="metric-value-large">{seg_data['roi']}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            """
+            
+            st.markdown(card_html, unsafe_allow_html=True)
+    
+    # Add CSS for the segment cards
+    st.markdown("""
+    <style>
+        /* CSS untuk segment-overview-card sudah ada di bagian atas dalam CSS utama */
+        /* Jadi kita tidak perlu menambahkannya lagi di sini */
+    </style>
+    """, unsafe_allow_html=True)
+    
+    # Add a note about data processing
+    st.markdown("""
+    <div style="background: rgba(30, 41, 59, 0.5); border-left: 4px solid #667eea; padding: 1rem 1.5rem; border-radius: 8px; margin-top: 1rem; margin-bottom: 2rem;">
+        <div style="display: flex; align-items: center; gap: 0.75rem; color: #94a3b8; font-size: 0.9rem;">
+            <span style="font-size: 1.25rem;">ℹ️</span>
+            <span><strong>Data Processing Note:</strong> All segment strategies are dynamically calculated from your customer RFM data. The algorithms analyze Recency, Frequency, and Monetary values to assign optimal strategies and tactics for maximum ROI.</span>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Strategy Cards (Existing Code)
+    st.markdown('<div class="section-divider"></div>', unsafe_allow_html=True)
+    
+    st.markdown("""
+    <div class="section-header">
+        <div class="section-icon">🎯</div>
+        <div>
+            <div class="section-title">Detailed Segment Strategies</div>
+            <div class="section-subtitle">In-depth action plans for each customer segment with comprehensive tactics and KPIs</div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Filtered strategy cards based on segment filter
+    strategy_cards_html = ""
+    for cid, p in profs.items():
+        if segment_filter == 'all' or segment_filter == cid:
+            # Build tactics HTML
+            tactics_html = ""
+            for tactic in p['tactics']:
+                tactics_html += f'<div class="tactic-item">{tactic}</div>'
+            
+            # Build KPIs HTML
+            kpis_html = ""
+            for kpi in p['kpis']:
+                kpis_html += f'<div class="kpi-item">{kpi}</div>'
+            
+            strategy_cards_html += f"""
+            <div class="strategy-card" style="background: {p['grad']}">
+                <div class="strategy-header">
+                    <div>
+                        <h3 class="strategy-name">{p['name']}</h3>
+                        <div class="strategy-subtitle">{p['strategy']} Strategy</div>
+                    </div>
+                    <div class="priority-badge">{p['priority']}</div>
+                </div>
+                
+                <div class="tactics-section">
+                    <div class="tactics-title">🎯 Key Tactics</div>
+                    <div class="tactics-grid">
+                        {tactics_html}
+                    </div>
+                </div>
+                
+                <div class="tactics-section">
+                    <div class="tactics-title">📊 Target KPIs</div>
+                    <div class="kpis-grid">
+                        {kpis_html}
+                    </div>
+                </div>
+                
+                <div class="strategy-footer">
+                    <div class="budget-item">
+                        <div class="budget-label">Budget Allocation</div>
+                        <div class="budget-value">{p['budget']}</div>
+                    </div>
+                    <div class="budget-item">
+                        <div class="budget-label">Expected ROI</div>
+                        <div class="budget-value">{p['roi']}</div>
+                    </div>
+                </div>
+            </div>
+            """
+    
+    if strategy_cards_html:
+        st.markdown(f'<div class="strategy-grid">{strategy_cards_html}</div>', unsafe_allow_html=True)
+    else:
+        st.markdown("""
+        <div class="empty-state">
+            <div class="empty-icon">🎯</div>
+            <h3>No Strategy Cards Available</h3>
+            <p>Try selecting a different segment filter</p>
+        </div>
+        """, unsafe_allow_html=True)
         
         # Add CSS for the segment cards
         st.markdown("""
