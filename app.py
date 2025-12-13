@@ -278,11 +278,13 @@ def create_charts(df):
         textfont=dict(color='white'),
         insidetextorientation='radial'
     ))
-     fig1.update_layout(
+    
+    # PERBAIKAN INI: Pastikan indentasi konsisten
+    fig1.update_layout(
         title=dict(
-        text="🎯 Customer Distribution",
-        font=dict(color='white', size=24), # Font Size Diperbesar menjadi 24
-        x=0.0                            # Posisi Horizontal diatur ke Paling Kiri
+            text="🎯 Customer Distribution",
+            font=dict(color='white', size=24), # Font Size Diperbesar menjadi 24
+            x=0.0                            # Posisi Horizontal diatur ke Paling Kiri
         ),
         height=400,
         showlegend=True,
