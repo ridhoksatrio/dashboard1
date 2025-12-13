@@ -138,14 +138,6 @@ st.markdown("""
     .change-positive {color: #10b981}
     .change-negative {color: #ef4444}
     
-    /* FILTER SECTION - DIPERBAIKI */
-    .filter-section {background: rgba(30, 41, 59, 0.8); border-radius: 16px; padding: 1.5rem; 
-                    margin: 1.5rem 0; border: 1px solid rgba(255, 255, 255, 0.05); overflow: hidden}
-    .filter-title {font-size: 1.25rem; font-weight: 700; color: #fff; margin-bottom: 1.5rem; 
-                  display: flex; align-items: center; gap: 0.5rem}
-    .filter-grid {display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem}
-    @media (max-width: 768px) {.filter-grid {grid-template-columns: 1fr}}
-    
     /* FILTER ITEMS - DITAMBAHKAN */
     .filter-column {padding: 0.5rem}
     .filter-label {font-size: 0.875rem; color: #94a3b8; margin-bottom: 0.5rem; font-weight: 600; display: block}
