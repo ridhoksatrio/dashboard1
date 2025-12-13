@@ -293,29 +293,6 @@ st.markdown("""
         transform: translateY(-2px);
     }
     
-    /* CHARTS CONTAINER */
-    .chart-container {
-        background: linear-gradient(135deg, rgba(30, 41, 59, 0.9) 0%, rgba(15, 23, 42, 0.8) 100%); 
-        border-radius: 20px; 
-        padding: 2rem; 
-        border: 1px solid rgba(255, 255, 255, 0.08); 
-        margin-bottom: 2rem;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-    }
-    .chart-title {
-        font-size: 1.25rem; 
-        font-weight: 800; 
-        color: #fff; 
-        margin-bottom: 1.5rem; 
-        display: flex; 
-        align-items: center; 
-        gap: 0.75rem;
-        padding-bottom: 0.75rem;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    }
-    .charts-grid {display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; margin-bottom: 2rem}
-    @media (max-width: 1200px) {.charts-grid {grid-template-columns: 1fr}}
-    .chart-full {grid-column: 1 / -1}
     
     /* STRATEGY CARDS */
     .strategy-grid {display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; margin-bottom: 2rem}
@@ -567,8 +544,6 @@ st.markdown("""
         background: transparent !important;
     }
     
-    /* FILTER CONTENT CONTAINER */
-    .filter-content {padding: 0.5rem 0}
     
     /* CUSTOM LABELS untuk filter */
     .custom-label {
