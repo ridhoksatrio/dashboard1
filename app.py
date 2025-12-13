@@ -751,7 +751,7 @@ def create_charts(df):
         fig.update_layout(
             title=dict(
                 text=title, 
-                font=dict(color='white', size=18),  # Font size sedikit lebih kecil untuk histogram
+                font=dict(color='white', size=30),  # Font size sedikit lebih kecil untuk histogram
                 x=0.5,
                 xanchor='center'
             ),
