@@ -1342,140 +1342,258 @@ def main():
             """, unsafe_allow_html=True)
     
     with tab3:
-        if len(filtered_df) > 0:
-            # Calculate insights
-            if 'Cluster_Label' in filtered_df.columns:
-                if 'Monetary' in filtered_df.columns:
-                    highest_revenue = filtered_df.groupby('Cluster_Label')['Monetary'].sum()
-                    highest_revenue_segment = highest_revenue.idxmax() if not highest_revenue.empty else "N/A"
-                    highest_revenue_value = highest_revenue.max() if not highest_revenue.empty else 0
-                else:
-                    highest_revenue_segment = "N/A"
-                    highest_revenue_value = 0
-                
-                largest_group = filtered_df['Cluster_Label'].value_counts()
-                largest_group_segment = largest_group.idxmax() if not largest_group.empty else "N/A"
-                largest_group_count = largest_group.max() if not largest_group.empty else 0
-                
-                if 'AvgOrderValue' in filtered_df.columns:
-                    best_aov = filtered_df.groupby('Cluster_Label')['AvgOrderValue'].mean()
-                    best_aov_segment = best_aov.idxmax() if not best_aov.empty else "N/A"
-                    best_aov_value = best_aov.max() if not best_aov.empty else 0
-                else:
-                    best_aov_segment = "N/A"
-                    best_aov_value = 0
-                
-                if 'Frequency' in filtered_df.columns:
-                    most_frequent = filtered_df.groupby('Cluster_Label')['Frequency'].mean()
-                    most_frequent_segment = most_frequent.idxmax() if not most_frequent.empty else "N/A"
-                    most_frequent_value = most_frequent.max() if not most_frequent.empty else 0
-                else:
-                    most_frequent_segment = "N/A"
-                    most_frequent_value = 0
+    if len(filtered_df) > 0:
+        # Calculate insights
+        if 'Cluster_Label' in filtered_df.columns:
+            if 'Monetary' in filtered_df.columns:
+                highest_revenue = filtered_df.groupby('Cluster_Label')['Monetary'].sum()
+                highest_revenue_segment = highest_revenue.idxmax() if not highest_revenue.empty else "N/A"
+                highest_revenue_value = highest_revenue.max() if not highest_revenue.empty else 0
             else:
                 highest_revenue_segment = "N/A"
                 highest_revenue_value = 0
-                largest_group_segment = "N/A"
-                largest_group_count = 0
+            
+            largest_group = filtered_df['Cluster_Label'].value_counts()
+            largest_group_segment = largest_group.idxmax() if not largest_group.empty else "N/A"
+            largest_group_count = largest_group.max() if not largest_group.empty else 0
+            
+            if 'AvgOrderValue' in filtered_df.columns:
+                best_aov = filtered_df.groupby('Cluster_Label')['AvgOrderValue'].mean()
+                best_aov_segment = best_aov.idxmax() if not best_aov.empty else "N/A"
+                best_aov_value = best_aov.max() if not best_aov.empty else 0
+            else:
                 best_aov_segment = "N/A"
                 best_aov_value = 0
+            
+            if 'Frequency' in filtered_df.columns:
+                most_frequent = filtered_df.groupby('Cluster_Label')['Frequency'].mean()
+                most_frequent_segment = most_frequent.idxmax() if not most_frequent.empty else "N/A"
+                most_frequent_value = most_frequent.max() if not most_frequent.empty else 0
+            else:
                 most_frequent_segment = "N/A"
                 most_frequent_value = 0
+        else:
+            highest_revenue_segment = "N/A"
+            highest_revenue_value = 0
+            largest_group_segment = "N/A"
+            largest_group_count = 0
+            best_aov_segment = "N/A"
+            best_aov_value = 0
+            most_frequent_segment = "N/A"
+            most_frequent_value = 0
+        
+        st.markdown('<div class="insights-section">', unsafe_allow_html=True)
+        st.markdown('<div class="insights-title">🧠 AI-Powered Insights & Recommendations</div>', unsafe_allow_html=True)
+        
+        # Container untuk equal height cards
+        st.markdown('<div class="insights-grid">', unsafe_allow_html=True)
+        
+        # Kolom 1: Key Performance Summary
+        insights_list = [
+            f"🏆 <b>Highest Revenue:</b> {highest_revenue_segment} (£{highest_revenue_value/1000:.1f}K)",
+            f"👥 <b>Largest Group:</b> {largest_group_segment} ({largest_group_count:,} customers)",
+            f"💰 <b>Best AOV:</b> {best_aov_segment} (£{best_aov_value:.0f})",
+            f"🔄 <b>Most Frequent:</b> {most_frequent_segment} ({most_frequent_value:.1f} orders)"
+        ]
+        
+        col1_html = f"""
+        <div class="insight-card">
+            <h4 class="insight-heading">📊 Key Performance Summary</h4>
+            <ul class="insight-list">
+        """
+        for insight in insights_list:
+            col1_html += f"<li>{insight}</li>"
+        col1_html += """
+            </ul>
+        </div>
+        """
+        
+        # Kolom 2: Strategic Recommendations
+        col2_html = """
+        <div class="insight-card">
+            <h4 class="insight-heading">💡 Strategic Recommendations</h4>
+            <ul class="insight-list">
+                <li>🎯 <b>Launch retention programs</b> for high-value segments</li>
+                <li>📧 <b>Implement personalized win-back campaigns</b> for dormant customers</li>
+                <li>🚀 <b>Accelerate nurturing flows</b> for potential customers</li>
+                <li>💎 <b>Create VIP experiences</b> for champion segments</li>
+                <li>📈 <b>Develop cross-sell strategies</b> for loyal customers</li>
+                <li>🔍 <b>Monitor dormant segment</b> reactivation rates</li>
+            </ul>
+        </div>
+        """
+        
+        # Tampilkan kedua kartu dalam grid
+        st.markdown(col1_html + col2_html + '</div>', unsafe_allow_html=True)
+        
+        st.markdown('</div>', unsafe_allow_html=True)
+        
+        # Advanced Analytics Section (di luar expander untuk visibility yang lebih baik)
+        st.markdown("""
+        <div class="section-header" style="margin-top: 2rem;">
+            <div class="section-icon">📈</div>
+            <div>
+                <div class="section-title">Advanced Analytics</div>
+                <div class="section-subtitle">Key metrics and performance indicators</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        # Menampilkan metrik dalam grid yang lebih rapi
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            # Container untuk metrik
+            st.markdown("""
+            <div class="metrics-grid" style="grid-template-columns: repeat(2, 1fr); gap: 1rem; margin: 1rem 0;">
+            """, unsafe_allow_html=True)
             
-            st.markdown('<div class="insights-section">', unsafe_allow_html=True)
-            st.markdown('<div class="insights-title">🧠 AI-Powered Insights & Recommendations</div>', unsafe_allow_html=True)
+            # Metrik 1: Segment Concentration
+            segment_concentration = (largest_group_count / len(filtered_df) * 100) if len(filtered_df) > 0 else 0
+            st.markdown(f"""
+            <div class="metric-card" style="padding: 1.25rem;">
+                <div class="metric-icon">📊</div>
+                <div class="metric-value">{segment_concentration:.1f}%</div>
+                <div class="metric-label">Segment Concentration</div>
+                <div class="metric-change change-positive">
+                    <span>↑ 2.3%</span>
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
             
-            col1, col2 = st.columns(2)
+            # Metrik 2: Revenue Concentration
+            if 'Monetary' in filtered_df.columns:
+                top_20_percent = filtered_df.nlargest(int(len(filtered_df) * 0.2), 'Monetary')
+                total_revenue = filtered_df['Monetary'].sum()
+                
+                if total_revenue > 0:
+                    top_20_revenue = top_20_percent['Monetary'].sum()
+                    revenue_concentration = (top_20_revenue / total_revenue) * 100
+                    
+                    st.markdown(f"""
+                    <div class="metric-card" style="padding: 1.25rem;">
+                        <div class="metric-icon">💰</div>
+                        <div class="metric-value">{revenue_concentration:.1f}%</div>
+                        <div class="metric-label">Revenue (Top 20%)</div>
+                        <div class="metric-change change-positive">
+                            <span>↑ 1.5%</span>
+                        </div>
+                    </div>
+                    """, unsafe_allow_html=True)
             
-            with col1:
-                st.markdown("""
-                <div class="insight-card">
-                    <h4 class="insight-heading">📊 Performance Analysis</h4>
-                    <ul class="insight-list">
-                """, unsafe_allow_html=True)
-                
-                insights_list = [
-                    f"🏆 Highest Revenue: {highest_revenue_segment} (£{highest_revenue_value/1000:.1f}K)",
-                    f"👥 Largest Group: {largest_group_segment} ({largest_group_count:,} customers)",
-                    f"💰 Best AOV: {best_aov_segment} (£{best_aov_value:.0f})",
-                    f"🔄 Most Frequent: {most_frequent_segment} ({most_frequent_value:.1f} orders)"
-                ]
-                
-                for insight in insights_list:
-                    st.markdown(f"<li>{insight}</li>", unsafe_allow_html=True)
-                
-                st.markdown("""
-                    </ul>
+            st.markdown('</div>', unsafe_allow_html=True)
+        
+        with col2:
+            st.markdown("""
+            <div class="metrics-grid" style="grid-template-columns: repeat(2, 1fr); gap: 1rem; margin: 1rem 0;">
+            """, unsafe_allow_html=True)
+            
+            # Metrik 3: Average Recency
+            if 'Recency' in filtered_df.columns:
+                avg_recency = filtered_df['Recency'].mean()
+                st.markdown(f"""
+                <div class="metric-card" style="padding: 1.25rem;">
+                    <div class="metric-icon">⏰</div>
+                    <div class="metric-value">{avg_recency:.1f}d</div>
+                    <div class="metric-label">Avg Recency</div>
+                    <div class="metric-change change-positive">
+                        <span>↓ 3.2d</span>
+                    </div>
                 </div>
                 """, unsafe_allow_html=True)
             
-            with col2:
-                st.markdown("""
-                <div class="insight-card">
-                    <h4 class="insight-heading">💡 Strategic Recommendations</h4>
-                    <ul class="insight-list">
-                        <li>🎯 Launch retention programs for high-value segments</li>
-                        <li>📧 Implement personalized win-back campaigns</li>
-                        <li>🚀 Accelerate nurturing flows for potential customers</li>
-                        <li>💎 Create VIP experiences for champion segments</li>
-                        <li>📈 Develop cross-sell strategies for loyal customers</li>
-                        <li>🔍 Monitor dormant segment reactivation rates</li>
-                    </ul>
+            # Metrik 4: Average Frequency
+            if 'Frequency' in filtered_df.columns:
+                avg_frequency = filtered_df['Frequency'].mean()
+                st.markdown(f"""
+                <div class="metric-card" style="padding: 1.25rem;">
+                    <div class="metric-icon">🔄</div>
+                    <div class="metric-value">{avg_frequency:.1f}</div>
+                    <div class="metric-label">Avg Frequency</div>
+                    <div class="metric-change change-positive">
+                        <span>↑ 0.8</span>
+                    </div>
                 </div>
                 """, unsafe_allow_html=True)
             
             st.markdown('</div>', unsafe_allow_html=True)
+        
+        # Tambahkan CSS untuk equal height cards
+        st.markdown("""
+        <style>
+            .insights-grid {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1.5rem;
+                align-items: stretch;
+            }
             
-            # Additional insights
-            with st.expander("📈 Advanced Analytics"):
-                col1, col2 = st.columns(2)
-                
-                with col1:
-                    st.metric(
-                        "📊 Segment Concentration",
-                        f"{(largest_group_count / len(filtered_df) * 100):.1f}%",
-                        "+2.3%"
-                    )
-                    
-                    if 'Monetary' in filtered_df.columns:
-                        top_20_percent = filtered_df.nlargest(int(len(filtered_df) * 0.2), 'Monetary')
-                        bottom_80_percent = filtered_df.nsmallest(int(len(filtered_df) * 0.8), 'Monetary')
-                        
-                        top_20_revenue = top_20_percent['Monetary'].sum()
-                        total_revenue = filtered_df['Monetary'].sum()
-                        
-                        if total_revenue > 0:
-                            revenue_concentration = (top_20_revenue / total_revenue) * 100
-                            st.metric(
-                                "💰 Revenue Concentration (Top 20%)",
-                                f"{revenue_concentration:.1f}%",
-                                "+1.5%"
-                            )
-                
-                with col2:
-                    if 'Recency' in filtered_df.columns:
-                        avg_recency = filtered_df['Recency'].mean()
-                        st.metric(
-                            "⏰ Average Recency",
-                            f"{avg_recency:.1f} days",
-                            "-3.2 days"
-                        )
-                    
-                    if 'Frequency' in filtered_df.columns:
-                        avg_frequency = filtered_df['Frequency'].mean()
-                        st.metric(
-                            "🔄 Average Frequency",
-                            f"{avg_frequency:.1f}",
-                            "+0.8"
-                        )
-        else:
-            st.markdown("""
-            <div class="empty-state">
-                <div class="empty-icon">💡</div>
-                <h3>No Insights Available</h3>
-                <p>Try adjusting your filters to see insights</p>
-            </div>
-            """, unsafe_allow_html=True)
+            .insight-card {
+                background: rgba(79, 172, 254, 0.08);
+                border: 1px solid rgba(79, 172, 254, 0.2);
+                border-radius: 16px;
+                padding: 1.5rem;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+            }
+            
+            .insight-heading {
+                font-size: 1.25rem;
+                font-weight: 800;
+                color: #4facfe;
+                margin-bottom: 1rem;
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                flex-shrink: 0;
+            }
+            
+            .insight-list {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+                flex-grow: 1;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+            }
+            
+            .insight-list li {
+                padding: 0.75rem 0;
+                border-bottom: 1px solid rgba(79, 172, 254, 0.2);
+                color: rgba(255, 255, 255, 0.9);
+                display: flex;
+                align-items: flex-start;
+                gap: 0.5rem;
+                line-height: 1.4;
+            }
+            
+            .insight-list li:last-child {
+                border-bottom: none;
+            }
+            
+            .insight-list li b {
+                color: #fff;
+                font-weight: 700;
+            }
+            
+            @media (max-width: 768px) {
+                .insights-grid {
+                    grid-template-columns: 1fr;
+                }
+            }
+        </style>
+        """, unsafe_allow_html=True)
+        
+    else:
+        st.markdown("""
+        <div class="empty-state">
+            <div class="empty-icon">💡</div>
+            <h3>No Insights Available</h3>
+            <p>Try adjusting your filters to see insights</p>
+        </div>
+        """, unsafe_allow_html=True)
     
     # Divider 3
     st.markdown('<div class="section-divider-thick"></div>', unsafe_allow_html=True)
