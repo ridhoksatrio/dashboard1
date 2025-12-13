@@ -381,6 +381,27 @@ st.markdown("""
     .budget-label {font-size: 0.8rem; color: rgba(255, 255, 255, 0.7); margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em;}
     .budget-value {font-size: 1.75rem; font-weight: 900}
     
+    /* SEGMENT STRATEGIES OVERVIEW SECTION - DITAMBAHKAN */
+    .strategies-overview-section {
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%);
+        border: 1px solid rgba(102, 126, 234, 0.2); 
+        border-radius: 20px; 
+        padding: 2rem; 
+        margin: 2rem 0;
+        box-shadow: 0 10px 25px rgba(102, 126, 234, 0.05);
+    }
+    .strategies-overview-title {
+        font-size: 1.75rem; 
+        font-weight: 900; 
+        color: #667eea; 
+        margin-bottom: 1.5rem; 
+        display: flex; 
+        align-items: center; 
+        gap: 0.75rem;
+        padding-bottom: 0.75rem;
+        border-bottom: 2px solid rgba(102, 126, 234, 0.3);
+    }
+    
     /* CHAMPION BREAKDOWN */
     .champion-section {
         background: linear-gradient(135deg, rgba(255, 215, 0, 0.08) 0%, rgba(255, 140, 0, 0.08) 100%); 
@@ -1322,177 +1343,72 @@ def main():
             """, unsafe_allow_html=True)
     
     with tab2:
-    # Champion Breakdown Section
+        # Champion Breakdown Section
         champion_clusters = [c for c in filtered_df['Cluster_KMeans'].unique() 
                         if c in profs and profs[c]['name'] == '🏆 Champions']
     
-    if len(champion_clusters) > 0:
-        st.markdown('<div class="champion-section">', unsafe_allow_html=True)
-        st.markdown('<div class="champion-title">🏆 Champion Segments Breakdown</div>', unsafe_allow_html=True)
+        if len(champion_clusters) > 0:
+            st.markdown('<div class="champion-section">', unsafe_allow_html=True)
+            st.markdown('<div class="champion-title">🏆 Champion Segments Breakdown</div>', unsafe_allow_html=True)
+            
+            cols = st.columns(2)
+            for idx, cid in enumerate(sorted(champion_clusters)):
+                if cid in champion_details:
+                    det = champion_details[cid]
+                    with cols[idx % 2]:
+                        st.markdown(f"""
+                        <div class="champion-card">
+                            <div class="champion-number">Champion C{cid}</div>
+                            <div class="champion-tier">🏅 {det['tier']}</div>
+                            <div class="champion-desc">{det['desc']}</div>
+                            <div class="champion-chars">📊 {det['char']}</div>
+                        </div>
+                        """, unsafe_allow_html=True)
+            
+            st.markdown('</div>', unsafe_allow_html=True)
         
-        cols = st.columns(2)
-        for idx, cid in enumerate(sorted(champion_clusters)):
-            if cid in champion_details:
-                det = champion_details[cid]
-                with cols[idx % 2]:
-                    st.markdown(f"""
-                    <div class="champion-card">
-                        <div class="champion-number">Champion C{cid}</div>
-                        <div class="champion-tier">🏅 {det['tier']}</div>
-                        <div class="champion-desc">{det['desc']}</div>
-                        <div class="champion-chars">📊 {det['char']}</div>
-                    </div>
-                    """, unsafe_allow_html=True)
+        # BAGIAN BARU: Segment Strategies Overview
+        st.markdown('<div class="strategies-overview-section">', unsafe_allow_html=True)
+        st.markdown('<div class="strategies-overview-title">📋 Segment Strategies Overview</div>', unsafe_allow_html=True)
+        st.markdown('<p style="color: #94a3b8; margin-bottom: 2rem; font-size: 1.1rem;">Comprehensive view of all customer segments with detailed strategies, tactics, and KPIs</p>', unsafe_allow_html=True)
         
-        st.markdown('</div>', unsafe_allow_html=True)
-    
-    # NEW SECTION: All Segments Overview
-    st.markdown('<div class="section-divider"></div>', unsafe_allow_html=True)
-    
-    st.markdown("""
-    <div class="section-header">
-        <div class="section-icon">📋</div>
-        <div>
-            <div class="section-title">Segment Strategies Overview</div>
-            <div class="section-subtitle">Comprehensive view of all customer segments with detailed strategies, tactics, and KPIs</div>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    # Create columns for the grid (3 columns)
-    cols = st.columns(3)
-    
-    # Display segment cards in a grid - DIPERBAIKI: menggunakan strats langsung
-    for idx, (seg_key, seg_data) in enumerate(strats.items()):
-        with cols[idx % 3]:
-            # Create HTML for the card
-            card_html = f"""
-            <div class="segment-overview-card" style="background: {seg_data['grad']}">
-                <div class="segment-overview-header">
-                    <div class="segment-title-section">
-                        <div class="segment-icon">{seg_data['name'].split()[0]}</div>
-                        <div>
-                            <h3 class="segment-name">{seg_data['name']}</h3>
-                            <div class="segment-priority">
-                                <span class="priority-dot priority-{seg_data['priority'].lower()}"></span>
-                                {seg_data['priority']}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="segment-strategy">
-                        <span class="strategy-label">📋 {seg_data['strategy']} Strategy</span>
-                    </div>
-                </div>
-                
-                <div class="segment-content">
-                    <div class="segment-section">
-                        <div class="section-title-small">🎯 Key Tactics</div>
-                        <div class="tactics-grid">
-            """
+        # Urutkan segmen berdasarkan prioritas
+        priority_order = {'CRITICAL': 1, 'URGENT': 2, 'HIGH': 3, 'MEDIUM': 4}
+        sorted_profs = sorted(profs.items(), key=lambda x: priority_order.get(x[1]['priority'], 5))
+        
+        # Tampilkan semua segmen dalam grid
+        for cluster_id, strat in sorted_profs:
+            # Hitung jumlah customer di segmen ini
+            segment_customers = len(rfm[rfm['Cluster_KMeans'] == cluster_id])
             
-            # Add tactics (show only first 3)
-            for tactic in seg_data['tactics'][:3]:
-                card_html += f'<span class="tactic-chip">{tactic}</span>'
-            
-            card_html += """
-                        </div>
-                    </div>
-                    
-                    <div class="segment-section">
-                        <div class="section-title-small">📊 Target KPIs</div>
-                        <div class="kpis-grid">
-            """
-            
-            # Add KPIs
-            for kpi in seg_data['kpis']:
-                card_html += f'<span class="kpi-badge">{kpi}</span>'
-            
-            card_html += f"""
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="segment-footer">
-                    <div class="budget-roi-container">
-                        <div class="metric-box">
-                            <div class="metric-label">💰 Budget Allocation</div>
-                            <div class="metric-value-large">{seg_data['budget']}</div>
-                        </div>
-                        <div class="metric-box">
-                            <div class="metric-label">📈 ROI Target</div>
-                            <div class="metric-value-large">{seg_data['roi']}</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            """
-            
-            st.markdown(card_html, unsafe_allow_html=True)
-    
-    # Add CSS for the segment cards
-    st.markdown("""
-    <style>
-        /* CSS untuk segment-overview-card sudah ada di bagian atas dalam CSS utama */
-        /* Jadi kita tidak perlu menambahkannya lagi di sini */
-    </style>
-    """, unsafe_allow_html=True)
-    
-    # Add a note about data processing
-    st.markdown("""
-    <div style="background: rgba(30, 41, 59, 0.5); border-left: 4px solid #667eea; padding: 1rem 1.5rem; border-radius: 8px; margin-top: 1rem; margin-bottom: 2rem;">
-        <div style="display: flex; align-items: center; gap: 0.75rem; color: #94a3b8; font-size: 0.9rem;">
-            <span style="font-size: 1.25rem;">ℹ️</span>
-            <span><strong>Data Processing Note:</strong> All segment strategies are dynamically calculated from your customer RFM data. The algorithms analyze Recency, Frequency, and Monetary values to assign optimal strategies and tactics for maximum ROI.</span>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    # Strategy Cards (Existing Code)
-    st.markdown('<div class="section-divider"></div>', unsafe_allow_html=True)
-    
-    st.markdown("""
-    <div class="section-header">
-        <div class="section-icon">🎯</div>
-        <div>
-            <div class="section-title">Detailed Segment Strategies</div>
-            <div class="section-subtitle">In-depth action plans for each customer segment with comprehensive tactics and KPIs</div>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    # Filtered strategy cards based on segment filter
-    strategy_cards_html = ""
-    for cid, p in profs.items():
-        if segment_filter == 'all' or segment_filter == cid:
-            # Build tactics HTML
+            # Format tactics sebagai HTML
             tactics_html = ""
-            for tactic in p['tactics']:
+            for tactic in strat['tactics']:
                 tactics_html += f'<div class="tactic-item">{tactic}</div>'
             
-            # Build KPIs HTML
+            # Format KPIs sebagai HTML
             kpis_html = ""
-            for kpi in p['kpis']:
+            for kpi in strat['kpis']:
                 kpis_html += f'<div class="kpi-item">{kpi}</div>'
             
-            strategy_cards_html += f"""
-            <div class="strategy-card" style="background: {p['grad']}">
+            # Buat card untuk setiap segmen
+            segment_card_html = f"""
+            <div class="strategy-card" style="background: {strat['grad']};">
                 <div class="strategy-header">
-                    <div>
-                        <h3 class="strategy-name">{p['name']}</h3>
-                        <div class="strategy-subtitle">{p['strategy']} Strategy</div>
-                    </div>
-                    <div class="priority-badge">{p['priority']}</div>
+                    <div class="strategy-name">{strat['name']}</div>
+                    <div class="priority-badge" style="color: {strat['color']}; border: 1px solid {strat['color']};">{strat['priority']}</div>
                 </div>
+                <div class="strategy-subtitle">{strat['strategy']}</div>
                 
                 <div class="tactics-section">
-                    <div class="tactics-title">🎯 Key Tactics</div>
+                    <div class="tactics-title">🎯 Tactics & Actions</div>
                     <div class="tactics-grid">
                         {tactics_html}
                     </div>
                 </div>
                 
                 <div class="tactics-section">
-                    <div class="tactics-title">📊 Target KPIs</div>
+                    <div class="tactics-title">📈 Key Performance Indicators</div>
                     <div class="kpis-grid">
                         {kpis_html}
                     </div>
@@ -1501,366 +1417,23 @@ def main():
                 <div class="strategy-footer">
                     <div class="budget-item">
                         <div class="budget-label">Budget Allocation</div>
-                        <div class="budget-value">{p['budget']}</div>
+                        <div class="budget-value">{strat['budget']}</div>
                     </div>
                     <div class="budget-item">
                         <div class="budget-label">Expected ROI</div>
-                        <div class="budget-value">{p['roi']}</div>
+                        <div class="budget-value">{strat['roi']}</div>
+                    </div>
+                    <div class="budget-item">
+                        <div class="budget-label">Segment Size</div>
+                        <div class="budget-value">{segment_customers}</div>
                     </div>
                 </div>
             </div>
             """
-    
-    if strategy_cards_html:
-        st.markdown(f'<div class="strategy-grid">{strategy_cards_html}</div>', unsafe_allow_html=True)
-    else:
-        st.markdown("""
-        <div class="empty-state">
-            <div class="empty-icon">🎯</div>
-            <h3>No Strategy Cards Available</h3>
-            <p>Try selecting a different segment filter</p>
-        </div>
-        """, unsafe_allow_html=True)
+            
+            st.markdown(segment_card_html, unsafe_allow_html=True)
         
-        # Add CSS for the segment cards
-        st.markdown("""
-        <style>
-            .segment-overview-card {
-                background: linear-gradient(135deg, rgba(30, 41, 59, 0.95) 0%, rgba(15, 23, 42, 0.9) 100%);
-                border-radius: 20px;
-                padding: 1.5rem;
-                border: 1px solid rgba(255, 255, 255, 0.08);
-                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-                position: relative;
-                overflow: hidden;
-                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-                display: flex;
-                flex-direction: column;
-                height: 100%;
-                margin-bottom: 1.5rem;
-            }
-            
-            .segment-overview-card::before {
-                content: '';
-                position: absolute;
-                top: 0;
-                left: 0;
-                right: 0;
-                height: 4px;
-                border-radius: 20px 20px 0 0;
-            }
-            
-            .segment-overview-card:hover {
-                transform: translateY(-6px);
-                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-                border-color: rgba(255, 255, 255, 0.15);
-            }
-            
-            .segment-overview-header {
-                display: flex;
-                justify-content: space-between;
-                align-items: flex-start;
-                margin-bottom: 1.25rem;
-                padding-bottom: 1rem;
-                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            }
-            
-            .segment-title-section {
-                display: flex;
-                align-items: center;
-                gap: 0.75rem;
-                flex: 1;
-            }
-            
-            .segment-icon {
-                font-size: 1.75rem;
-                background: rgba(255, 255, 255, 0.1);
-                padding: 0.5rem;
-                border-radius: 12px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                min-width: 48px;
-                height: 48px;
-            }
-            
-            .segment-name {
-                font-size: 1.25rem;
-                font-weight: 800;
-                color: #fff;
-                margin: 0 0 0.25rem 0;
-                line-height: 1.2;
-            }
-            
-            .segment-priority {
-                display: flex;
-                align-items: center;
-                gap: 0.5rem;
-                font-size: 0.8rem;
-                font-weight: 700;
-                color: rgba(255, 255, 255, 0.9);
-            }
-            
-            .priority-dot {
-                width: 8px;
-                height: 8px;
-                border-radius: 50%;
-                display: inline-block;
-            }
-            
-            .priority-critical {
-                background: linear-gradient(135deg, #FF416C, #FF4B2B);
-                box-shadow: 0 0 10px rgba(255, 65, 108, 0.5);
-            }
-            
-            .priority-urgent {
-                background: linear-gradient(135deg, #FF6B6B, #EE5A6F);
-                box-shadow: 0 0 10px rgba(255, 107, 107, 0.5);
-            }
-            
-            .priority-high {
-                background: linear-gradient(135deg, #4ECDC4, #44A08D);
-                box-shadow: 0 0 10px rgba(78, 205, 196, 0.5);
-            }
-            
-            .priority-medium {
-                background: linear-gradient(135deg, #FFD166, #FFB347);
-                box-shadow: 0 0 10px rgba(255, 209, 102, 0.5);
-            }
-            
-            .segment-strategy {
-                background: rgba(255, 255, 255, 0.08);
-                padding: 0.35rem 0.75rem;
-                border-radius: 20px;
-                border: 1px solid rgba(255, 255, 255, 0.1);
-                margin-left: 0.5rem;
-            }
-            
-            .strategy-label {
-                font-size: 0.75rem;
-                font-weight: 600;
-                color: rgba(255, 255, 255, 0.9);
-                white-space: nowrap;
-            }
-            
-            .segment-content {
-                flex: 1;
-                margin-bottom: 1.25rem;
-            }
-            
-            .segment-section {
-                margin-bottom: 1rem;
-            }
-            
-            .segment-section:last-child {
-                margin-bottom: 0;
-            }
-            
-            .section-title-small {
-                font-size: 0.85rem;
-                font-weight: 700;
-                color: rgba(255, 255, 255, 0.9);
-                margin-bottom: 0.5rem;
-                text-transform: uppercase;
-                letter-spacing: 0.05em;
-                display: flex;
-                align-items: center;
-                gap: 0.5rem;
-            }
-            
-            .tactics-grid {
-                display: flex;
-                flex-wrap: wrap;
-                gap: 0.5rem;
-            }
-            
-            .tactic-chip {
-                background: rgba(255, 255, 255, 0.1);
-                border-radius: 12px;
-                padding: 0.4rem 0.6rem;
-                font-size: 0.75rem;
-                color: rgba(255, 255, 255, 0.9);
-                border: 1px solid rgba(255, 255, 255, 0.05);
-                transition: all 0.2s ease;
-                display: inline-flex;
-                align-items: center;
-                gap: 0.25rem;
-                margin-bottom: 0.25rem;
-            }
-            
-            .tactic-chip:hover {
-                background: rgba(255, 255, 255, 0.15);
-                transform: translateY(-2px);
-            }
-            
-            .kpis-grid {
-                display: flex;
-                flex-wrap: wrap;
-                gap: 0.5rem;
-            }
-            
-            .kpi-badge {
-                background: rgba(255, 255, 255, 0.08);
-                border-radius: 12px;
-                padding: 0.4rem 0.6rem;
-                font-size: 0.75rem;
-                font-weight: 700;
-                color: rgba(255, 255, 255, 0.9);
-                border: 1px solid rgba(255, 255, 255, 0.05);
-            }
-            
-            .segment-footer {
-                padding-top: 1rem;
-                border-top: 1px solid rgba(255, 255, 255, 0.1);
-            }
-            
-            .budget-roi-container {
-                display: grid;
-                grid-template-columns: repeat(2, 1fr);
-                gap: 0.75rem;
-            }
-            
-            .metric-box {
-                background: rgba(255, 255, 255, 0.08);
-                border-radius: 12px;
-                padding: 0.75rem;
-                text-align: center;
-                border: 1px solid rgba(255, 255, 255, 0.05);
-                transition: all 0.2s ease;
-            }
-            
-            .metric-box:hover {
-                background: rgba(255, 255, 255, 0.12);
-                transform: translateY(-2px);
-            }
-            
-            .metric-label {
-                font-size: 0.7rem;
-                color: rgba(255, 255, 255, 0.7);
-                margin-bottom: 0.25rem;
-                text-transform: uppercase;
-                letter-spacing: 0.05em;
-                font-weight: 600;
-            }
-            
-            .metric-value-large {
-                font-size: 1.5rem;
-                font-weight: 900;
-                color: #fff;
-                line-height: 1;
-            }
-            
-            /* Color-specific top borders */
-            .segment-overview-card[style*="FFD700"]::before {
-                background: linear-gradient(90deg, #FFD700, #FFA500, #FF8C00);
-            }
-            
-            .segment-overview-card[style*="667eea"]::before {
-                background: linear-gradient(90deg, #667eea, #764ba2, #5a52a3);
-            }
-            
-            .segment-overview-card[style*="f093fb"]::before {
-                background: linear-gradient(90deg, #f093fb, #f5576c, #d2368d);
-            }
-            
-            .segment-overview-card[style*="ff6b6b"]::before {
-                background: linear-gradient(90deg, #ff6b6b, #ee5a6f, #c44569);
-            }
-            
-            .segment-overview-card[style*="11998e"]::before {
-                background: linear-gradient(90deg, #11998e, #38ef7d, #00b09b);
-            }
-            
-            .segment-overview-card[style*="89f7fe"]::before {
-                background: linear-gradient(90deg, #89f7fe, #66a6ff, #4a6fff);
-            }
-        </style>
-        """, unsafe_allow_html=True)
-        
-        # Add a note about data processing
-        st.markdown("""
-        <div style="background: rgba(30, 41, 59, 0.5); border-left: 4px solid #667eea; padding: 1rem 1.5rem; border-radius: 8px; margin-top: 1rem; margin-bottom: 2rem;">
-            <div style="display: flex; align-items: center; gap: 0.75rem; color: #94a3b8; font-size: 0.9rem;">
-                <span style="font-size: 1.25rem;">ℹ️</span>
-                <span><strong>Data Processing Note:</strong> All segment strategies are dynamically calculated from your customer RFM data. The algorithms analyze Recency, Frequency, and Monetary values to assign optimal strategies and tactics for maximum ROI.</span>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
-        
-        # Strategy Cards (Existing Code)
-        st.markdown('<div class="section-divider"></div>', unsafe_allow_html=True)
-        
-        st.markdown("""
-        <div class="section-header">
-            <div class="section-icon">🎯</div>
-            <div>
-                <div class="section-title">Detailed Segment Strategies</div>
-                <div class="section-subtitle">In-depth action plans for each customer segment with comprehensive tactics and KPIs</div>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
-        
-        # Filtered strategy cards based on segment filter
-        strategy_cards_html = ""
-        for cid, p in profs.items():
-            if segment_filter == 'all' or segment_filter == cid:
-                # Build tactics HTML
-                tactics_html = ""
-                for tactic in p['tactics']:
-                    tactics_html += f'<div class="tactic-item">{tactic}</div>'
-                
-                # Build KPIs HTML
-                kpis_html = ""
-                for kpi in p['kpis']:
-                    kpis_html += f'<div class="kpi-item">{kpi}</div>'
-                
-                strategy_cards_html += f"""
-                <div class="strategy-card" style="background: {p['grad']}">
-                    <div class="strategy-header">
-                        <div>
-                            <h3 class="strategy-name">{p['name']}</h3>
-                            <div class="strategy-subtitle">{p['strategy']} Strategy</div>
-                        </div>
-                        <div class="priority-badge">{p['priority']}</div>
-                    </div>
-                    
-                    <div class="tactics-section">
-                        <div class="tactics-title">🎯 Key Tactics</div>
-                        <div class="tactics-grid">
-                            {tactics_html}
-                        </div>
-                    </div>
-                    
-                    <div class="tactics-section">
-                        <div class="tactics-title">📊 Target KPIs</div>
-                        <div class="kpis-grid">
-                            {kpis_html}
-                        </div>
-                    </div>
-                    
-                    <div class="strategy-footer">
-                        <div class="budget-item">
-                            <div class="budget-label">Budget Allocation</div>
-                            <div class="budget-value">{p['budget']}</div>
-                        </div>
-                        <div class="budget-item">
-                            <div class="budget-label">Expected ROI</div>
-                            <div class="budget-value">{p['roi']}</div>
-                        </div>
-                    </div>
-                </div>
-                """
-        
-        if strategy_cards_html:
-            st.markdown(f'<div class="strategy-grid">{strategy_cards_html}</div>', unsafe_allow_html=True)
-        else:
-            st.markdown("""
-            <div class="empty-state">
-                <div class="empty-icon">🎯</div>
-                <h3>No Strategy Cards Available</h3>
-                <p>Try selecting a different segment filter</p>
-            </div>
-            """, unsafe_allow_html=True)
+        st.markdown('</div>', unsafe_allow_html=True)
     
     with tab3:
         if len(filtered_df) > 0:
