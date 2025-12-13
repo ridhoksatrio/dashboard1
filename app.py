@@ -461,6 +461,7 @@ st.markdown("""
         display: flex;
         gap: 2rem;
         align-items: stretch; /* Ini yang membuat cards sama tinggi */
+        margin-bottom: 2rem;
     }
     
     @media (max-width: 768px) {
@@ -479,7 +480,6 @@ st.markdown("""
         display: flex;
         flex-direction: column;
         height: 100%; /* Ini membuat card mengambil full height dari container */
-        min-height: 350px; /* Minimum height untuk konsistensi */
     }
     
     .insight-card-header {
@@ -534,8 +534,14 @@ st.markdown("""
     
     .advanced-analytics-grid {
         display: grid;
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(4, 1fr);
         gap: 1rem;
+    }
+    
+    @media (max-width: 1200px) {
+        .advanced-analytics-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
     }
     
     @media (max-width: 768px) {
@@ -1403,210 +1409,200 @@ def main():
             """, unsafe_allow_html=True)
     
     with tab3:
-    if len(filtered_df) > 0:
-        # Calculate insights dengan format data yang konsisten
-        if 'Cluster_Label' in filtered_df.columns:
-            if 'Monetary' in filtered_df.columns:
-                highest_revenue = filtered_df.groupby('Cluster_Label')['Monetary'].sum()
-                highest_revenue_segment = highest_revenue.idxmax() if not highest_revenue.empty else "N/A"
-                highest_revenue_value = highest_revenue.max() if not highest_revenue.empty else 0
+        if len(filtered_df) > 0:
+            # Calculate insights dengan format data yang konsisten
+            if 'Cluster_Label' in filtered_df.columns:
+                if 'Monetary' in filtered_df.columns:
+                    highest_revenue = filtered_df.groupby('Cluster_Label')['Monetary'].sum()
+                    highest_revenue_segment = highest_revenue.idxmax() if not highest_revenue.empty else "N/A"
+                    highest_revenue_value = highest_revenue.max() if not highest_revenue.empty else 0
+                else:
+                    highest_revenue_segment = "N/A"
+                    highest_revenue_value = 0
+                
+                largest_group = filtered_df['Cluster_Label'].value_counts()
+                largest_group_segment = largest_group.idxmax() if not largest_group.empty else "N/A"
+                largest_group_count = largest_group.max() if not largest_group.empty else 0
+                
+                if 'AvgOrderValue' in filtered_df.columns:
+                    best_aov = filtered_df.groupby('Cluster_Label')['AvgOrderValue'].mean()
+                    best_aov_segment = best_aov.idxmax() if not best_aov.empty else "N/A"
+                    best_aov_value = best_aov.max() if not best_aov.empty else 0
+                else:
+                    best_aov_segment = "N/A"
+                    best_aov_value = 0
+                
+                if 'Frequency' in filtered_df.columns:
+                    most_frequent = filtered_df.groupby('Cluster_Label')['Frequency'].mean()
+                    most_frequent_segment = most_frequent.idxmax() if not most_frequent.empty else "N/A"
+                    most_frequent_value = most_frequent.max() if not most_frequent.empty else 0
+                else:
+                    most_frequent_segment = "N/A"
+                    most_frequent_value = 0
             else:
                 highest_revenue_segment = "N/A"
                 highest_revenue_value = 0
-            
-            largest_group = filtered_df['Cluster_Label'].value_counts()
-            largest_group_segment = largest_group.idxmax() if not largest_group.empty else "N/A"
-            largest_group_count = largest_group.max() if not largest_group.empty else 0
-            
-            if 'AvgOrderValue' in filtered_df.columns:
-                best_aov = filtered_df.groupby('Cluster_Label')['AvgOrderValue'].mean()
-                best_aov_segment = best_aov.idxmax() if not best_aov.empty else "N/A"
-                best_aov_value = best_aov.max() if not best_aov.empty else 0
-            else:
+                largest_group_segment = "N/A"
+                largest_group_count = 0
                 best_aov_segment = "N/A"
                 best_aov_value = 0
-            
-            if 'Frequency' in filtered_df.columns:
-                most_frequent = filtered_df.groupby('Cluster_Label')['Frequency'].mean()
-                most_frequent_segment = most_frequent.idxmax() if not most_frequent.empty else "N/A"
-                most_frequent_value = most_frequent.max() if not most_frequent.empty else 0
-            else:
                 most_frequent_segment = "N/A"
                 most_frequent_value = 0
-        else:
-            highest_revenue_segment = "N/A"
-            highest_revenue_value = 0
-            largest_group_segment = "N/A"
-            largest_group_count = 0
-            best_aov_segment = "N/A"
-            best_aov_value = 0
-            most_frequent_segment = "N/A"
-            most_frequent_value = 0
-        
-        # Build insights section HTML
-        insights_html = """
-        <div class="insights-section">
-            <div class="insights-title">🧠 AI-Powered Insights & Recommendations</div>
-            <div class="insights-grid-container">
-        """
-        
-        # Kolom 1: Key Performance Summary
-        insights_list = [
-            f"🏆 Highest Revenue: {highest_revenue_segment} (£{highest_revenue_value/1000:.1f}K)",
-            f"👥 Largest Segment: {largest_group_segment} ({largest_group_count:,} customers)",
-            f"💰 Best AOV: {best_aov_segment} (£{best_aov_value:.0f})",
-            f"🔄 Most Frequent: {most_frequent_segment} ({most_frequent_value:.1f} orders)",
-            f"📈 Champion Ratio: {(len(filtered_df[filtered_df['Cluster_Label'].str.contains('Champions')]) / len(filtered_df) * 100 if len(filtered_df) > 0 else 0):.1f}%",
-            f"⏰ Avg Recency: {filtered_df['Recency'].mean():.1f} days" if 'Recency' in filtered_df.columns else "⏰ Avg Recency: N/A"
-        ]
-        
-        # Build list items HTML
-        insight_items_html = ""
-        for insight in insights_list:
-            insight_items_html += f"<li>{insight}</li>"
-        
-        insights_html += f"""
-                <div class="insight-card">
-                    <div class="insight-card-header">
-                        <div class="insight-card-title">📊 Key Performance Summary</div>
-                        <div class="insight-card-subtitle">Data-driven insights from customer segments</div>
+            
+            # Build insights section HTML
+            insights_list = [
+                f"🏆 Highest Revenue: {highest_revenue_segment} (£{highest_revenue_value/1000:.1f}K)",
+                f"👥 Largest Segment: {largest_group_segment} ({largest_group_count:,} customers)",
+                f"💰 Best AOV: {best_aov_segment} (£{best_aov_value:.0f})",
+                f"🔄 Most Frequent: {most_frequent_segment} ({most_frequent_value:.1f} orders)",
+                f"📈 Champion Ratio: {(len(filtered_df[filtered_df['Cluster_Label'].str.contains('Champions')]) / len(filtered_df) * 100 if len(filtered_df) > 0 else 0):.1f}%",
+                f"⏰ Avg Recency: {filtered_df['Recency'].mean():.1f} days" if 'Recency' in filtered_df.columns else "⏰ Avg Recency: N/A"
+            ]
+            
+            # Build list items HTML
+            insight_items_html = ""
+            for insight in insights_list:
+                insight_items_html += f"<li>{insight}</li>"
+            
+            # Calculate advanced metrics
+            concentration_pct = (largest_group_count / len(filtered_df) * 100) if len(filtered_df) > 0 else 0
+            
+            if 'Monetary' in filtered_df.columns:
+                top_20_percent = filtered_df.nlargest(max(1, int(len(filtered_df) * 0.2)), 'Monetary')
+                total_revenue = filtered_df['Monetary'].sum()
+                revenue_concentration = (top_20_percent['Monetary'].sum() / total_revenue * 100) if total_revenue > 0 else 0
+            else:
+                revenue_concentration = 0
+            
+            avg_recency = filtered_df['Recency'].mean() if 'Recency' in filtered_df.columns else 0
+            avg_frequency = filtered_df['Frequency'].mean() if 'Frequency' in filtered_df.columns else 0
+            
+            # Build complete insights HTML
+            insights_html = f"""
+            <div class="insights-section">
+                <div class="insights-title">🧠 AI-Powered Insights & Recommendations</div>
+                <div class="insights-grid-container">
+                    <div class="insight-card">
+                        <div class="insight-card-header">
+                            <div class="insight-card-title">📊 Key Performance Summary</div>
+                            <div class="insight-card-subtitle">Data-driven insights from customer segments</div>
+                        </div>
+                        <ul class="insight-list">
+                            {insight_items_html}
+                        </ul>
                     </div>
-                    <ul class="insight-list">
-                        {insight_items_html}
-                    </ul>
+                    <div class="insight-card">
+                        <div class="insight-card-header">
+                            <div class="insight-card-title">💡 Strategic Recommendations</div>
+                            <div class="insight-card-subtitle">Actionable strategies for each segment</div>
+                        </div>
+                        <ul class="insight-list">
+                            <li>🎯 <strong>Retention Programs</strong> for high-value segments</li>
+                            <li>📧 <strong>Personalized Win-Back</strong> campaigns for dormant customers</li>
+                            <li>🚀 <strong>Accelerated Nurturing</strong> flows for potential customers</li>
+                            <li>💎 <strong>VIP Experiences</strong> for champion segments</li>
+                            <li>📈 <strong>Cross-Sell Strategies</strong> for loyal customers</li>
+                            <li>🔍 <strong>Dormant Reactivation</strong> monitoring programs</li>
+                        </ul>
+                    </div>
                 </div>
-        """
-        
-        # Kolom 2: Strategic Recommendations
-        insights_html += """
-                <div class="insight-card">
-                    <div class="insight-card-header">
-                        <div class="insight-card-title">💡 Strategic Recommendations</div>
-                        <div class="insight-card-subtitle">Actionable strategies for each segment</div>
-                    </div>
-                    <ul class="insight-list">
-                        <li>🎯 <strong>Retention Programs</strong> for high-value segments</li>
-                        <li>📧 <strong>Personalized Win-Back</strong> campaigns for dormant customers</li>
-                        <li>🚀 <strong>Accelerated Nurturing</strong> flows for potential customers</li>
-                        <li>💎 <strong>VIP Experiences</strong> for champion segments</li>
-                        <li>📈 <strong>Cross-Sell Strategies</strong> for loyal customers</li>
-                        <li>🔍 <strong>Dormant Reactivation</strong> monitoring programs</li>
-                    </ul>
-                </div>
-            </div>
-        """
-        
-        # Advanced Analytics Section
-        concentration_pct = (largest_group_count / len(filtered_df) * 100) if len(filtered_df) > 0 else 0
-        
-        if 'Monetary' in filtered_df.columns:
-            top_20_percent = filtered_df.nlargest(max(1, int(len(filtered_df) * 0.2)), 'Monetary')
-            total_revenue = filtered_df['Monetary'].sum()
-            revenue_concentration = (top_20_percent['Monetary'].sum() / total_revenue * 100) if total_revenue > 0 else 0
-        else:
-            revenue_concentration = 0
-        
-        avg_recency = filtered_df['Recency'].mean() if 'Recency' in filtered_df.columns else 0
-        avg_frequency = filtered_df['Frequency'].mean() if 'Frequency' in filtered_df.columns else 0
-        
-        insights_html += f"""
-            <div class="advanced-analytics-section">
-                <div class="advanced-analytics-title">📈 Advanced Analytics</div>
-                <div class="advanced-analytics-grid">
-                    <div class="metric-card">
-                        <div class="metric-icon">📊</div>
-                        <div class="metric-value">{concentration_pct:.1f}%</div>
-                        <div class="metric-label">Segment Concentration</div>
-                        <div class="metric-change change-positive">
-                            <span>↑ 2.3%</span>
+                <div class="advanced-analytics-section">
+                    <div class="advanced-analytics-title">📈 Advanced Analytics</div>
+                    <div class="advanced-analytics-grid">
+                        <div class="metric-card">
+                            <div class="metric-icon">📊</div>
+                            <div class="metric-value">{concentration_pct:.1f}%</div>
+                            <div class="metric-label">Segment Concentration</div>
+                            <div class="metric-change change-positive">
+                                <span>↑ 2.3%</span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="metric-card">
-                        <div class="metric-icon">💰</div>
-                        <div class="metric-value">{revenue_concentration:.1f}%</div>
-                        <div class="metric-label">Revenue Concentration (Top 20%)</div>
-                        <div class="metric-change change-positive">
-                            <span>↑ 1.5%</span>
+                        <div class="metric-card">
+                            <div class="metric-icon">💰</div>
+                            <div class="metric-value">{revenue_concentration:.1f}%</div>
+                            <div class="metric-label">Revenue Concentration (Top 20%)</div>
+                            <div class="metric-change change-positive">
+                                <span>↑ 1.5%</span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="metric-card">
-                        <div class="metric-icon">⏰</div>
-                        <div class="metric-value">{avg_recency:.1f}</div>
-                        <div class="metric-label">Avg Recency (days)</div>
-                        <div class="metric-change change-negative">
-                            <span>↓ 3.2</span>
+                        <div class="metric-card">
+                            <div class="metric-icon">⏰</div>
+                            <div class="metric-value">{avg_recency:.1f}</div>
+                            <div class="metric-label">Avg Recency (days)</div>
+                            <div class="metric-change change-negative">
+                                <span>↓ 3.2</span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="metric-card">
-                        <div class="metric-icon">🔄</div>
-                        <div class="metric-value">{avg_frequency:.1f}</div>
-                        <div class="metric-label">Avg Frequency</div>
-                        <div class="metric-change change-positive">
-                            <span>↑ 0.8</span>
+                        <div class="metric-card">
+                            <div class="metric-icon">🔄</div>
+                            <div class="metric-value">{avg_frequency:.1f}</div>
+                            <div class="metric-label">Avg Frequency</div>
+                            <div class="metric-change change-positive">
+                                <span>↑ 0.8</span>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        """
-        
-        # Tampilkan semua HTML sekaligus
-        st.markdown(insights_html, unsafe_allow_html=True)
-        
-        # Additional detailed insights dalam expander
-        with st.expander("🔍 Detailed Segment Analysis"):
-            col1, col2 = st.columns(2)
+            """
             
-            with col1:
-                st.markdown("#### 📈 Performance Trends")
-                if 'Monetary' in filtered_df.columns and 'Cluster_Label' in filtered_df.columns:
-                    rev_by_segment = filtered_df.groupby('Cluster_Label')['Monetary'].agg(['sum', 'mean', 'count']).round(2)
-                    rev_by_segment.columns = ['Total Revenue', 'Avg Revenue', 'Customer Count']
-                    st.dataframe(rev_by_segment, use_container_width=True)
-                
-                st.markdown("#### 🎯 Opportunity Sizing")
-                if 'Cluster_KMeans' in filtered_df.columns:
-                    segment_opportunity = filtered_df['Cluster_Label'].value_counts().reset_index()
-                    segment_opportunity.columns = ['Segment', 'Count']
-                    segment_opportunity['Percentage'] = (segment_opportunity['Count'] / len(filtered_df) * 100).round(1)
-                    st.dataframe(segment_opportunity, use_container_width=True)
+            # Tampilkan semua HTML sekaligus
+            st.markdown(insights_html, unsafe_allow_html=True)
             
-            with col2:
-                st.markdown("#### ⚡ Quick Actions")
-                st.info("""
-                **Immediate Next Steps:**
-                1. **This Week:** Launch email campaign to top 20% revenue segments
-                2. **Next 30 Days:** Implement win-back program for dormant customers
-                3. **Next Quarter:** Develop VIP program for champion segments
-                4. **Ongoing:** Monitor segment migration and adjust strategies
-                """)
+            # Additional detailed insights dalam expander
+            with st.expander("🔍 Detailed Segment Analysis"):
+                col1, col2 = st.columns(2)
                 
-                st.markdown("#### 📊 Health Metrics")
-                if all(col in filtered_df.columns for col in ['Recency', 'Frequency', 'Monetary']):
-                    health_data = {
-                        'Metric': ['Recency Score', 'Frequency Score', 'Monetary Score', 'Overall RFM'],
-                        'Current': [
-                            f"{filtered_df['Recency'].mean():.1f}",
-                            f"{filtered_df['Frequency'].mean():.1f}",
-                            f"£{filtered_df['Monetary'].mean():,.0f}",
-                            f"{filtered_df['RFM_Score'].mean():.1f}" if 'RFM_Score' in filtered_df.columns else "N/A"
-                        ],
-                        'Target': ['< 30 days', '> 10', '£1,000+', '> 400'],
-                        'Status': ['✅ On Track' if filtered_df['Recency'].mean() < 30 else '⚠️ Needs Attention',
-                                  '✅ On Track' if filtered_df['Frequency'].mean() > 10 else '⚠️ Needs Attention',
-                                  '✅ On Track' if filtered_df['Monetary'].mean() > 1000 else '⚠️ Needs Attention',
-                                  '✅ On Track' if 'RFM_Score' in filtered_df.columns and filtered_df['RFM_Score'].mean() > 400 else '⚠️ Needs Attention']
-                    }
-                    health_df = pd.DataFrame(health_data)
-                    st.dataframe(health_df, use_container_width=True, hide_index=True)
-    else:
-        st.markdown("""
-        <div class="empty-state">
-            <div class="empty-icon">💡</div>
-            <h3>No Insights Available</h3>
-            <p>Try adjusting your filters to see insights</p>
-        </div>
-        """, unsafe_allow_html=True)
+                with col1:
+                    st.markdown("#### 📈 Performance Trends")
+                    if 'Monetary' in filtered_df.columns and 'Cluster_Label' in filtered_df.columns:
+                        rev_by_segment = filtered_df.groupby('Cluster_Label')['Monetary'].agg(['sum', 'mean', 'count']).round(2)
+                        rev_by_segment.columns = ['Total Revenue', 'Avg Revenue', 'Customer Count']
+                        st.dataframe(rev_by_segment, use_container_width=True)
+                    
+                    st.markdown("#### 🎯 Opportunity Sizing")
+                    if 'Cluster_KMeans' in filtered_df.columns:
+                        segment_opportunity = filtered_df['Cluster_Label'].value_counts().reset_index()
+                        segment_opportunity.columns = ['Segment', 'Count']
+                        segment_opportunity['Percentage'] = (segment_opportunity['Count'] / len(filtered_df) * 100).round(1)
+                        st.dataframe(segment_opportunity, use_container_width=True)
+                
+                with col2:
+                    st.markdown("#### ⚡ Quick Actions")
+                    st.info("""
+                    **Immediate Next Steps:**
+                    1. **This Week:** Launch email campaign to top 20% revenue segments
+                    2. **Next 30 Days:** Implement win-back program for dormant customers
+                    3. **Next Quarter:** Develop VIP program for champion segments
+                    4. **Ongoing:** Monitor segment migration and adjust strategies
+                    """)
+                    
+                    st.markdown("#### 📊 Health Metrics")
+                    if all(col in filtered_df.columns for col in ['Recency', 'Frequency', 'Monetary']):
+                        health_data = {
+                            'Metric': ['Recency Score', 'Frequency Score', 'Monetary Score', 'Overall RFM'],
+                            'Current': [
+                                f"{filtered_df['Recency'].mean():.1f}",
+                                f"{filtered_df['Frequency'].mean():.1f}",
+                                f"£{filtered_df['Monetary'].mean():,.0f}",
+                                f"{filtered_df['RFM_Score'].mean():.1f}" if 'RFM_Score' in filtered_df.columns else "N/A"
+                            ],
+                            'Target': ['< 30 days', '> 10', '£1,000+', '> 400'],
+                            'Status': ['✅ On Track' if filtered_df['Recency'].mean() < 30 else '⚠️ Needs Attention',
+                                      '✅ On Track' if filtered_df['Frequency'].mean() > 10 else '⚠️ Needs Attention',
+                                      '✅ On Track' if filtered_df['Monetary'].mean() > 1000 else '⚠️ Needs Attention',
+                                      '✅ On Track' if 'RFM_Score' in filtered_df.columns and filtered_df['RFM_Score'].mean() > 400 else '⚠️ Needs Attention']
+                        }
+                        health_df = pd.DataFrame(health_data)
+                        st.dataframe(health_df, use_container_width=True, hide_index=True)
+        else:
+            st.markdown("""
+            <div class="empty-state">
+                <div class="empty-icon">💡</div>
+                <h3>No Insights Available</h3>
+                <p>Try adjusting your filters to see insights</p>
+            </div>
+            """, unsafe_allow_html=True)
     
     # Divider 3
     st.markdown('<div class="section-divider-thick"></div>', unsafe_allow_html=True)
