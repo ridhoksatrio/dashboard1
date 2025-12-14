@@ -1696,24 +1696,7 @@ def main():
             </div>
             """, unsafe_allow_html=True)
     
-    # Footer
-    st.markdown("""
-    <div class="footer">
-        <div style="margin-bottom: 1rem;">
-            <span style="font-size: 1.1rem; font-weight: 700; color: #fff;">Customer Intelligence Hub v2.3</span> • 
-            <span style="color: #94a3b8;">Powered by AI Segmentation</span> • 
-            <span style="color: #94a3b8;">Data Updated Daily</span>
-        </div>
-        <div>
-            <a href="#" style="color: #667eea; text-decoration: none; margin: 0 1rem; padding: 0.5rem 1rem; background: rgba(102, 126, 234, 0.1); border-radius: 8px;">📥 Export Report</a> • 
-            <a href="#" style="color: #667eea; text-decoration: none; margin: 0 1rem; padding: 0.5rem 1rem; background: rgba(102, 126, 234, 0.1); border-radius: 8px;">📅 Schedule Delivery</a> • 
-            <a href="#" style="color: #667eea; text-decoration: none; margin: 0 1rem; padding: 0.5rem 1rem; background: rgba(102, 126, 234, 0.1); border-radius: 8px;">🔄 Live Sync</a>
-        </div>
-        <div style="margin-top: 1.5rem; color: #64748b; font-size: 0.8rem;">
-            © 2024 Customer Intelligence Hub. All rights reserved. | v2.3.0
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
+
 
 if __name__ == "__main__":
     main()
