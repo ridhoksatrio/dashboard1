@@ -1475,7 +1475,7 @@ def main():
     # ASUMSI: cluster_full_details sudah terdefinisi di tempat lain, 
 # berisi data lengkap untuk semua segmen (Champions, Loyal, dll.)
 
-with tab2:
+    with tab2:
     # HAPUS: 'Champion Breakdown Section' lama untuk menghindari duplikasi.
     # Keterangan dan kartu detail Champion akan disertakan dalam 'Segment Strategies' di bawah.
     
