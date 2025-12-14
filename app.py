@@ -1608,37 +1608,37 @@ def main():
         # === CARD STRATEGY ===
         st.markdown(f"""
         <div class="strategy-card">
-            <div class="strategy-header">
-                <h2 class="strategy-name">{selected_segment}</h2>
-            </div>
+        <div class="strategy-header">
+        <h2 class="strategy-name">{selected_segment}</h2>
+        </div>
 
-            <div class="detail-section">
-                <div class="detail-title">📊 Karakteristik</div>
-                <div class="detail-content">
-                    {format_content(details['karakteristik'])}
-                </div>
-            </div>
+        <div class="detail-section">
+        <div class="detail-title">📊 Karakteristik</div>
+        <div class="detail-content">
+        {format_content(details['karakteristik'])}
+        </div>
+        </div>
 
-            <div class="detail-section">
-                <div class="detail-title">🎯 Strategi Utama</div>
-                <div class="detail-content">
-                    {format_content(details['strategi'])}
-                </div>
-            </div>
+        <div class="detail-section">
+        <div class="detail-title">🎯 Strategi Utama</div>
+        <div class="detail-content">
+        {format_content(details['strategi'])}
+        </div>
+        </div>
 
-            <div class="detail-section">
-                <div class="detail-title">⚙️ Aksi Penjualan</div>
-                <div class="detail-content">
-                    {format_content(details['aksi'])}
-                </div>
-            </div>
+        <div class="detail-section">
+        <div class="detail-title">⚙️ Aksi Penjualan</div>
+        <div class="detail-content">
+        {format_content(details['aksi'])}
+        </div>
+        </div>
 
-            <div class="detail-section">
-                <div class="detail-title">📈 KPI Target</div>
-                <div class="detail-content">
-                    {format_content(details['kpi'])}
-                </div>
-            </div>
+        <div class="detail-section">
+        <div class="detail-title">📈 KPI Target</div>
+        <div class="detail-content">
+        {format_content(details['kpi'])}
+        </div>
+        </div>
         </div>
         """, unsafe_allow_html=True)
         
