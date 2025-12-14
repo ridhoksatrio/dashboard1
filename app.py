@@ -6,7 +6,7 @@ import warnings
 
 warnings.filterwarnings('ignore')
 
-# Konfigurasi halaman Streamlit
+# Streamlit page configuration
 st.set_page_config(
     page_title="Customer Intelligence Hub",
     page_icon="🎯",
@@ -68,49 +68,49 @@ champion_details = {
     6: {'tier':'Diamond Elite','desc':'Ultra frequent buyers with exceptional loyalty','char':'1d recency, 126.8 orders, £33,796 spend'}
 }
 
-# Detail lengkap untuk setiap tipe cluster - TANPA TAG HTML
+# Full details for each cluster type - WITHOUT HTML TAGS
 cluster_full_details = {
     'Champions': {
-        'karakteristik': 'Recency sangat rendah<br>Frequency tinggi<br>Monetary sangat tinggi',
-        'strategi': 'Fokus retensi dan peningkatan nilai jangka panjang',
-        'aksi': 'Beri akses produk lebih awal sebelum rilis umum<br>Sediakan customer manager khusus untuk transaksi besar<br>Kirim hadiah premium setiap milestone transaksi<br>Undang ke event eksklusif online atau offline<br>Buat program referral VIP',
-        'kpi': 'Retention di atas 95 persen<br>Upsell rate di atas 40 persen<br>Referral contribution di atas 30 persen'
+        'characteristics': 'Very low recency<br>High frequency<br>Very high monetary',
+        'strategy': 'Focus on retention and long-term value enhancement',
+        'actions': 'Provide early access to products before general release<br>Assign dedicated customer manager for large transactions<br>Send premium gifts for transaction milestones<br>Invite to exclusive online or offline events<br>Create VIP referral program',
+        'kpis': 'Retention above 95 percent<br>Upsell rate above 40 percent<br>Referral contribution above 30 percent'
     },
     'Loyal': {
-        'karakteristik': 'Recency rendah<br>Frequency tinggi<br>Monetary menengah',
-        'strategi': 'Tingkatkan loyalitas agar naik kelas ke Champions',
-        'aksi': 'Terapkan loyalty tier berbasis poin<br>Beri benefit khusus via aplikasi atau akun member<br>Kirim promo ulang tahun dan anniversary<br>Dorong referral dengan insentif langsung<br>Beri akses flash sale terbatas',
-        'kpi': 'Retention di atas 85 persen<br>Kenaikan frekuensi pembelian minimal 20 persen<br>NPS di atas 8'
+        'characteristics': 'Low recency<br>High frequency<br>Medium monetary',
+        'strategy': 'Increase loyalty to move up to Champions tier',
+        'actions': 'Implement point-based loyalty tiers<br>Provide exclusive benefits via app or member account<br>Send birthday and anniversary promotions<br>Encourage referrals with direct incentives<br>Provide limited flash sale access',
+        'kpis': 'Retention above 85 percent<br>Minimum 20 percent increase in purchase frequency<br>NPS above 8'
     },
     'Big Spenders': {
-        'karakteristik': 'Monetary sangat tinggi<br>Frequency tidak selalu tinggi<br>Recency bervariasi',
-        'strategi': 'Maksimalkan nilai transaksi per pelanggan',
-        'aksi': 'Tawarkan cicilan atau metode pembayaran fleksibel<br>Beri free express delivery tanpa minimum<br>Buat bundling produk bernilai tinggi<br>Sediakan layanan concierge order<br>Kirim hadiah eksklusif berbasis nilai belanja',
-        'kpi': 'AOV naik minimal 15 persen<br>Retention di atas 90 persen<br>Kepuasan pelanggan di atas 4.8 dari 5'
+        'characteristics': 'Very high monetary<br>Frequency not always high<br>Recency varies',
+        'strategy': 'Maximize transaction value per customer',
+        'actions': 'Offer flexible installment or payment methods<br>Provide free express delivery without minimum<br>Create high-value product bundles<br>Provide concierge ordering service<br>Send exclusive gifts based on purchase value',
+        'kpis': 'AOV increase of at least 15 percent<br>Retention above 90 percent<br>Customer satisfaction above 4.8 out of 5'
     },
     'Dormant': {
-        'karakteristik': 'Recency tinggi<br>Frequency rendah<br>Risiko churn besar',
-        'strategi': 'Aktifkan kembali pelanggan yang tidak aktif',
-        'aksi': 'Kirim diskon agresif 25 sampai 30 persen<br>Gunakan email, WhatsApp, dan iklan retargeting<br>Tawarkan promo dengan batas waktu pendek<br>Lakukan pendekatan personal untuk pelanggan bernilai tinggi<br>Kirim reminder berbasis produk terakhir',
-        'kpi': 'Win back rate di atas 25 persen<br>Response rate di atas 15 persen<br>ROI kampanye di atas 200 persen'
+        'characteristics': 'High recency<br>Low frequency<br>High churn risk',
+        'strategy': 'Reactivate inactive customers',
+        'actions': 'Send aggressive 25 to 30 percent discounts<br>Use email, WhatsApp, and retargeting ads<br>Offer time-limited promotions<br>Make personal approaches for high-value customers<br>Send reminders based on last purchased products',
+        'kpis': 'Win-back rate above 25 percent<br>Response rate above 15 percent<br>Campaign ROI above 200 percent'
     },
     'Potential': {
-        'karakteristik': 'Recency rendah<br>Frequency masih rendah<br>Monetary rendah sampai menengah',
-        'strategi': 'Percepat pembelian kedua',
-        'aksi': 'Kirim edukasi produk dan use case<br>Beri diskon khusus pembelian kedua<br>Aktifkan welcome email flow bertahap<br>Rekomendasikan produk pelengkap<br>Gunakan cross sell sederhana',
-        'kpi': 'Conversion ke repeat buyer di atas 35 persen<br>Pembelian kedua kurang dari 30 hari<br>LTV naik minimal 25 persen'
+        'characteristics': 'Low recency<br>Still low frequency<br>Low to medium monetary',
+        'strategy': 'Accelerate second purchase',
+        'actions': 'Send product education and use cases<br>Provide special discount for second purchase<br>Activate phased welcome email flow<br>Recommend complementary products<br>Use simple cross-sell techniques',
+        'kpis': 'Conversion to repeat buyer above 35 percent<br>Second purchase within 30 days<br>LTV increase of at least 25 percent'
     },
     'Standard': {
-        'karakteristik': 'RFM rata rata<br>Volume besar<br>Nilai per pelanggan stabil',
-        'strategi': 'Jaga engagement dengan biaya efisien',
-        'aksi': 'Kirim newsletter rutin dengan konten relevan<br>Jalankan promo musiman<br>Gunakan rekomendasi produk berbasis AI<br>Beri reward kecil tak terduga<br>Bangun komunitas atau program member ringan',
-        'kpi': 'Engagement rate di atas 40 persen<br>Retensi stabil<br>Kepuasan pelanggan di atas 3.5 dari 5'
+        'characteristics': 'Average RFM<br>Large volume<br>Stable per-customer value',
+        'strategy': 'Maintain engagement with cost efficiency',
+        'actions': 'Send regular newsletters with relevant content<br>Run seasonal promotions<br>Use AI-based product recommendations<br>Provide unexpected small rewards<br>Build community or lightweight membership program',
+        'kpis': 'Engagement rate above 40 percent<br>Stable retention<br>Customer satisfaction above 3.5 out of 5'
     }
 }
 
-# Fungsi untuk mengonversi teks dengan <br> menjadi HTML yang benar
+# Function to convert text with <br> to proper HTML
 def format_content(text):
-    """Konversi teks dengan tag <br> menjadi elemen HTML dengan class detail-item"""
+    """Convert text with <br> tags to HTML elements with class detail-item"""
     if '<br>' in text:
         items = [item.strip() for item in text.split('<br>')]
         html_items = ''.join([f'<div class="detail-item">{item}</div>' for item in items])
@@ -143,7 +143,7 @@ def get_strat(cid, data):
         s = 'standard'
     return {**strats[s], 'cluster_id': cid}
 
-# Inisialisasi profs dan colors
+# Initialize profs and colors
 @st.cache_data
 def init_data(rfm):
     profs = {}
@@ -162,7 +162,7 @@ def init_data(rfm):
 
 profs, colors, rfm = init_data(rfm)
 
-# CSS Custom untuk Streamlit yang lebih modern - DIPERBAIKI
+# Custom CSS for more modern Streamlit - IMPROVED
 st.markdown("""
 <style>
     * {margin: 0; padding: 0; box-sizing: border-box}
@@ -173,7 +173,7 @@ st.markdown("""
     .st-emotion-cache-1cypcdb {background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%) !important; border-right: 1px solid #334155}
     .st-emotion-cache-16txtl3 {padding: 2rem 1.5rem !important}
     
-    /* HEADER dengan glassmorphism */
+    /* HEADER with glassmorphism */
     .header-container {
         background: rgba(15, 23, 42, 0.95); 
         backdrop-filter: blur(20px); 
@@ -191,7 +191,7 @@ st.markdown("""
                   letter-spacing: -0.5px;}
     .header-subtitle {color: #94a3b8; font-size: 1.15rem; margin-top: 0.5rem; font-weight: 400; max-width: 800px; line-height: 1.5;}
     
-    /* SECTION DIVIDER - DITAMBAHKAN */
+    /* SECTION DIVIDER - ADDED */
     .section-divider {
         height: 1px;
         background: linear-gradient(90deg, 
@@ -221,7 +221,7 @@ st.markdown("""
         border-radius: 3px;
     }
     
-    /* SECTION HEADERS - DITAMBAHKAN */
+    /* SECTION HEADERS - ADDED */
     .section-header {
         display: flex;
         align-items: center;
@@ -261,7 +261,7 @@ st.markdown("""
         font-weight: 400;
     }
     
-    /* METRICS GRID dengan neumorphism */
+    /* METRICS GRID with neumorphism */
     .metrics-grid {display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; margin: 2rem 0}
     @media (max-width: 1200px) {.metrics-grid {grid-template-columns: repeat(2, 1fr)}}
     @media (max-width: 768px) {.metrics-grid {grid-template-columns: 1fr}}
@@ -312,7 +312,7 @@ st.markdown("""
     .change-negative {color: #ef4444; background: rgba(239, 68, 68, 0.1); padding: 0.25rem 0.5rem; border-radius: 20px;}
   
     
-    /* FILTER ITEMS - DITAMBAHKAN */
+    /* FILTER ITEMS - ADDED */
     .filter-column {padding: 0.5rem}
     .filter-label {font-size: 0.875rem; color: #94a3b8; margin-bottom: 0.75rem; font-weight: 600; display: block}
     
@@ -385,7 +385,7 @@ st.markdown("""
     }
     .strategy-subtitle {font-size: 1.1rem; color: rgba(255, 255, 255, 0.9); margin-bottom: 1.5rem; font-weight: 500}
     
-    /* Detail section styling untuk tab 4 */
+    /* Detail section styling for tab 4 */
     .detail-section {
         margin-bottom: 1.5rem;
         padding-bottom: 1rem;
@@ -495,7 +495,7 @@ st.markdown("""
         border: 1px solid rgba(255, 215, 0, 0.2);
     }
     
-    /* INSIGHTS SECTION - DIPERBAIKI */
+    /* INSIGHTS SECTION - IMPROVED */
     .insights-section {
         background: linear-gradient(135deg, rgba(79, 172, 254, 0.08) 0%, rgba(0, 242, 254, 0.08) 100%);
         border: 1px solid rgba(79, 172, 254, 0.2); 
@@ -516,7 +516,7 @@ st.markdown("""
         border-bottom: 2px solid rgba(79, 172, 254, 0.3);
     }
     
-    /* PERBAIKAN: Equal height cards container */
+    /* IMPROVEMENT: Equal height cards container */
     .insights-grid-container {
         display: flex;
         gap: 2rem;
@@ -530,7 +530,7 @@ st.markdown("""
         }
     }
     
-    /* PERBAIKAN: Insight card dengan height 100% */
+    /* IMPROVEMENT: Insight card with 100% height */
     .insight-card {
         background: rgba(79, 172, 254, 0.08); 
         border: 1px solid rgba(79, 172, 254, 0.2); 
@@ -626,7 +626,7 @@ st.markdown("""
     .empty-state {text-align: center; padding: 4rem; color: #94a3b8}
     .empty-icon {font-size: 3.5rem; margin-bottom: 1.5rem; opacity: 0.5}
     
-    /* STREAMLIT WIDGET OVERRIDES - DIPERBAIKI */
+    /* STREAMLIT WIDGET OVERRIDES - IMPROVED */
     div[data-testid="stSelectbox"] > div {
         background: rgba(30, 41, 59, 0.8); 
         border-color: rgba(255, 255, 255, 0.1) !important; 
@@ -650,7 +650,7 @@ st.markdown("""
         border-radius: 10px;
     }
     
-    /* CUSTOM LABELS untuk filter */
+    /* CUSTOM LABELS for filter */
     .custom-label {
         display: flex; 
         align-items: center; 
@@ -698,7 +698,7 @@ st.markdown("""
         letter-spacing: 0.05em;
     }
     
-    /* SELECT BOX STYLING untuk Tab 4 */
+    /* SELECT BOX STYLING for Tab 4 */
     .segment-select-container {
         margin: 2rem 0;
         padding: 1.5rem;
@@ -719,7 +719,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# Fungsi untuk membuat chart yang lebih modern
+# Function to create more modern charts
 def create_charts(df):
     # Chart 1: Customer Distribution Donut
     cc = df['Cluster_Label'].value_counts()
@@ -816,7 +816,7 @@ def create_charts(df):
             )]
         )
     
-    # Chart 3: 3D RFM Analysis dengan tema gelap
+    # Chart 3: 3D RFM Analysis with dark theme
     if all(col in df.columns for col in ['Recency', 'Frequency', 'Monetary']):
         fig3 = go.Figure(go.Scatter3d(
             x=df['Recency'], 
@@ -880,7 +880,7 @@ def create_charts(df):
             paper_bgcolor='rgba(0,0,0,0)'
         )
     
-    # Chart 4-6: Histograms dengan tema gelap
+    # Chart 4-6: Histograms with dark theme
     def create_histogram(df, column, title, color):
         if column not in df.columns:
             fig = go.Figure()
@@ -931,7 +931,7 @@ def create_charts(df):
     fig5 = create_histogram(df, 'Frequency', '🔄 Frequency Distribution', '#4ECDC4')
     fig6 = create_histogram(df, 'Monetary', '💵 Monetary Distribution', '#45B7D1')
     
-    # Chart 7: RFM Table - versi yang diperbaiki
+    # Chart 7: RFM Table - fixed version
     try:
         segment_counts = df.groupby('Cluster_Label').size().reset_index(name='Count')
         
@@ -1078,7 +1078,7 @@ with st.sidebar:
         4. **Get insights** in the AI Insights tab
         """)
 
-# Layout utama Streamlit
+# Main Streamlit layout
 def main():
     # Header
     st.markdown("""
@@ -1090,7 +1090,7 @@ def main():
     </div>
     """, unsafe_allow_html=True)
     
-    # Section 1: Key Metrics dengan section header
+    # Section 1: Key Metrics with section header
     st.markdown("""
     <div class="section-header">
         <div>
@@ -1163,7 +1163,7 @@ def main():
     
     st.markdown('</div>', unsafe_allow_html=True)
     
-    # Section 2: Data Filters dengan section header
+    # Section 2: Data Filters with section header
     st.markdown("""
     <div class="section-header">
         <div>
@@ -1331,7 +1331,7 @@ def main():
             (filtered_df['Recency'] <= recency_filter[1])
         ]
     
-    # Tabs Section dengan section header
+    # Tabs Section with section header
     st.markdown("""
     <div class="section-header">
         <div>
@@ -1341,7 +1341,7 @@ def main():
     </div>
     """, unsafe_allow_html=True)
     
-    # Tabs - TANPA TAB4 (hanya 3 tab sekarang)
+    # Tabs - WITHOUT TAB4 (only 3 tabs now)
     tab1, tab2, tab3 = st.tabs(["📊 Analytics Dashboard", "🎯 Growth Strategies", "💡 AI Insights"])
     
     with tab1:
@@ -1404,7 +1404,7 @@ def main():
             """, unsafe_allow_html=True)
     
     with tab2:
-        # Bagian 1: Champion Breakdown (tetap sama)
+        # Part 1: Champion Breakdown (same as before)
         champion_clusters = [c for c in filtered_df['Cluster_KMeans'].unique() 
                         if c in profs and profs[c]['name'] == '🏆 Champions']
 
@@ -1424,29 +1424,29 @@ def main():
                         </div>
                         """, unsafe_allow_html=True)
         
-        # BAGIAN BARU: Selling Strategy (dipindahkan dari tab4)
+        # NEW SECTION: Selling Strategy (moved from tab4)
         st.markdown("""
         <div class="section-header">
             <div>
                 <div class="section-title">Selling Strategy</div>
-                <div class="section-subtitle">Strategi penjualan interaktif berdasarkan segmen pelanggan</div>
+                <div class="section-subtitle">Interactive selling strategies based on customer segments</div>
             </div>
         </div>
         """, unsafe_allow_html=True)
 
 
-        # Bagian dropdown untuk memilih segment
+        # Dropdown section to select segment
         
         segment_names = list(cluster_full_details.keys())
         selected_segment = st.selectbox(
-            "🎯 Pilih Segmen Pelanggan",
+            "🎯 Select Customer Segment",
             segment_names,
             index=0,
             key="selling_strategy_segment"
         )
         
         
-        # Dua kolom untuk detail strategi (layout sama seperti tab3)
+        # Two columns for strategy details (same layout as tab3)
         details = cluster_full_details[selected_segment]
         
         col1, col2 = st.columns(2)
@@ -1455,11 +1455,11 @@ def main():
             st.markdown(f"""
             <div class="insight-card">
                 <div class="insight-card-header">
-                    <div class="insight-card-title">📊 Karakteristik</div>
-                    <div class="insight-card-subtitle">Profil dan perilaku pelanggan</div>
+                    <div class="insight-card-title">📊 Characteristics</div>
+                    <div class="insight-card-subtitle">Customer profile and behavior</div>
                 </div>
                 <div class="detail-content">
-                    {format_content(details['karakteristik'])}
+                    {format_content(details['characteristics'])}
                 </div>
             </div>
             """, unsafe_allow_html=True)
@@ -1467,11 +1467,11 @@ def main():
             st.markdown(f"""
             <div class="insight-card" style="margin-top: 1.5rem;">
                 <div class="insight-card-header">
-                    <div class="insight-card-title">🎯 Strategi Utama</div>
-                    <div class="insight-card-subtitle">Pendekatan strategis untuk segmen ini</div>
+                    <div class="insight-card-title">🎯 Main Strategy</div>
+                    <div class="insight-card-subtitle">Strategic approach for this segment</div>
                 </div>
                 <div class="detail-content">
-                    {format_content(details['strategi'])}
+                    {format_content(details['strategy'])}
                 </div>
             </div>
             """, unsafe_allow_html=True)
@@ -1480,11 +1480,11 @@ def main():
             st.markdown(f"""
             <div class="insight-card">
                 <div class="insight-card-header">
-                    <div class="insight-card-title">⚙️ Aksi Penjualan</div>
-                    <div class="insight-card-subtitle">Taktik implementasi spesifik</div>
+                    <div class="insight-card-title">⚙️ Sales Actions</div>
+                    <div class="insight-card-subtitle">Specific implementation tactics</div>
                 </div>
                 <div class="detail-content">
-                    {format_content(details['aksi'])}
+                    {format_content(details['actions'])}
                 </div>
             </div>
             """, unsafe_allow_html=True)
@@ -1492,11 +1492,11 @@ def main():
             st.markdown(f"""
             <div class="insight-card" style="margin-top: 1.5rem;">
                 <div class="insight-card-header">
-                    <div class="insight-card-title">📈 KPI Target</div>
-                    <div class="insight-card-subtitle">Indikator kinerja yang diharapkan</div>
+                    <div class="insight-card-title">📈 KPI Targets</div>
+                    <div class="insight-card-subtitle">Expected performance indicators</div>
                 </div>
                 <div class="detail-content">
-                    {format_content(details['kpi'])}
+                    {format_content(details['kpis'])}
                 </div>
             </div>
             """, unsafe_allow_html=True)
@@ -1504,7 +1504,7 @@ def main():
 
     with tab3:
         if len(filtered_df) > 0:
-            # Calculate insights dengan format data yang konsisten
+            # Calculate insights with consistent data format
             if 'Cluster_Label' in filtered_df.columns:
                 if 'Monetary' in filtered_df.columns:
                     highest_revenue = filtered_df.groupby('Cluster_Label')['Monetary'].sum()
@@ -1640,7 +1640,7 @@ def main():
             </div>
             """
             
-            # Tampilkan semua HTML sekaligus
+            # Display all HTML at once
             st.markdown(insights_html, unsafe_allow_html=True)
             
         else:
