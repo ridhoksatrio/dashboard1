@@ -1166,7 +1166,6 @@ def main():
     # Section 2: Data Filters dengan section header
     st.markdown("""
     <div class="section-header">
-        <div class="section-icon">🎛️</div>
         <div>
             <div class="section-title">Smart Filters</div>
             <div class="section-subtitle">Refine and segment your customer data with precision controls</div>
@@ -1335,7 +1334,6 @@ def main():
     # Tabs Section dengan section header
     st.markdown("""
     <div class="section-header">
-        <div class="section-icon">📋</div>
         <div>
             <div class="section-title">Dashboard Analytics</div>
             <div class="section-subtitle">Explore different aspects of your customer data through interactive tabs</div>
@@ -1411,7 +1409,7 @@ def main():
                         if c in profs and profs[c]['name'] == '🏆 Champions']
 
         if len(champion_clusters) > 0:
-            st.markdown('<div class="champion-title">🏆 Champion Segments Breakdown</div>', unsafe_allow_html=True)
+            st.markdown('<div class="champion-title">Champion Segments Breakdown</div>', unsafe_allow_html=True)
             cols = st.columns(2)
             for idx, cid in enumerate(sorted(champion_clusters)):
                 if cid in champion_details:
