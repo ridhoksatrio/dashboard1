@@ -1440,9 +1440,6 @@ def main():
 
 
         # Bagian dropdown untuk memilih segment
-        st.markdown("""
-        <div style="margin: 1.5rem 0; padding: 1.5rem; background: rgba(30, 41, 59, 0.6); border-radius: 15px; border: 1px solid rgba(255, 255, 255, 0.1);">
-        """, unsafe_allow_html=True)
         
         segment_names = list(cluster_full_details.keys())
         selected_segment = st.selectbox(
