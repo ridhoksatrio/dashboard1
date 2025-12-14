@@ -1386,7 +1386,6 @@ def main():
                         if c in profs and profs[c]['name'] == '🏆 Champions']
     
         if len(champion_clusters) > 0:
-            st.markdown('<div class="champion-section">', unsafe_allow_html=True)
             st.markdown('<div class="champion-title">🏆 Champion Segments Breakdown</div>', unsafe_allow_html=True)
             cols = st.columns(2)
             for idx, cid in enumerate(sorted(champion_clusters)):
