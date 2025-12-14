@@ -1514,35 +1514,6 @@ def main():
             </div>
             """, unsafe_allow_html=True)
         
-        # Advanced Analytics Section (sama seperti tab3)
-        st.markdown("""
-            <div class="advanced-analytics-section">
-                <div class="advanced-analytics-title">📅 Timeline Implementasi & Monitoring</div>
-                <div class="advanced-analytics-grid">
-                    <div class="metric-card">
-                        <div class="metric-icon">📅</div>
-                        <div class="metric-value">Minggu 1-2</div>
-                        <div class="metric-label">Persiapan Materi & Tim</div>
-                    </div>
-                    <div class="metric-card">
-                        <div class="metric-icon">🚀</div>
-                        <div class="metric-value">Minggu 3-4</div>
-                        <div class="metric-label">Peluncuran Kampanye</div>
-                    </div>
-                    <div class="metric-card">
-                        <div class="metric-icon">📊</div>
-                        <div class="metric-value">Minggu 5-8</div>
-                        <div class="metric-label">Monitoring & Optimisasi</div>
-                    </div>
-                    <div class="metric-card">
-                        <div class="metric-icon">📈</div>
-                        <div class="metric-value">Minggu 9-12</div>
-                        <div class="metric-label">Evaluasi Hasil</div>
-                    </div>
-                </div>
-            </div>
-        """, unsafe_allow_html=True)
-        
         # Close insights section
         st.markdown("</div>", unsafe_allow_html=True)
 
@@ -1696,7 +1667,5 @@ def main():
             </div>
             """, unsafe_allow_html=True)
     
-
-
 if __name__ == "__main__":
     main()
