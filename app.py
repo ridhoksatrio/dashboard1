@@ -1538,15 +1538,15 @@ def main():
             st.markdown('</div>', unsafe_allow_html=True)
         
         # Tampilkan strategi untuk semua segment (non-champion)
-        st.markdown("""
-        <div class="section-header">
-            <div class="section-icon">🎯</div>
-            <div>
-                <div class="section-title">Segment Strategies</div>
-                <div class="section-subtitle">Detailed strategies for all customer segments</div>
+            st.markdown("""
+                <div class="section-header">
+                <div class="section-icon">🎯</div>
+                <div>
+                    <div class="section-title">Segment Strategies</div>
+                    <div class="section-subtitle">Detailed strategies for all customer segments</div>
+                </div>
             </div>
-        </div>
-        """, unsafe_allow_html=True)
+            """, unsafe_allow_html=True)
         
         # Grid untuk strategi semua segment
         strategy_cols = st.columns(2)
