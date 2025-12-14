@@ -1076,7 +1076,6 @@ with st.sidebar:
         2. **Explore** segments in the Analytics tab
         3. **View** strategies in the Growth Strategies tab
         4. **Get insights** in the AI Insights tab
-        5. **Implement** strategies from Selling Strategy tab
         """)
 
 # Layout utama Streamlit
@@ -1345,8 +1344,8 @@ def main():
     </div>
     """, unsafe_allow_html=True)
     
-    # Tabs - DITAMBAHKAN TAB KE-4
-    tab1, tab2, tab3, tab4 = st.tabs(["📊 Analytics Dashboard", "🎯 Growth Strategies", "💡 AI Insights", "📋 Selling Strategy"])
+    # Tabs - TANPA TAB4 (hanya 3 tab sekarang)
+    tab1, tab2, tab3 = st.tabs(["📊 Analytics Dashboard", "🎯 Growth Strategies", "💡 AI Insights"])
     
     with tab1:
         if len(filtered_df) > 0:
@@ -1408,10 +1407,10 @@ def main():
             """, unsafe_allow_html=True)
     
     with tab2:
-        # Champion Breakdown Section
+        # Bagian 1: Champion Breakdown (tetap sama)
         champion_clusters = [c for c in filtered_df['Cluster_KMeans'].unique() 
                         if c in profs and profs[c]['name'] == '🏆 Champions']
-    
+
         if len(champion_clusters) > 0:
             st.markdown('<div class="champion-title">🏆 Champion Segments Breakdown</div>', unsafe_allow_html=True)
             cols = st.columns(2)
@@ -1427,9 +1426,126 @@ def main():
                             <div class="champion-chars">📊 {det['char']}</div>
                         </div>
                         """, unsafe_allow_html=True)
+        
+        # BAGIAN BARU: Selling Strategy (dipindahkan dari tab4)
+        st.markdown("""
+        <div class="section-header">
+            <div class="section-icon">📋</div>
+            <div>
+                <div class="section-title">Selling Strategy</div>
+                <div class="section-subtitle">Strategi penjualan interaktif berdasarkan segmen pelanggan</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+        # Insights container untuk Selling Strategy (sama seperti tab3)
+        st.markdown("""
+        <div class="insights-section">
+            <div class="insights-title">📋 Selling Strategy</div>
+        """, unsafe_allow_html=True)
+
+        # Bagian dropdown untuk memilih segment
+        st.markdown("""
+        <div style="margin: 1.5rem 0; padding: 1.5rem; background: rgba(30, 41, 59, 0.6); border-radius: 15px; border: 1px solid rgba(255, 255, 255, 0.1);">
+        """, unsafe_allow_html=True)
+        
+        segment_names = list(cluster_full_details.keys())
+        selected_segment = st.selectbox(
+            "🎯 Pilih Segmen Pelanggan",
+            segment_names,
+            index=0,
+            key="selling_strategy_segment"
+        )
+        
+        st.markdown("</div>", unsafe_allow_html=True)
+        
+        # Dua kolom untuk detail strategi (layout sama seperti tab3)
+        details = cluster_full_details[selected_segment]
+        
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            st.markdown(f"""
+            <div class="insight-card">
+                <div class="insight-card-header">
+                    <div class="insight-card-title">📊 Karakteristik</div>
+                    <div class="insight-card-subtitle">Profil dan perilaku pelanggan</div>
+                </div>
+                <div class="detail-content">
+                    {format_content(details['karakteristik'])}
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
             
-            st.markdown('</div>', unsafe_allow_html=True)
-    
+            st.markdown(f"""
+            <div class="insight-card" style="margin-top: 1.5rem;">
+                <div class="insight-card-header">
+                    <div class="insight-card-title">🎯 Strategi Utama</div>
+                    <div class="insight-card-subtitle">Pendekatan strategis untuk segmen ini</div>
+                </div>
+                <div class="detail-content">
+                    {format_content(details['strategi'])}
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+        
+        with col2:
+            st.markdown(f"""
+            <div class="insight-card">
+                <div class="insight-card-header">
+                    <div class="insight-card-title">⚙️ Aksi Penjualan</div>
+                    <div class="insight-card-subtitle">Taktik implementasi spesifik</div>
+                </div>
+                <div class="detail-content">
+                    {format_content(details['aksi'])}
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+            
+            st.markdown(f"""
+            <div class="insight-card" style="margin-top: 1.5rem;">
+                <div class="insight-card-header">
+                    <div class="insight-card-title">📈 KPI Target</div>
+                    <div class="insight-card-subtitle">Indikator kinerja yang diharapkan</div>
+                </div>
+                <div class="detail-content">
+                    {format_content(details['kpi'])}
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+        
+        # Advanced Analytics Section (sama seperti tab3)
+        st.markdown("""
+            <div class="advanced-analytics-section">
+                <div class="advanced-analytics-title">📅 Timeline Implementasi & Monitoring</div>
+                <div class="advanced-analytics-grid">
+                    <div class="metric-card">
+                        <div class="metric-icon">📅</div>
+                        <div class="metric-value">Minggu 1-2</div>
+                        <div class="metric-label">Persiapan Materi & Tim</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-icon">🚀</div>
+                        <div class="metric-value">Minggu 3-4</div>
+                        <div class="metric-label">Peluncuran Kampanye</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-icon">📊</div>
+                        <div class="metric-value">Minggu 5-8</div>
+                        <div class="metric-label">Monitoring & Optimisasi</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-icon">📈</div>
+                        <div class="metric-value">Minggu 9-12</div>
+                        <div class="metric-label">Evaluasi Hasil</div>
+                    </div>
+                </div>
+            </div>
+        """, unsafe_allow_html=True)
+        
+        # Close insights section
+        st.markdown("</div>", unsafe_allow_html=True)
+
     with tab3:
         if len(filtered_df) > 0:
             # Calculate insights dengan format data yang konsisten
@@ -1579,94 +1695,6 @@ def main():
                 <p>Try adjusting your filters to see insights</p>
             </div>
             """, unsafe_allow_html=True)
-    
-    # TAB 4: SELLING STRATEGY - VERSI INTERAKTIF YANG DIMINTA
-    with tab4:
-        st.markdown("""
-        <div class="section-header">
-            <div class="section-icon">📋</div>
-            <div>
-                <div class="section-title">Selling Strategy</div>
-                <div class="section-subtitle">
-                    Strategi penjualan interaktif berdasarkan segmen pelanggan
-                </div>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
-
-        # === PILIH SEGMEN ===
-        segment_names = list(cluster_full_details.keys())
-
-        selected_segment = st.selectbox(
-            "🎯 Pilih Segmen Pelanggan",
-            segment_names,
-            index=0
-        )
-
-        details = cluster_full_details[selected_segment]
-
-        # === CARD STRATEGY ===
-        st.markdown(f"""
-        <div class="strategy-card">
-        <div class="strategy-header">
-        <h2 class="strategy-name">{selected_segment}</h2>
-        </div>
-
-        <div class="detail-section">
-        <div class="detail-title">📊 Karakteristik</div>
-        <div class="detail-content">
-        {format_content(details['karakteristik'])}
-        </div>
-        </div>
-
-        <div class="detail-section">
-        <div class="detail-title">🎯 Strategi Utama</div>
-        <div class="detail-content">
-        {format_content(details['strategi'])}
-        </div>
-        </div>
-
-        <div class="detail-section">
-        <div class="detail-title">⚙️ Aksi Penjualan</div>
-        <div class="detail-content">
-        {format_content(details['aksi'])}
-        </div>
-        </div>
-
-        <div class="detail-section">
-        <div class="detail-title">📈 KPI Target</div>
-        <div class="detail-content">
-        {format_content(details['kpi'])}
-        </div>
-        </div>
-        </div>
-        """, unsafe_allow_html=True)
-        
-        # === INFORMASI TAMBAHAN ===
-        st.markdown("""
-        <div style="margin-top: 2rem; padding: 1.5rem; background: rgba(30, 41, 59, 0.6); border-radius: 15px; border: 1px solid rgba(255, 255, 255, 0.1);">
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
-                <div>
-                    <div style="font-weight: 700; color: #fff; margin-bottom: 0.5rem;">📅 Timeline Implementasi</div>
-                    <div style="color: #cbd5e1; font-size: 0.9rem;">
-                        • Minggu 1-2: Persiapan materi & tim<br>
-                        • Minggu 3-4: Peluncuran kampanye<br>
-                        • Minggu 5-8: Monitoring & optimisasi<br>
-                        • Minggu 9-12: Evaluasi hasil
-                    </div>
-                </div>
-                <div>
-                    <div style="font-weight: 700; color: #fff; margin-bottom: 0.5rem;">📊 Metrik Monitoring</div>
-                    <div style="color: #cbd5e1; font-size: 0.9rem;">
-                        • Weekly: Engagement rate<br>
-                        • Bi-weekly: Conversion rate<br>
-                        • Monthly: ROI & customer satisfaction<br>
-                        • Quarterly: LTV improvement
-                    </div>
-                </div>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
     
     # Footer
     st.markdown("""
