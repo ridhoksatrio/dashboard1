@@ -1427,7 +1427,6 @@ def main():
         # BAGIAN BARU: Selling Strategy (dipindahkan dari tab4)
         st.markdown("""
         <div class="section-header">
-            <div class="section-icon">📋</div>
             <div>
                 <div class="section-title">Selling Strategy</div>
                 <div class="section-subtitle">Strategi penjualan interaktif berdasarkan segmen pelanggan</div>
