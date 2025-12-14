@@ -1438,11 +1438,6 @@ def main():
         </div>
         """, unsafe_allow_html=True)
 
-        # Insights container untuk Selling Strategy (sama seperti tab3)
-        st.markdown("""
-        <div class="insights-section">
-            <div class="insights-title">📋 Selling Strategy</div>
-        """, unsafe_allow_html=True)
 
         # Bagian dropdown untuk memilih segment
         st.markdown("""
