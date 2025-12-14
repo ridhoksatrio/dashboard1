@@ -6,7 +6,6 @@ import warnings
 
 warnings.filterwarnings('ignore')
 
-# Streamlit page configuration
 st.set_page_config(
     page_title="Customer Intelligence Hub",
     page_icon="🎯",
@@ -14,7 +13,6 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Load & Prepare Data
 @st.cache_data
 def load_data():
     try:
@@ -23,7 +21,6 @@ def load_data():
         try:
             rfm = pd.read_csv('final_customer_segments.csv', index_col=0)
         except:
-            # Create sample data if file not found
             st.error("Data file not found. Using sample data for demonstration.")
             np.random.seed(42)
             n_samples = 1000
@@ -37,20 +34,18 @@ def load_data():
             })
             rfm.index = [f'CUST_{i:04d}' for i in range(n_samples)]
     
-    # Ensure required columns exist
     required_cols = ['Recency', 'Frequency', 'Monetary', 'AvgOrderValue', 'RFM_Score', 'Cluster_KMeans']
     for col in required_cols:
         if col not in rfm.columns:
             if col == 'Cluster_KMeans':
-                rfm[col] = 0  # Default cluster
+                rfm[col] = 0
             else:
-                rfm[col] = 0  # Default value
+                rfm[col] = 0
     
     return rfm
 
 rfm = load_data()
 
-# Cluster Strategies
 strats = {
     'champions': {'name':'🏆 Champions','grad':'linear-gradient(135deg,#FFD700,#FFA500, #FF8C00)','color':'#FFD700','priority':'CRITICAL','strategy':'VIP Platinum','tactics':['💎 Exclusive Early Access','🎁 Premium Gifts','📞 24/7 Manager','🌟 VIP Events','✨ Celebrations'],'kpis':['Retention>95%','Upsell>40%','Referral>30%'],'budget':'30%','roi':'500%'},
     'loyal': {'name':'💎 Loyal','grad':'linear-gradient(135deg,#667eea,#764ba2,#5a52a3)','color':'#667eea','priority':'HIGH','strategy':'Loyalty Boost','tactics':['🎯 Tiered Rewards','📱 App Benefits','🎉 Birthday Offers','💝 Referral Bonus','🔔 Flash Access'],'kpis':['Retention>85%','Frequency+20%','NPS>8'],'budget':'25%','roi':'380%'},
@@ -60,7 +55,6 @@ strats = {
     'standard': {'name':'📊 Standard','grad':'linear-gradient(135deg,#89f7fe,#66a6ff,#4a6fff)','color':'#89f7fe','priority':'MEDIUM','strategy':'Steady Engage','tactics':['📧 Newsletters','🎯 Seasonal','💌 AI Recs','🎁 Surprises','📱 Community'],'kpis':['Engage>40%','Stable','Sat>3.5/5'],'budget':'5%','roi':'150%'}
 }
 
-# Champion Sub-segments Explanation
 champion_details = {
     1: {'tier':'Platinum Elite','desc':'Super frequent buyers with highest engagement','char':'11d recency, 15.6 orders, £5,425 spend'},
     3: {'tier':'Ultra VIP','desc':'Extreme high-value with massive order frequency','char':'8d recency, 38.9 orders, £40,942 spend'},
@@ -68,7 +62,6 @@ champion_details = {
     6: {'tier':'Diamond Elite','desc':'Ultra frequent buyers with exceptional loyalty','char':'1d recency, 126.8 orders, £33,796 spend'}
 }
 
-# Full details for each cluster type - WITHOUT HTML TAGS
 cluster_full_details = {
     'Champions': {
         'characteristics': 'Very low recency<br>High frequency<br>Very high monetary',
@@ -108,9 +101,7 @@ cluster_full_details = {
     }
 }
 
-# Function to convert text with <br> to proper HTML
 def format_content(text):
-    """Convert text with <br> tags to HTML elements with class detail-item"""
     if '<br>' in text:
         items = [item.strip() for item in text.split('<br>')]
         html_items = ''.join([f'<div class="detail-item">{item}</div>' for item in items])
@@ -143,7 +134,6 @@ def get_strat(cid, data):
         s = 'standard'
     return {**strats[s], 'cluster_id': cid}
 
-# Initialize profs and colors
 @st.cache_data
 def init_data(rfm):
     profs = {}
@@ -162,18 +152,15 @@ def init_data(rfm):
 
 profs, colors, rfm = init_data(rfm)
 
-# Custom CSS for more modern Streamlit - IMPROVED
 st.markdown("""
 <style>
     * {margin: 0; padding: 0; box-sizing: border-box}
     body {font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0f172a; min-height: 100vh}
     .stApp {background: transparent !important; padding: 0 !important; max-width: 100% !important}
     
-    /* SIDEBAR */
     .st-emotion-cache-1cypcdb {background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%) !important; border-right: 1px solid #334155}
     .st-emotion-cache-16txtl3 {padding: 2rem 1.5rem !important}
     
-    /* HEADER with glassmorphism */
     .header-container {
         background: rgba(15, 23, 42, 0.95); 
         backdrop-filter: blur(20px); 
@@ -191,7 +178,6 @@ st.markdown("""
                   letter-spacing: -0.5px;}
     .header-subtitle {color: #94a3b8; font-size: 1.15rem; margin-top: 0.5rem; font-weight: 400; max-width: 800px; line-height: 1.5;}
     
-    /* SECTION DIVIDER - ADDED */
     .section-divider {
         height: 1px;
         background: linear-gradient(90deg, 
@@ -221,7 +207,6 @@ st.markdown("""
         border-radius: 3px;
     }
     
-    /* SECTION HEADERS - ADDED */
     .section-header {
         display: flex;
         align-items: center;
@@ -261,7 +246,6 @@ st.markdown("""
         font-weight: 400;
     }
     
-    /* METRICS GRID with neumorphism */
     .metrics-grid {display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; margin: 2rem 0}
     @media (max-width: 1200px) {.metrics-grid {grid-template-columns: repeat(2, 1fr)}}
     @media (max-width: 768px) {.metrics-grid {grid-template-columns: 1fr}}
@@ -312,11 +296,9 @@ st.markdown("""
     .change-negative {color: #ef4444; background: rgba(239, 68, 68, 0.1); padding: 0.25rem 0.5rem; border-radius: 20px;}
   
     
-    /* FILTER ITEMS - ADDED */
     .filter-column {padding: 0.5rem}
     .filter-label {font-size: 0.875rem; color: #94a3b8; margin-bottom: 0.75rem; font-weight: 600; display: block}
     
-    /* TABS STYLING */
     .stTabs [data-baseweb="tab-list"] {gap: 0.75rem; margin: 2.5rem 0 2rem 0}
     .stTabs [data-baseweb="tab"] {
         background: rgba(30, 41, 59, 0.5) !important; 
@@ -342,7 +324,6 @@ st.markdown("""
         transform: translateY(-2px);
     }
     
-    /* STRATEGY CARDS */
     .strategy-grid {display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; margin-bottom: 2rem}
     @media (max-width: 1200px) {.strategy-grid {grid-template-columns: 1fr}}
     .strategy-card {
@@ -385,7 +366,6 @@ st.markdown("""
     }
     .strategy-subtitle {font-size: 1.1rem; color: rgba(255, 255, 255, 0.9); margin-bottom: 1.5rem; font-weight: 500}
     
-    /* Detail section styling for tab 4 */
     .detail-section {
         margin-bottom: 1.5rem;
         padding-bottom: 1rem;
@@ -441,7 +421,6 @@ st.markdown("""
     .budget-label {font-size: 0.8rem; color: rgba(255, 255, 255, 0.7); margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em;}
     .budget-value {font-size: 1.75rem; font-weight: 900}
     
-    /* CHAMPION BREAKDOWN */
     .champion-section {
         background: linear-gradient(135deg, rgba(255, 215, 0, 0.08) 0%, rgba(255, 140, 0, 0.08) 100%); 
         border: 1px solid rgba(255, 215, 0, 0.2); 
@@ -495,7 +474,6 @@ st.markdown("""
         border: 1px solid rgba(255, 215, 0, 0.2);
     }
     
-    /* INSIGHTS SECTION - IMPROVED */
     .insights-section {
         background: linear-gradient(135deg, rgba(79, 172, 254, 0.08) 0%, rgba(0, 242, 254, 0.08) 100%);
         border: 1px solid rgba(79, 172, 254, 0.2); 
@@ -516,7 +494,6 @@ st.markdown("""
         border-bottom: 2px solid rgba(79, 172, 254, 0.3);
     }
     
-    /* IMPROVEMENT: Equal height cards container */
     .insights-grid-container {
         display: flex;
         gap: 2rem;
@@ -530,7 +507,6 @@ st.markdown("""
         }
     }
     
-    /* IMPROVEMENT: Insight card with 100% height */
     .insight-card {
         background: rgba(79, 172, 254, 0.08); 
         border: 1px solid rgba(79, 172, 254, 0.2); 
@@ -575,7 +551,6 @@ st.markdown("""
     }
     .insight-list li:last-child {border-bottom: none}
     
-    /* ADVANCED ANALYTICS SECTION */
     .advanced-analytics-section {
         margin-top: 2rem;
         padding-top: 1.5rem;
@@ -610,7 +585,6 @@ st.markdown("""
         }
     }
     
-    /* FOOTER */
     .footer {
         text-align: center; 
         padding: 2rem; 
@@ -622,11 +596,9 @@ st.markdown("""
         border-radius: 20px 20px 0 0;
     }
     
-    /* UTILITY CLASSES */
     .empty-state {text-align: center; padding: 4rem; color: #94a3b8}
     .empty-icon {font-size: 3.5rem; margin-bottom: 1.5rem; opacity: 0.5}
     
-    /* STREAMLIT WIDGET OVERRIDES - IMPROVED */
     div[data-testid="stSelectbox"] > div {
         background: rgba(30, 41, 59, 0.8); 
         border-color: rgba(255, 255, 255, 0.1) !important; 
@@ -650,7 +622,6 @@ st.markdown("""
         border-radius: 10px;
     }
     
-    /* CUSTOM LABELS for filter */
     .custom-label {
         display: flex; 
         align-items: center; 
@@ -661,12 +632,10 @@ st.markdown("""
         font-weight: 700;
     }
     
-    /* SPACING UTILITIES */
     .spacer-sm {margin: 1rem 0}
     .spacer-md {margin: 2rem 0}
     .spacer-lg {margin: 3rem 0}
     
-    /* NEW: Improved layout for strategy cards in overview */
     .strategy-overview-grid {
         display: flex;
         flex-direction: column;
@@ -674,7 +643,6 @@ st.markdown("""
         margin-top: 1.5rem;
     }
     
-    /* SUMMARY HEADER STYLES */
     .summary-header {
         display: flex;
         justify-content: space-between;
@@ -698,7 +666,6 @@ st.markdown("""
         letter-spacing: 0.05em;
     }
     
-    /* SELECT BOX STYLING for Tab 4 */
     .segment-select-container {
         margin: 2rem 0;
         padding: 1.5rem;
@@ -719,9 +686,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# Function to create more modern charts
 def create_charts(df):
-    # Chart 1: Customer Distribution Donut
     cc = df['Cluster_Label'].value_counts()
     
     fig1 = go.Figure(go.Pie(
@@ -760,7 +725,6 @@ def create_charts(df):
         )
     )
     
-    # Chart 2: Revenue by Segment
     if 'Monetary' in df.columns:
         rv = df.groupby('Cluster_Label')['Monetary'].sum().sort_values()
         
@@ -816,7 +780,6 @@ def create_charts(df):
             )]
         )
     
-    # Chart 3: 3D RFM Analysis with dark theme
     if all(col in df.columns for col in ['Recency', 'Frequency', 'Monetary']):
         fig3 = go.Figure(go.Scatter3d(
             x=df['Recency'], 
@@ -880,7 +843,6 @@ def create_charts(df):
             paper_bgcolor='rgba(0,0,0,0)'
         )
     
-    # Chart 4-6: Histograms with dark theme
     def create_histogram(df, column, title, color):
         if column not in df.columns:
             fig = go.Figure()
@@ -931,7 +893,6 @@ def create_charts(df):
     fig5 = create_histogram(df, 'Frequency', '🔄 Frequency Distribution', '#4ECDC4')
     fig6 = create_histogram(df, 'Monetary', '💵 Monetary Distribution', '#45B7D1')
     
-    # Chart 7: RFM Table - fixed version
     try:
         segment_counts = df.groupby('Cluster_Label').size().reset_index(name='Count')
         
@@ -1040,7 +1001,6 @@ def create_charts(df):
     
     return fig1, fig2, fig3, fig4, fig5, fig6, fig7
 
-# Sidebar
 with st.sidebar:
     st.markdown("### ⚙️ Dashboard Controls")
     
@@ -1078,9 +1038,7 @@ with st.sidebar:
         4. **Get insights** in the AI Insights tab
         """)
 
-# Main Streamlit layout
 def main():
-    # Header
     st.markdown("""
     <div class="header-container">
         <div class="main-header">
@@ -1090,7 +1048,6 @@ def main():
     </div>
     """, unsafe_allow_html=True)
     
-    # Section 1: Key Metrics with section header
     st.markdown("""
     <div class="section-header">
         <div>
@@ -1100,7 +1057,6 @@ def main():
     </div>
     """, unsafe_allow_html=True)
     
-    # Metrics Grid
     st.markdown('<div class="metrics-grid">', unsafe_allow_html=True)
     
     col1, col2, col3, col4 = st.columns(4)
@@ -1163,7 +1119,6 @@ def main():
     
     st.markdown('</div>', unsafe_allow_html=True)
     
-    # Section 2: Data Filters with section header
     st.markdown("""
     <div class="section-header">
         <div>
@@ -1173,18 +1128,15 @@ def main():
     </div>
     """, unsafe_allow_html=True)
     
-    # Filters
     with st.container():
         st.markdown('<div class="filter-section">', unsafe_allow_html=True)
         
-        # Filter grid
         col1, col2, col3 = st.columns(3)
         
         with col1:
             st.markdown('<div class="filter-content">', unsafe_allow_html=True)
             st.markdown('<div class="custom-label">🎨 Segment Filter</div>', unsafe_allow_html=True)
             
-            # Segment Filter
             segment_options = [{'label': '🌐 All Segments', 'value': 'all'}]
             for c, p in profs.items():
                 if p['name'] == '🏆 Champions' and c in champion_details:
@@ -1207,7 +1159,6 @@ def main():
             st.markdown('<div class="filter-content">', unsafe_allow_html=True)
             st.markdown('<div class="custom-label">📊 RFM Score Range</div>', unsafe_allow_html=True)
             
-            # RFM Score Range
             if 'RFM_Score' in rfm.columns:
                 rfm_min = int(rfm['RFM_Score'].min())
                 rfm_max = int(rfm['RFM_Score'].max())
@@ -1235,7 +1186,6 @@ def main():
             st.markdown('<div class="filter-content">', unsafe_allow_html=True)
             st.markdown('<div class="custom-label">🔥 Priority Level</div>', unsafe_allow_html=True)
             
-            # Priority Level
             priority_options = [
                 {'label': '🌐 All Priorities', 'value': 'all'},
                 {'label': '🔴 CRITICAL', 'value': 'CRITICAL'},
@@ -1253,7 +1203,6 @@ def main():
             )
             st.markdown('</div>', unsafe_allow_html=True)
         
-        # Advanced Filters
         st.markdown('<div style="margin-top: 1.5rem;">', unsafe_allow_html=True)
         with st.expander("🔍 Advanced Filters"):
             col1, col2, col3 = st.columns(3)
@@ -1297,7 +1246,6 @@ def main():
         st.markdown('</div>', unsafe_allow_html=True)
         st.markdown('</div>', unsafe_allow_html=True)
     
-    # Apply filters
     filtered_df = rfm.copy()
     
     if 'RFM_Score' in rfm.columns:
@@ -1312,7 +1260,6 @@ def main():
     if priority_filter != 'all' and 'Priority' in filtered_df.columns:
         filtered_df = filtered_df[filtered_df['Priority'] == priority_filter]
     
-    # Apply advanced filters if they exist
     if 'monetary_filter' in locals() and 'Monetary' in filtered_df.columns:
         filtered_df = filtered_df[
             (filtered_df['Monetary'] >= monetary_filter[0]) & 
@@ -1331,7 +1278,6 @@ def main():
             (filtered_df['Recency'] <= recency_filter[1])
         ]
     
-    # Tabs Section with section header
     st.markdown("""
     <div class="section-header">
         <div>
@@ -1341,15 +1287,12 @@ def main():
     </div>
     """, unsafe_allow_html=True)
     
-    # Tabs - WITHOUT TAB4 (only 3 tabs now)
     tab1, tab2, tab3 = st.tabs(["📊 Analytics Dashboard", "🎯 Growth Strategies", "💡 AI Insights"])
     
     with tab1:
         if len(filtered_df) > 0:
-            # Generate charts
             fig1, fig2, fig3, fig4, fig5, fig6, fig7 = create_charts(filtered_df)
             
-            # Row 1: Two charts
             col1, col2 = st.columns(2)
             with col1:
                 st.markdown('<div class="chart-container">', unsafe_allow_html=True)
@@ -1361,12 +1304,10 @@ def main():
                 st.plotly_chart(fig2, use_container_width=True, config={'displayModeBar': True})
                 st.markdown('</div>', unsafe_allow_html=True)
             
-            # Row 2: Full width 3D chart
             st.markdown('<div class="chart-container chart-full">', unsafe_allow_html=True)
             st.plotly_chart(fig3, use_container_width=True, config={'displayModeBar': True})
             st.markdown('</div>', unsafe_allow_html=True)
             
-            # Row 3: Three histograms
             col1, col2, col3 = st.columns(3)
             with col1:
                 st.markdown('<div class="chart-container">', unsafe_allow_html=True)
@@ -1383,12 +1324,10 @@ def main():
                 st.plotly_chart(fig6, use_container_width=True, config={'displayModeBar': False})
                 st.markdown('</div>', unsafe_allow_html=True)
             
-            # Row 4: Full width table
             st.markdown('<div class="chart-container chart-full">', unsafe_allow_html=True)
             st.plotly_chart(fig7, use_container_width=True, config={'displayModeBar': False})
             st.markdown('</div>', unsafe_allow_html=True)
             
-            # Data summary
             with st.expander("📋 Data Summary"):
                 st.dataframe(
                     filtered_df.describe(),
@@ -1404,7 +1343,6 @@ def main():
             """, unsafe_allow_html=True)
     
     with tab2:
-        # Part 1: Champion Breakdown (same as before)
         champion_clusters = [c for c in filtered_df['Cluster_KMeans'].unique() 
                         if c in profs and profs[c]['name'] == '🏆 Champions']
 
@@ -1424,7 +1362,6 @@ def main():
                         </div>
                         """, unsafe_allow_html=True)
         
-        # NEW SECTION: Selling Strategy (moved from tab4)
         st.markdown("""
         <div class="section-header">
             <div>
@@ -1434,9 +1371,6 @@ def main():
         </div>
         """, unsafe_allow_html=True)
 
-
-        # Dropdown section to select segment
-        
         segment_names = list(cluster_full_details.keys())
         selected_segment = st.selectbox(
             "🎯 Select Customer Segment",
@@ -1445,8 +1379,6 @@ def main():
             key="selling_strategy_segment"
         )
         
-        
-        # Two columns for strategy details (same layout as tab3)
         details = cluster_full_details[selected_segment]
         
         col1, col2 = st.columns(2)
@@ -1500,11 +1432,9 @@ def main():
                 </div>
             </div>
             """, unsafe_allow_html=True)
-        
 
     with tab3:
         if len(filtered_df) > 0:
-            # Calculate insights with consistent data format
             if 'Cluster_Label' in filtered_df.columns:
                 if 'Monetary' in filtered_df.columns:
                     highest_revenue = filtered_df.groupby('Cluster_Label')['Monetary'].sum()
@@ -1543,7 +1473,6 @@ def main():
                 most_frequent_segment = "N/A"
                 most_frequent_value = 0
             
-            # Build insights section HTML
             insights_list = [
                 f"🏆 Highest Revenue: {highest_revenue_segment} (£{highest_revenue_value/1000:.1f}K)",
                 f"👥 Largest Segment: {largest_group_segment} ({largest_group_count:,} customers)",
@@ -1553,12 +1482,10 @@ def main():
                 f"⏰ Avg Recency: {filtered_df['Recency'].mean():.1f} days" if 'Recency' in filtered_df.columns else "⏰ Avg Recency: N/A"
             ]
             
-            # Build list items HTML
             insight_items_html = ""
             for insight in insights_list:
                 insight_items_html += f"<li>{insight}</li>"
             
-            # Calculate advanced metrics
             concentration_pct = (largest_group_count / len(filtered_df) * 100) if len(filtered_df) > 0 else 0
             
             if 'Monetary' in filtered_df.columns:
@@ -1571,7 +1498,6 @@ def main():
             avg_recency = filtered_df['Recency'].mean() if 'Recency' in filtered_df.columns else 0
             avg_frequency = filtered_df['Frequency'].mean() if 'Frequency' in filtered_df.columns else 0
             
-            # Build complete insights HTML
             insights_html = f"""
             <div class="insights-section">
                 <div class="insights-title">🧠 AI-Powered Insights & Recommendations</div>
@@ -1640,7 +1566,6 @@ def main():
             </div>
             """
             
-            # Display all HTML at once
             st.markdown(insights_html, unsafe_allow_html=True)
             
         else:
