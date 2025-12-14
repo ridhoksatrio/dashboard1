@@ -68,45 +68,55 @@ champion_details = {
     6: {'tier':'Diamond Elite','desc':'Ultra frequent buyers with exceptional loyalty','char':'1d recency, 126.8 orders, £33,796 spend'}
 }
 
-# Detail lengkap untuk setiap tipe cluster
+# Detail lengkap untuk setiap tipe cluster - TANPA TAG HTML
 cluster_full_details = {
     'Champions': {
-        'karakteristik': '• Recency sangat rendah<br>• Frequency tinggi<br>• Monetary sangat tinggi',
+        'karakteristik': 'Recency sangat rendah<br>Frequency tinggi<br>Monetary sangat tinggi',
         'strategi': 'Fokus retensi dan peningkatan nilai jangka panjang',
-        'aksi': '• Beri akses produk lebih awal sebelum rilis umum<br>• Sediakan customer manager khusus untuk transaksi besar<br>• Kirim hadiah premium setiap milestone transaksi<br>• Undang ke event eksklusif online atau offline<br>• Buat program referral VIP',
-        'kpi': '• Retention di atas 95 persen<br>• Upsell rate di atas 40 persen<br>• Referral contribution di atas 30 persen'
+        'aksi': 'Beri akses produk lebih awal sebelum rilis umum<br>Sediakan customer manager khusus untuk transaksi besar<br>Kirim hadiah premium setiap milestone transaksi<br>Undang ke event eksklusif online atau offline<br>Buat program referral VIP',
+        'kpi': 'Retention di atas 95 persen<br>Upsell rate di atas 40 persen<br>Referral contribution di atas 30 persen'
     },
     'Loyal': {
-        'karakteristik': '• Recency rendah<br>• Frequency tinggi<br>• Monetary menengah',
+        'karakteristik': 'Recency rendah<br>Frequency tinggi<br>Monetary menengah',
         'strategi': 'Tingkatkan loyalitas agar naik kelas ke Champions',
-        'aksi': '• Terapkan loyalty tier berbasis poin<br>• Beri benefit khusus via aplikasi atau akun member<br>• Kirim promo ulang tahun dan anniversary<br>• Dorong referral dengan insentif langsung<br>• Beri akses flash sale terbatas',
-        'kpi': '• Retention di atas 85 persen<br>• Kenaikan frekuensi pembelian minimal 20 persen<br>• NPS di atas 8'
+        'aksi': 'Terapkan loyalty tier berbasis poin<br>Beri benefit khusus via aplikasi atau akun member<br>Kirim promo ulang tahun dan anniversary<br>Dorong referral dengan insentif langsung<br>Beri akses flash sale terbatas',
+        'kpi': 'Retention di atas 85 persen<br>Kenaikan frekuensi pembelian minimal 20 persen<br>NPS di atas 8'
     },
     'Big Spenders': {
-        'karakteristik': '• Monetary sangat tinggi<br>• Frequency tidak selalu tinggi<br>• Recency bervariasi',
+        'karakteristik': 'Monetary sangat tinggi<br>Frequency tidak selalu tinggi<br>Recency bervariasi',
         'strategi': 'Maksimalkan nilai transaksi per pelanggan',
-        'aksi': '• Tawarkan cicilan atau metode pembayaran fleksibel<br>• Beri free express delivery tanpa minimum<br>• Buat bundling produk bernilai tinggi<br>• Sediakan layanan concierge order<br>• Kirim hadiah eksklusif berbasis nilai belanja',
-        'kpi': '• AOV naik minimal 15 persen<br>• Retention di atas 90 persen<br>• Kepuasan pelanggan di atas 4.8 dari 5'
+        'aksi': 'Tawarkan cicilan atau metode pembayaran fleksibel<br>Beri free express delivery tanpa minimum<br>Buat bundling produk bernilai tinggi<br>Sediakan layanan concierge order<br>Kirim hadiah eksklusif berbasis nilai belanja',
+        'kpi': 'AOV naik minimal 15 persen<br>Retention di atas 90 persen<br>Kepuasan pelanggan di atas 4.8 dari 5'
     },
     'Dormant': {
-        'karakteristik': '• Recency tinggi<br>• Frequency rendah<br>• Risiko churn besar',
+        'karakteristik': 'Recency tinggi<br>Frequency rendah<br>Risiko churn besar',
         'strategi': 'Aktifkan kembali pelanggan yang tidak aktif',
-        'aksi': '• Kirim diskon agresif 25 sampai 30 persen<br>• Gunakan email, WhatsApp, dan iklan retargeting<br>• Tawarkan promo dengan batas waktu pendek<br>• Lakukan pendekatan personal untuk pelanggan bernilai tinggi<br>• Kirim reminder berbasis produk terakhir',
-        'kpi': '• Win back rate di atas 25 persen<br>• Response rate di atas 15 persen<br>• ROI kampanye di atas 200 persen'
+        'aksi': 'Kirim diskon agresif 25 sampai 30 persen<br>Gunakan email, WhatsApp, dan iklan retargeting<br>Tawarkan promo dengan batas waktu pendek<br>Lakukan pendekatan personal untuk pelanggan bernilai tinggi<br>Kirim reminder berbasis produk terakhir',
+        'kpi': 'Win back rate di atas 25 persen<br>Response rate di atas 15 persen<br>ROI kampanye di atas 200 persen'
     },
     'Potential': {
-        'karakteristik': '• Recency rendah<br>• Frequency masih rendah<br>• Monetary rendah sampai menengah',
+        'karakteristik': 'Recency rendah<br>Frequency masih rendah<br>Monetary rendah sampai menengah',
         'strategi': 'Percepat pembelian kedua',
-        'aksi': '• Kirim edukasi produk dan use case<br>• Beri diskon khusus pembelian kedua<br>• Aktifkan welcome email flow bertahap<br>• Rekomendasikan produk pelengkap<br>• Gunakan cross sell sederhana',
-        'kpi': '• Conversion ke repeat buyer di atas 35 persen<br>• Pembelian kedua kurang dari 30 hari<br>• LTV naik minimal 25 persen'
+        'aksi': 'Kirim edukasi produk dan use case<br>Beri diskon khusus pembelian kedua<br>Aktifkan welcome email flow bertahap<br>Rekomendasikan produk pelengkap<br>Gunakan cross sell sederhana',
+        'kpi': 'Conversion ke repeat buyer di atas 35 persen<br>Pembelian kedua kurang dari 30 hari<br>LTV naik minimal 25 persen'
     },
     'Standard': {
-        'karakteristik': '• RFM rata rata<br>• Volume besar<br>• Nilai per pelanggan stabil',
+        'karakteristik': 'RFM rata rata<br>Volume besar<br>Nilai per pelanggan stabil',
         'strategi': 'Jaga engagement dengan biaya efisien',
-        'aksi': '• Kirim newsletter rutin dengan konten relevan<br>• Jalankan promo musiman<br>• Gunakan rekomendasi produk berbasis AI<br>• Beri reward kecil tak terduga<br>• Bangun komunitas atau program member ringan',
-        'kpi': '• Engagement rate di atas 40 persen<br>• Retensi stabil<br>• Kepuasan pelanggan di atas 3.5 dari 5'
+        'aksi': 'Kirim newsletter rutin dengan konten relevan<br>Jalankan promo musiman<br>Gunakan rekomendasi produk berbasis AI<br>Beri reward kecil tak terduga<br>Bangun komunitas atau program member ringan',
+        'kpi': 'Engagement rate di atas 40 persen<br>Retensi stabil<br>Kepuasan pelanggan di atas 3.5 dari 5'
     }
 }
+
+# Fungsi untuk mengonversi teks dengan <br> menjadi HTML yang benar
+def format_content(text):
+    """Konversi teks dengan tag <br> menjadi elemen HTML dengan class detail-item"""
+    if '<br>' in text:
+        items = [item.strip() for item in text.split('<br>')]
+        html_items = ''.join([f'<div class="detail-item">{item}</div>' for item in items])
+        return html_items
+    else:
+        return f'<div class="detail-item">{text}</div>'
 
 def get_strat(cid, data):
     cd = data[data['Cluster_KMeans'] == cid]
@@ -152,7 +162,7 @@ def init_data(rfm):
 
 profs, colors, rfm = init_data(rfm)
 
-# CSS Custom untuk Streamlit yang lebih modern - DIPERBAIKI dengan tambahan untuk dropdown
+# CSS Custom untuk Streamlit yang lebih modern - DIPERBAIKI
 st.markdown("""
 <style>
     * {margin: 0; padding: 0; box-sizing: border-box}
@@ -363,51 +373,49 @@ st.markdown("""
         border: 1px solid rgba(255, 255, 255, 0.2);
     }
     .strategy-subtitle {font-size: 1.1rem; color: rgba(255, 255, 255, 0.9); margin-bottom: 1.5rem; font-weight: 500}
-    .tactics-section {
-        background: rgba(255, 255, 255, 0.08); 
-        border-radius: 16px; 
-        padding: 1.25rem; 
-        margin: 1.5rem 0;
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.05);
+    
+    /* Detail section styling untuk tab 4 */
+    .detail-section {
+        margin-bottom: 1.5rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
     }
-    .tactics-title {
-        font-size: 0.875rem; 
-        font-weight: 800; 
-        color: rgba(255, 255, 255, 0.9); 
-        margin-bottom: 1rem;
-        text-transform: uppercase; 
-        letter-spacing: 0.05em;
+    
+    .detail-section:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+        padding-bottom: 0;
+    }
+    
+    .detail-title {
+        font-size: 1rem; 
+        font-weight: 700; 
+        color: #fff; 
+        margin-bottom: 0.75rem;
         display: flex;
         align-items: center;
         gap: 0.5rem;
     }
-    .tactics-grid {display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem}
-    @media (max-width: 768px) {.tactics-grid {grid-template-columns: 1fr}}
-    .tactic-item {
-        background: rgba(255, 255, 255, 0.1); 
-        border-radius: 12px; 
-        padding: 1rem; 
-        font-size: 0.9rem;
-        transition: all 0.2s ease; 
-        border-left: 4px solid transparent;
-        border: 1px solid rgba(255, 255, 255, 0.05);
+    
+    .detail-content {
+        font-size: 0.9rem; 
+        color: rgba(255, 255, 255, 0.9); 
+        line-height: 1.5;
     }
-    .tactic-item:hover {
-        background: rgba(255, 255, 255, 0.15); 
-        transform: translateX(4px); 
-        border-left-color: rgba(255, 255, 255, 0.5);
+    
+    .detail-item {
+        margin-bottom: 0.5rem;
+        padding-left: 0.75rem;
+        position: relative;
     }
-    .kpis-grid {display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin: 1.5rem 0}
-    .kpi-item {
-        background: rgba(255, 255, 255, 0.08); 
-        border-radius: 12px; 
-        padding: 1rem; 
-        text-align: center;
-        font-size: 0.875rem; 
-        font-weight: 700;
-        border: 1px solid rgba(255, 255, 255, 0.05);
+    
+    .detail-item:before {
+        content: "•";
+        color: currentColor;
+        position: absolute;
+        left: 0;
     }
+    
     .strategy-footer {
         display: flex; 
         justify-content: space-between; 
@@ -474,58 +482,6 @@ st.markdown("""
         border: 1px solid rgba(255, 215, 0, 0.2);
     }
     
-    /* CHAMPION DETAIL CARD - BARU */
-    .champion-detail-card {
-        background: linear-gradient(135deg, rgba(255, 215, 0, 0.12) 0%, rgba(255, 140, 0, 0.08) 100%); 
-        border: 1px solid rgba(255, 215, 0, 0.25); 
-        border-radius: 16px; 
-        padding: 1.5rem; 
-        margin: 1rem 0;
-        box-shadow: 0 8px 20px rgba(255, 215, 0, 0.1);
-    }
-    
-    .detail-section {
-        margin-bottom: 1.5rem;
-        padding-bottom: 1rem;
-        border-bottom: 1px solid rgba(255, 215, 0, 0.2);
-    }
-    
-    .detail-section:last-child {
-        border-bottom: none;
-        margin-bottom: 0;
-        padding-bottom: 0;
-    }
-    
-    .detail-title {
-        font-size: 1rem; 
-        font-weight: 700; 
-        color: #FFD700; 
-        margin-bottom: 0.75rem;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-    }
-    
-    .detail-content {
-        font-size: 0.9rem; 
-        color: rgba(255, 255, 255, 0.9); 
-        line-height: 1.5;
-        padding-left: 0.5rem;
-    }
-    
-    .detail-item {
-        margin-bottom: 0.5rem;
-        padding-left: 0.75rem;
-        position: relative;
-    }
-    
-    .detail-item:before {
-        content: "•";
-        color: #FFD700;
-        position: absolute;
-        left: 0;
-    }
-    
     /* INSIGHTS SECTION - DIPERBAIKI */
     .insights-section {
         background: linear-gradient(135deg, rgba(79, 172, 254, 0.08) 0%, rgba(0, 242, 254, 0.08) 100%);
@@ -551,7 +507,7 @@ st.markdown("""
     .insights-grid-container {
         display: flex;
         gap: 2rem;
-        align-items: stretch; /* Ini yang membuat cards sama tinggi */
+        align-items: stretch;
         margin-bottom: 2rem;
     }
     
@@ -570,7 +526,7 @@ st.markdown("""
         flex: 1;
         display: flex;
         flex-direction: column;
-        height: 100%; /* Ini membuat card mengambil full height dari container */
+        height: 100%;
     }
     
     .insight-card-header {
@@ -727,56 +683,6 @@ st.markdown("""
         font-weight: 800;
         text-transform: uppercase;
         letter-spacing: 0.05em;
-    }
-    
-    /* NEW: Tactic chip and KPI badge styles */
-    .tactic-chip {
-        background: rgba(255, 255, 255, 0.1); 
-        border-radius: 12px; 
-        padding: 0.75rem 1rem; 
-        font-size: 0.9rem;
-        border: 1px solid rgba(255, 255, 255, 0.05);
-        display: inline-block;
-        margin: 0.25rem;
-    }
-    
-    .kpi-badge {
-        background: rgba(255, 255, 255, 0.08); 
-        border-radius: 12px; 
-        padding: 0.75rem 1rem; 
-        text-align: center;
-        font-size: 0.875rem; 
-        font-weight: 700;
-        border: 1px solid rgba(255, 255, 255, 0.05);
-        display: inline-block;
-        margin: 0.25rem;
-    }
-    
-    /* Segment Content Styles */
-    .segment-content {
-        margin: 1.5rem 0;
-    }
-    
-    .segment-section {
-        margin-bottom: 1.5rem;
-    }
-    
-    .section-title-small {
-        font-size: 0.875rem; 
-        font-weight: 800; 
-        color: rgba(255, 255, 255, 0.9); 
-        margin-bottom: 0.75rem;
-        text-transform: uppercase; 
-        letter-spacing: 0.05em;
-    }
-    
-    .segment-footer {
-        display: flex; 
-        justify-content: space-between; 
-        margin-top: 2rem; 
-        padding-top: 1.5rem;
-        border-top: 1px solid rgba(255, 255, 255, 0.1);
-        gap: 1rem;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -1227,9 +1133,6 @@ def main():
     
     st.markdown('</div>', unsafe_allow_html=True)
     
-    # Divider 1
-
-    
     # Section 2: Data Filters dengan section header
     st.markdown("""
     <div class="section-header">
@@ -1365,7 +1268,6 @@ def main():
         st.markdown('</div>', unsafe_allow_html=True)
         st.markdown('</div>', unsafe_allow_html=True)
     
-    # Divider 2
     # Apply filters
     filtered_df = rfm.copy()
     
@@ -1646,7 +1548,7 @@ def main():
             </div>
             """, unsafe_allow_html=True)
     
-    # TAB 4: SELLING STRATEGY - DITAMBAHKAN
+    # TAB 4: SELLING STRATEGY - DIPERBAIKI
     with tab4:
         st.markdown("""
         <div class="section-header">
@@ -1684,7 +1586,7 @@ def main():
                                 <span>Karakteristik</span>
                             </div>
                             <div class="detail-content">
-                                {cluster_full_details['Champions']['karakteristik'].replace('<br>', '<div class="detail-item">• </div>')}
+                                {format_content(cluster_full_details['Champions']['karakteristik'])}
                             </div>
                         </div>
                         
@@ -1694,7 +1596,7 @@ def main():
                                 <span>Strategi Utama</span>
                             </div>
                             <div class="detail-content">
-                                {cluster_full_details['Champions']['strategi']}
+                                {format_content(cluster_full_details['Champions']['strategi'])}
                             </div>
                         </div>
                         
@@ -1704,7 +1606,7 @@ def main():
                                 <span>Aksi Konkret</span>
                             </div>
                             <div class="detail-content">
-                                {cluster_full_details['Champions']['aksi'].replace('<br>', '<div class="detail-item">• </div>')}
+                                {format_content(cluster_full_details['Champions']['aksi'])}
                             </div>
                         </div>
                         
@@ -1714,7 +1616,7 @@ def main():
                                 <span>Target KPI</span>
                             </div>
                             <div class="detail-content">
-                                {cluster_full_details['Champions']['kpi'].replace('<br>', '<div class="detail-item">• </div>')}
+                                {format_content(cluster_full_details['Champions']['kpi'])}
                             </div>
                         </div>
                     </div>
@@ -1751,7 +1653,7 @@ def main():
                                 <span>Karakteristik</span>
                             </div>
                             <div class="detail-content">
-                                {cluster_full_details['Loyal']['karakteristik'].replace('<br>', '<div class="detail-item">• </div>')}
+                                {format_content(cluster_full_details['Loyal']['karakteristik'])}
                             </div>
                         </div>
                         
@@ -1761,7 +1663,7 @@ def main():
                                 <span>Strategi Utama</span>
                             </div>
                             <div class="detail-content">
-                                {cluster_full_details['Loyal']['strategi']}
+                                {format_content(cluster_full_details['Loyal']['strategi'])}
                             </div>
                         </div>
                         
@@ -1771,7 +1673,7 @@ def main():
                                 <span>Aksi Konkret</span>
                             </div>
                             <div class="detail-content">
-                                {cluster_full_details['Loyal']['aksi'].replace('<br>', '<div class="detail-item">• </div>')}
+                                {format_content(cluster_full_details['Loyal']['aksi'])}
                             </div>
                         </div>
                         
@@ -1781,7 +1683,7 @@ def main():
                                 <span>Target KPI</span>
                             </div>
                             <div class="detail-content">
-                                {cluster_full_details['Loyal']['kpi'].replace('<br>', '<div class="detail-item">• </div>')}
+                                {format_content(cluster_full_details['Loyal']['kpi'])}
                             </div>
                         </div>
                     </div>
@@ -1824,7 +1726,7 @@ def main():
                                 <span>Karakteristik</span>
                             </div>
                             <div class="detail-content">
-                                {cluster_full_details['Big Spenders']['karakteristik'].replace('<br>', '<div class="detail-item">• </div>')}
+                                {format_content(cluster_full_details['Big Spenders']['karakteristik'])}
                             </div>
                         </div>
                         
@@ -1834,7 +1736,7 @@ def main():
                                 <span>Strategi Utama</span>
                             </div>
                             <div class="detail-content">
-                                {cluster_full_details['Big Spenders']['strategi']}
+                                {format_content(cluster_full_details['Big Spenders']['strategi'])}
                             </div>
                         </div>
                         
@@ -1844,7 +1746,7 @@ def main():
                                 <span>Aksi Konkret</span>
                             </div>
                             <div class="detail-content">
-                                {cluster_full_details['Big Spenders']['aksi'].replace('<br>', '<div class="detail-item">• </div>')}
+                                {format_content(cluster_full_details['Big Spenders']['aksi'])}
                             </div>
                         </div>
                         
@@ -1854,7 +1756,7 @@ def main():
                                 <span>Target KPI</span>
                             </div>
                             <div class="detail-content">
-                                {cluster_full_details['Big Spenders']['kpi'].replace('<br>', '<div class="detail-item">• </div>')}
+                                {format_content(cluster_full_details['Big Spenders']['kpi'])}
                             </div>
                         </div>
                     </div>
@@ -1891,7 +1793,7 @@ def main():
                                 <span>Karakteristik</span>
                             </div>
                             <div class="detail-content">
-                                {cluster_full_details['Dormant']['karakteristik'].replace('<br>', '<div class="detail-item">• </div>')}
+                                {format_content(cluster_full_details['Dormant']['karakteristik'])}
                             </div>
                         </div>
                         
@@ -1901,7 +1803,7 @@ def main():
                                 <span>Strategi Utama</span>
                             </div>
                             <div class="detail-content">
-                                {cluster_full_details['Dormant']['strategi']}
+                                {format_content(cluster_full_details['Dormant']['strategi'])}
                             </div>
                         </div>
                         
@@ -1911,7 +1813,7 @@ def main():
                                 <span>Aksi Konkret</span>
                             </div>
                             <div class="detail-content">
-                                {cluster_full_details['Dormant']['aksi'].replace('<br>', '<div class="detail-item">• </div>')}
+                                {format_content(cluster_full_details['Dormant']['aksi'])}
                             </div>
                         </div>
                         
@@ -1921,7 +1823,7 @@ def main():
                                 <span>Target KPI</span>
                             </div>
                             <div class="detail-content">
-                                {cluster_full_details['Dormant']['kpi'].replace('<br>', '<div class="detail-item">• </div>')}
+                                {format_content(cluster_full_details['Dormant']['kpi'])}
                             </div>
                         </div>
                     </div>
@@ -1964,7 +1866,7 @@ def main():
                                 <span>Karakteristik</span>
                             </div>
                             <div class="detail-content">
-                                {cluster_full_details['Potential']['karakteristik'].replace('<br>', '<div class="detail-item">• </div>')}
+                                {format_content(cluster_full_details['Potential']['karakteristik'])}
                             </div>
                         </div>
                         
@@ -1974,7 +1876,7 @@ def main():
                                 <span>Strategi Utama</span>
                             </div>
                             <div class="detail-content">
-                                {cluster_full_details['Potential']['strategi']}
+                                {format_content(cluster_full_details['Potential']['strategi'])}
                             </div>
                         </div>
                         
@@ -1984,7 +1886,7 @@ def main():
                                 <span>Aksi Konkret</span>
                             </div>
                             <div class="detail-content">
-                                {cluster_full_details['Potential']['aksi'].replace('<br>', '<div class="detail-item">• </div>')}
+                                {format_content(cluster_full_details['Potential']['aksi'])}
                             </div>
                         </div>
                         
@@ -1994,7 +1896,7 @@ def main():
                                 <span>Target KPI</span>
                             </div>
                             <div class="detail-content">
-                                {cluster_full_details['Potential']['kpi'].replace('<br>', '<div class="detail-item">• </div>')}
+                                {format_content(cluster_full_details['Potential']['kpi'])}
                             </div>
                         </div>
                     </div>
@@ -2031,7 +1933,7 @@ def main():
                                 <span>Karakteristik</span>
                             </div>
                             <div class="detail-content">
-                                {cluster_full_details['Standard']['karakteristik'].replace('<br>', '<div class="detail-item">• </div>')}
+                                {format_content(cluster_full_details['Standard']['karakteristik'])}
                             </div>
                         </div>
                         
@@ -2041,7 +1943,7 @@ def main():
                                 <span>Strategi Utama</span>
                             </div>
                             <div class="detail-content">
-                                {cluster_full_details['Standard']['strategi']}
+                                {format_content(cluster_full_details['Standard']['strategi'])}
                             </div>
                         </div>
                         
@@ -2051,7 +1953,7 @@ def main():
                                 <span>Aksi Konkret</span>
                             </div>
                             <div class="detail-content">
-                                {cluster_full_details['Standard']['aksi'].replace('<br>', '<div class="detail-item">• </div>')}
+                                {format_content(cluster_full_details['Standard']['aksi'])}
                             </div>
                         </div>
                         
@@ -2061,7 +1963,7 @@ def main():
                                 <span>Target KPI</span>
                             </div>
                             <div class="detail-content">
-                                {cluster_full_details['Standard']['kpi'].replace('<br>', '<div class="detail-item">• </div>')}
+                                {format_content(cluster_full_details['Standard']['kpi'])}
                             </div>
                         </div>
                     </div>
@@ -2117,9 +2019,6 @@ def main():
                 </div>
             </div>
             """, unsafe_allow_html=True)
-    
-    # Divider 3
-    st.markdown('<div class="section-divider-thick"></div>', unsafe_allow_html=True)
     
     # Footer
     st.markdown("""
