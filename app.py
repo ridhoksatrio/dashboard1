@@ -346,6 +346,7 @@ st.markdown("""
     .strategy-grid {display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; margin-bottom: 2rem}
     @media (max-width: 1200px) {.strategy-grid {grid-template-columns: 1fr}}
     .strategy-card {
+        background: linear-gradient(135deg, rgba(30, 41, 59, 0.95) 0%, rgba(15, 23, 42, 0.9) 100%);
         border-radius: 20px; 
         padding: 2rem; 
         color: #fff; 
@@ -354,13 +355,23 @@ st.markdown("""
         overflow: hidden;
         transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        margin-top: 1.5rem;
     }
     .strategy-card:hover {
-        transform: translateY(-8px); 
-        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+        transform: translateY(-5px); 
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        border-color: rgba(102, 126, 234, 0.3);
     }
     .strategy-header {display: flex; justify-content: space-between; align-items: start; margin-bottom: 1.25rem}
-    .strategy-name {font-size: 1.75rem; font-weight: 900; margin: 0; line-height: 1.2}
+    .strategy-name {
+        font-size: 1.75rem; 
+        font-weight: 900; 
+        margin: 0; 
+        line-height: 1.2;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
     .priority-badge {
         padding: 0.5rem 1rem; 
         border-radius: 20px; 
@@ -378,7 +389,7 @@ st.markdown("""
     .detail-section {
         margin-bottom: 1.5rem;
         padding-bottom: 1rem;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
     
     .detail-section:last-child {
@@ -388,7 +399,7 @@ st.markdown("""
     }
     
     .detail-title {
-        font-size: 1rem; 
+        font-size: 1.1rem; 
         font-weight: 700; 
         color: #fff; 
         margin-bottom: 0.75rem;
@@ -398,22 +409,24 @@ st.markdown("""
     }
     
     .detail-content {
-        font-size: 0.9rem; 
+        font-size: 0.95rem; 
         color: rgba(255, 255, 255, 0.9); 
-        line-height: 1.5;
+        line-height: 1.6;
     }
     
     .detail-item {
-        margin-bottom: 0.5rem;
-        padding-left: 0.75rem;
+        margin-bottom: 0.75rem;
+        padding-left: 1rem;
         position: relative;
+        line-height: 1.5;
     }
     
     .detail-item:before {
         content: "•";
-        color: currentColor;
+        color: #667eea;
         position: absolute;
         left: 0;
+        font-weight: bold;
     }
     
     .strategy-footer {
@@ -683,6 +696,25 @@ st.markdown("""
         font-weight: 800;
         text-transform: uppercase;
         letter-spacing: 0.05em;
+    }
+    
+    /* SELECT BOX STYLING untuk Tab 4 */
+    .segment-select-container {
+        margin: 2rem 0;
+        padding: 1.5rem;
+        background: rgba(30, 41, 59, 0.6);
+        border-radius: 15px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .segment-select-label {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #fff;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -1548,477 +1580,93 @@ def main():
             </div>
             """, unsafe_allow_html=True)
     
-    # TAB 4: SELLING STRATEGY - DIPERBAIKI
+    # TAB 4: SELLING STRATEGY - VERSI INTERAKTIF YANG DIMINTA
     with tab4:
         st.markdown("""
         <div class="section-header">
             <div class="section-icon">📋</div>
             <div>
                 <div class="section-title">Selling Strategy</div>
-                <div class="section-subtitle">Strategi penjualan terperinci untuk setiap segmen pelanggan berdasarkan analisis RFM</div>
+                <div class="section-subtitle">
+                    Strategi penjualan interaktif berdasarkan segmen pelanggan
+                </div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+        # === PILIH SEGMEN ===
+        segment_names = list(cluster_full_details.keys())
+
+        selected_segment = st.selectbox(
+            "🎯 Pilih Segmen Pelanggan",
+            segment_names,
+            index=0
+        )
+
+        details = cluster_full_details[selected_segment]
+
+        # === CARD STRATEGY ===
+        st.markdown(f"""
+        <div class="strategy-card">
+            <div class="strategy-header">
+                <h2 class="strategy-name">{selected_segment}</h2>
+            </div>
+
+            <div class="detail-section">
+                <div class="detail-title">📊 Karakteristik</div>
+                <div class="detail-content">
+                    {format_content(details['karakteristik'])}
+                </div>
+            </div>
+
+            <div class="detail-section">
+                <div class="detail-title">🎯 Strategi Utama</div>
+                <div class="detail-content">
+                    {format_content(details['strategi'])}
+                </div>
+            </div>
+
+            <div class="detail-section">
+                <div class="detail-title">⚙️ Aksi Penjualan</div>
+                <div class="detail-content">
+                    {format_content(details['aksi'])}
+                </div>
+            </div>
+
+            <div class="detail-section">
+                <div class="detail-title">📈 KPI Target</div>
+                <div class="detail-content">
+                    {format_content(details['kpi'])}
+                </div>
             </div>
         </div>
         """, unsafe_allow_html=True)
         
-        # Container untuk semua strategi
-        strategy_container = st.container()
-        
-        with strategy_container:
-            # Buat 2 kolom untuk layout
-            col1, col2 = st.columns(2, gap="large")
-            
-            # Champions
-            with col1:
-                st.markdown(f"""
-                <div class="strategy-card" style="background: {strats['champions']['grad']};">
-                    <div class="strategy-header">
-                        <div>
-                            <div class="strategy-name">{strats['champions']['name']}</div>
-                            <div class="strategy-subtitle">Pelanggan bernilai tertinggi dengan loyalitas ekstrem</div>
-                        </div>
-                        <div class="priority-badge" style="background: rgba(255, 255, 255, 0.2);">{strats['champions']['priority']}</div>
-                    </div>
-                    
-                    <div class="strategy-content">
-                        <div class="detail-section">
-                            <div class="detail-title">
-                                <span>🎯</span>
-                                <span>Karakteristik</span>
-                            </div>
-                            <div class="detail-content">
-                                {format_content(cluster_full_details['Champions']['karakteristik'])}
-                            </div>
-                        </div>
-                        
-                        <div class="detail-section">
-                            <div class="detail-title">
-                                <span>🚀</span>
-                                <span>Strategi Utama</span>
-                            </div>
-                            <div class="detail-content">
-                                {format_content(cluster_full_details['Champions']['strategi'])}
-                            </div>
-                        </div>
-                        
-                        <div class="detail-section">
-                            <div class="detail-title">
-                                <span>⚡</span>
-                                <span>Aksi Konkret</span>
-                            </div>
-                            <div class="detail-content">
-                                {format_content(cluster_full_details['Champions']['aksi'])}
-                            </div>
-                        </div>
-                        
-                        <div class="detail-section">
-                            <div class="detail-title">
-                                <span>📊</span>
-                                <span>Target KPI</span>
-                            </div>
-                            <div class="detail-content">
-                                {format_content(cluster_full_details['Champions']['kpi'])}
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="strategy-footer">
-                        <div class="budget-item">
-                            <div class="budget-label">Alokasi Budget</div>
-                            <div class="budget-value">{strats['champions']['budget']}</div>
-                        </div>
-                        <div class="budget-item">
-                            <div class="budget-label">Estimasi ROI</div>
-                            <div class="budget-value">{strats['champions']['roi']}</div>
-                        </div>
+        # === INFORMASI TAMBAHAN ===
+        st.markdown("""
+        <div style="margin-top: 2rem; padding: 1.5rem; background: rgba(30, 41, 59, 0.6); border-radius: 15px; border: 1px solid rgba(255, 255, 255, 0.1);">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                <div>
+                    <div style="font-weight: 700; color: #fff; margin-bottom: 0.5rem;">📅 Timeline Implementasi</div>
+                    <div style="color: #cbd5e1; font-size: 0.9rem;">
+                        • Minggu 1-2: Persiapan materi & tim<br>
+                        • Minggu 3-4: Peluncuran kampanye<br>
+                        • Minggu 5-8: Monitoring & optimisasi<br>
+                        • Minggu 9-12: Evaluasi hasil
                     </div>
                 </div>
-                """, unsafe_allow_html=True)
-            
-            # Loyal
-            with col2:
-                st.markdown(f"""
-                <div class="strategy-card" style="background: {strats['loyal']['grad']};">
-                    <div class="strategy-header">
-                        <div>
-                            <div class="strategy-name">{strats['loyal']['name']}</div>
-                            <div class="strategy-subtitle">Pelanggan setia dengan potensi naik kelas</div>
-                        </div>
-                        <div class="priority-badge" style="background: rgba(255, 255, 255, 0.2);">{strats['loyal']['priority']}</div>
-                    </div>
-                    
-                    <div class="strategy-content">
-                        <div class="detail-section">
-                            <div class="detail-title">
-                                <span>🎯</span>
-                                <span>Karakteristik</span>
-                            </div>
-                            <div class="detail-content">
-                                {format_content(cluster_full_details['Loyal']['karakteristik'])}
-                            </div>
-                        </div>
-                        
-                        <div class="detail-section">
-                            <div class="detail-title">
-                                <span>🚀</span>
-                                <span>Strategi Utama</span>
-                            </div>
-                            <div class="detail-content">
-                                {format_content(cluster_full_details['Loyal']['strategi'])}
-                            </div>
-                        </div>
-                        
-                        <div class="detail-section">
-                            <div class="detail-title">
-                                <span>⚡</span>
-                                <span>Aksi Konkret</span>
-                            </div>
-                            <div class="detail-content">
-                                {format_content(cluster_full_details['Loyal']['aksi'])}
-                            </div>
-                        </div>
-                        
-                        <div class="detail-section">
-                            <div class="detail-title">
-                                <span>📊</span>
-                                <span>Target KPI</span>
-                            </div>
-                            <div class="detail-content">
-                                {format_content(cluster_full_details['Loyal']['kpi'])}
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="strategy-footer">
-                        <div class="budget-item">
-                            <div class="budget-label">Alokasi Budget</div>
-                            <div class="budget-value">{strats['loyal']['budget']}</div>
-                        </div>
-                        <div class="budget-item">
-                            <div class="budget-label">Estimasi ROI</div>
-                            <div class="budget-value">{strats['loyal']['roi']}</div>
-                        </div>
-                    </div>
-                </div>
-                """, unsafe_allow_html=True)
-            
-            # Divider
-            st.markdown('<div class="section-divider"></div>', unsafe_allow_html=True)
-            
-            # Baris kedua: Big Spenders dan Dormant
-            col3, col4 = st.columns(2, gap="large")
-            
-            # Big Spenders
-            with col3:
-                st.markdown(f"""
-                <div class="strategy-card" style="background: {strats['big']['grad']};">
-                    <div class="strategy-header">
-                        <div>
-                            <div class="strategy-name">{strats['big']['name']}</div>
-                            <div class="strategy-subtitle">Pelanggan dengan nilai transaksi sangat tinggi</div>
-                        </div>
-                        <div class="priority-badge" style="background: rgba(255, 255, 255, 0.2);">{strats['big']['priority']}</div>
-                    </div>
-                    
-                    <div class="strategy-content">
-                        <div class="detail-section">
-                            <div class="detail-title">
-                                <span>🎯</span>
-                                <span>Karakteristik</span>
-                            </div>
-                            <div class="detail-content">
-                                {format_content(cluster_full_details['Big Spenders']['karakteristik'])}
-                            </div>
-                        </div>
-                        
-                        <div class="detail-section">
-                            <div class="detail-title">
-                                <span>🚀</span>
-                                <span>Strategi Utama</span>
-                            </div>
-                            <div class="detail-content">
-                                {format_content(cluster_full_details['Big Spenders']['strategi'])}
-                            </div>
-                        </div>
-                        
-                        <div class="detail-section">
-                            <div class="detail-title">
-                                <span>⚡</span>
-                                <span>Aksi Konkret</span>
-                            </div>
-                            <div class="detail-content">
-                                {format_content(cluster_full_details['Big Spenders']['aksi'])}
-                            </div>
-                        </div>
-                        
-                        <div class="detail-section">
-                            <div class="detail-title">
-                                <span>📊</span>
-                                <span>Target KPI</span>
-                            </div>
-                            <div class="detail-content">
-                                {format_content(cluster_full_details['Big Spenders']['kpi'])}
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="strategy-footer">
-                        <div class="budget-item">
-                            <div class="budget-label">Alokasi Budget</div>
-                            <div class="budget-value">{strats['big']['budget']}</div>
-                        </div>
-                        <div class="budget-item">
-                            <div class="budget-label">Estimasi ROI</div>
-                            <div class="budget-value">{strats['big']['roi']}</div>
-                        </div>
-                    </div>
-                </div>
-                """, unsafe_allow_html=True)
-            
-            # Dormant
-            with col4:
-                st.markdown(f"""
-                <div class="strategy-card" style="background: {strats['dormant']['grad']};">
-                    <div class="strategy-header">
-                        <div>
-                            <div class="strategy-name">{strats['dormant']['name']}</div>
-                            <div class="strategy-subtitle">Pelanggan tidak aktif yang berisiko churn</div>
-                        </div>
-                        <div class="priority-badge" style="background: rgba(255, 255, 255, 0.2);">{strats['dormant']['priority']}</div>
-                    </div>
-                    
-                    <div class="strategy-content">
-                        <div class="detail-section">
-                            <div class="detail-title">
-                                <span>🎯</span>
-                                <span>Karakteristik</span>
-                            </div>
-                            <div class="detail-content">
-                                {format_content(cluster_full_details['Dormant']['karakteristik'])}
-                            </div>
-                        </div>
-                        
-                        <div class="detail-section">
-                            <div class="detail-title">
-                                <span>🚀</span>
-                                <span>Strategi Utama</span>
-                            </div>
-                            <div class="detail-content">
-                                {format_content(cluster_full_details['Dormant']['strategi'])}
-                            </div>
-                        </div>
-                        
-                        <div class="detail-section">
-                            <div class="detail-title">
-                                <span>⚡</span>
-                                <span>Aksi Konkret</span>
-                            </div>
-                            <div class="detail-content">
-                                {format_content(cluster_full_details['Dormant']['aksi'])}
-                            </div>
-                        </div>
-                        
-                        <div class="detail-section">
-                            <div class="detail-title">
-                                <span>📊</span>
-                                <span>Target KPI</span>
-                            </div>
-                            <div class="detail-content">
-                                {format_content(cluster_full_details['Dormant']['kpi'])}
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="strategy-footer">
-                        <div class="budget-item">
-                            <div class="budget-label">Alokasi Budget</div>
-                            <div class="budget-value">{strats['dormant']['budget']}</div>
-                        </div>
-                        <div class="budget-item">
-                            <div class="budget-label">Estimasi ROI</div>
-                            <div class="budget-value">{strats['dormant']['roi']}</div>
-                        </div>
-                    </div>
-                </div>
-                """, unsafe_allow_html=True)
-            
-            # Divider
-            st.markdown('<div class="section-divider"></div>', unsafe_allow_html=True)
-            
-            # Baris ketiga: Potential dan Standard
-            col5, col6 = st.columns(2, gap="large")
-            
-            # Potential
-            with col5:
-                st.markdown(f"""
-                <div class="strategy-card" style="background: {strats['potential']['grad']};">
-                    <div class="strategy-header">
-                        <div>
-                            <div class="strategy-name">{strats['potential']['name']}</div>
-                            <div class="strategy-subtitle">Pelanggan baru dengan potensi berkembang</div>
-                        </div>
-                        <div class="priority-badge" style="background: rgba(255, 255, 255, 0.2);">{strats['potential']['priority']}</div>
-                    </div>
-                    
-                    <div class="strategy-content">
-                        <div class="detail-section">
-                            <div class="detail-title">
-                                <span>🎯</span>
-                                <span>Karakteristik</span>
-                            </div>
-                            <div class="detail-content">
-                                {format_content(cluster_full_details['Potential']['karakteristik'])}
-                            </div>
-                        </div>
-                        
-                        <div class="detail-section">
-                            <div class="detail-title">
-                                <span>🚀</span>
-                                <span>Strategi Utama</span>
-                            </div>
-                            <div class="detail-content">
-                                {format_content(cluster_full_details['Potential']['strategi'])}
-                            </div>
-                        </div>
-                        
-                        <div class="detail-section">
-                            <div class="detail-title">
-                                <span>⚡</span>
-                                <span>Aksi Konkret</span>
-                            </div>
-                            <div class="detail-content">
-                                {format_content(cluster_full_details['Potential']['aksi'])}
-                            </div>
-                        </div>
-                        
-                        <div class="detail-section">
-                            <div class="detail-title">
-                                <span>📊</span>
-                                <span>Target KPI</span>
-                            </div>
-                            <div class="detail-content">
-                                {format_content(cluster_full_details['Potential']['kpi'])}
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="strategy-footer">
-                        <div class="budget-item">
-                            <div class="budget-label">Alokasi Budget</div>
-                            <div class="budget-value">{strats['potential']['budget']}</div>
-                        </div>
-                        <div class="budget-item">
-                            <div class="budget-label">Estimasi ROI</div>
-                            <div class="budget-value">{strats['potential']['roi']}</div>
-                        </div>
-                    </div>
-                </div>
-                """, unsafe_allow_html=True)
-            
-            # Standard
-            with col6:
-                st.markdown(f"""
-                <div class="strategy-card" style="background: {strats['standard']['grad']};">
-                    <div class="strategy-header">
-                        <div>
-                            <div class="strategy-name">{strats['standard']['name']}</div>
-                            <div class="strategy-subtitle">Pelanggan rata-rata dengan nilai stabil</div>
-                        </div>
-                        <div class="priority-badge" style="background: rgba(255, 255, 255, 0.2);">{strats['standard']['priority']}</div>
-                    </div>
-                    
-                    <div class="strategy-content">
-                        <div class="detail-section">
-                            <div class="detail-title">
-                                <span>🎯</span>
-                                <span>Karakteristik</span>
-                            </div>
-                            <div class="detail-content">
-                                {format_content(cluster_full_details['Standard']['karakteristik'])}
-                            </div>
-                        </div>
-                        
-                        <div class="detail-section">
-                            <div class="detail-title">
-                                <span>🚀</span>
-                                <span>Strategi Utama</span>
-                            </div>
-                            <div class="detail-content">
-                                {format_content(cluster_full_details['Standard']['strategi'])}
-                            </div>
-                        </div>
-                        
-                        <div class="detail-section">
-                            <div class="detail-title">
-                                <span>⚡</span>
-                                <span>Aksi Konkret</span>
-                            </div>
-                            <div class="detail-content">
-                                {format_content(cluster_full_details['Standard']['aksi'])}
-                            </div>
-                        </div>
-                        
-                        <div class="detail-section">
-                            <div class="detail-title">
-                                <span>📊</span>
-                                <span>Target KPI</span>
-                            </div>
-                            <div class="detail-content">
-                                {format_content(cluster_full_details['Standard']['kpi'])}
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="strategy-footer">
-                        <div class="budget-item">
-                            <div class="budget-label">Alokasi Budget</div>
-                            <div class="budget-value">{strats['standard']['budget']}</div>
-                        </div>
-                        <div class="budget-item">
-                            <div class="budget-label">Estimasi ROI</div>
-                            <div class="budget-value">{strats['standard']['roi']}</div>
-                        </div>
-                    </div>
-                </div>
-                """, unsafe_allow_html=True)
-            
-            # Summary Section
-            st.markdown("""
-            <div class="insights-section" style="margin-top: 3rem;">
-                <div class="insights-title">📈 Strategi Implementasi</div>
-                
-                <div class="insights-grid-container">
-                    <div class="insight-card">
-                        <div class="insight-card-header">
-                            <div class="insight-card-title">🎯 Prioritaskan Aksi</div>
-                            <div class="insight-card-subtitle">Urutan implementasi berdasarkan ROI</div>
-                        </div>
-                        <ul class="insight-list">
-                            <li>1. <strong>Champions</strong> - Retensi & upselling</li>
-                            <li>2. <strong>Big Spenders</strong> - Maximize transaction value</li>
-                            <li>3. <strong>Dormant</strong> - Win-back campaign</li>
-                            <li>4. <strong>Loyal</strong> - Loyalty program</li>
-                            <li>5. <strong>Potential</strong> - Second purchase acceleration</li>
-                            <li>6. <strong>Standard</strong> - Steady engagement</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="insight-card">
-                        <div class="insight-card-header">
-                            <div class="insight-card-title">💰 Alokasi Budget Optimal</div>
-                            <div class="insight-card-subtitle">Distribusi anggaran marketing</div>
-                        </div>
-                        <ul class="insight-list">
-                            <li>• Champions: <strong>30%</strong> - ROI 500%</li>
-                            <li>• Loyal: <strong>25%</strong> - ROI 380%</li>
-                            <li>• Big Spenders: <strong>20%</strong> - ROI 420%</li>
-                            <li>• Dormant: <strong>15%</strong> - ROI 250%</li>
-                            <li>• Potential: <strong>5%</strong> - ROI 180%</li>
-                            <li>• Standard: <strong>5%</strong> - ROI 150%</li>
-                        </ul>
+                <div>
+                    <div style="font-weight: 700; color: #fff; margin-bottom: 0.5rem;">📊 Metrik Monitoring</div>
+                    <div style="color: #cbd5e1; font-size: 0.9rem;">
+                        • Weekly: Engagement rate<br>
+                        • Bi-weekly: Conversion rate<br>
+                        • Monthly: ROI & customer satisfaction<br>
+                        • Quarterly: LTV improvement
                     </div>
                 </div>
             </div>
-            """, unsafe_allow_html=True)
+        </div>
+        """, unsafe_allow_html=True)
     
     # Footer
     st.markdown("""
