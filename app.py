@@ -453,7 +453,7 @@ st.markdown("""
     .champion-title {
         font-size: 1.75rem; 
         font-weight: 900; 
-        color: #4facfe; 
+        color: #FFFFFF; 
         margin-bottom: 1.5rem; 
         display: flex; 
         align-items: center; 
