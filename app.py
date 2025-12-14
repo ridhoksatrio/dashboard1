@@ -1508,8 +1508,6 @@ def main():
             </div>
             """, unsafe_allow_html=True)
         
-        # Close insights section
-        st.markdown("</div>", unsafe_allow_html=True)
 
     with tab3:
         if len(filtered_df) > 0:
