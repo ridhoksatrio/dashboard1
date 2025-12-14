@@ -1093,7 +1093,6 @@ def main():
     # Section 1: Key Metrics dengan section header
     st.markdown("""
     <div class="section-header">
-        <div class="section-icon">📊</div>
         <div>
             <div class="section-title">Key Performance Metrics</div>
             <div class="section-subtitle">Real-time insights into customer behavior and business performance</div>
