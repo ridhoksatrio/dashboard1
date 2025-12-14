@@ -1472,128 +1472,84 @@ def main():
             </div>
             """, unsafe_allow_html=True)
     
-    with tab2:
-        # Champion Breakdown Section
-        champion_clusters = [c for c in filtered_df['Cluster_KMeans'].unique() 
-                        if c in profs and profs[c]['name'] == '🏆 Champions']
+    # ASUMSI: cluster_full_details sudah terdefinisi di tempat lain, 
+# berisi data lengkap untuk semua segmen (Champions, Loyal, dll.)
+
+with tab2:
+    # HAPUS: 'Champion Breakdown Section' lama untuk menghindari duplikasi.
+    # Keterangan dan kartu detail Champion akan disertakan dalam 'Segment Strategies' di bawah.
     
-        if len(champion_clusters) > 0:
-            st.markdown('<div class="champion-title">🏆 Champion Segments Breakdown</div>', unsafe_allow_html=True)
-            cols = st.columns(2)
-            for idx, cid in enumerate(sorted(champion_clusters)):
-                if cid in champion_details:
-                    det = champion_details[cid]
-                    with cols[idx % 2]:
-                        # Card utama
-                        st.markdown(f"""
-                        <div class="champion-card">
-                            <div class="champion-number">Champion C{cid}</div>
-                            <div class="champion-tier">🏅 {det['tier']}</div>
-                            <div class="champion-desc">{det['desc']}</div>
-                            <div class="champion-chars">📊 {det['char']}</div>
-                        </div>
-                        """, unsafe_allow_html=True)
-                        
-                        # Detail lengkap solusi untuk Champions
-                        st.markdown("""
-                        <div class="champion-detail-card">
-                            <div class="detail-section">
-                                <div class="detail-title">📊 Karakteristik</div>
-                                <div class="detail-content">
-                                    <div class="detail-item">Recency sangat rendah</div>
-                                    <div class="detail-item">Frequency tinggi</div>
-                                    <div class="detail-item">Monetary sangat tinggi</div>
-                                </div>
-                            </div>
-                            
-                            <div class="detail-section">
-                                <div class="detail-title">🎯 Strategi Utama</div>
-                                <div class="detail-content">
-                                    Fokus retensi dan peningkatan nilai jangka panjang
-                                </div>
-                            </div>
-                            
-                            <div class="detail-section">
-                                <div class="detail-title">🚀 Aksi Konkret</div>
-                                <div class="detail-content">
-                                    <div class="detail-item">Beri akses produk lebih awal sebelum rilis umum</div>
-                                    <div class="detail-item">Sediakan customer manager khusus untuk transaksi besar</div>
-                                    <div class="detail-item">Kirim hadiah premium setiap milestone transaksi</div>
-                                    <div class="detail-item">Undang ke event eksklusif online atau offline</div>
-                                    <div class="detail-item">Buat program referral VIP</div>
-                                </div>
-                            </div>
-                            
-                            <div class="detail-section">
-                                <div class="detail-title">📈 Target KPI</div>
-                                <div class="detail-content">
-                                    <div class="detail-item">Retention di atas 95 persen</div>
-                                    <div class="detail-item">Upsell rate di atas 40 persen</div>
-                                    <div class="detail-item">Referral contribution di atas 30 persen</div>
-                                </div>
-                            </div>
-                        </div>
-                        """, unsafe_allow_html=True)
+    # Indikator Section Header
+    st.markdown("""
+<div class="section-header">
+    <div class="section-icon">🎯</div>
+    <div>
+        <div class="section-title">Segment Strategies</div>
+        <div class="section-subtitle">Detailed strategies for all customer segments</div>
+    </div>
+</div>
+""", unsafe_allow_html=True) # Indentasi HTML dihapus di sini
+
+    # Grid untuk strategi semua segment
+    strategy_cols = st.columns(2)
+    
+    # Tampilkan strategi untuk setiap tipe cluster dari cluster_full_details
+    for idx, (segment_type, details) in enumerate(cluster_full_details.items()):
+        
+        # Penentuan warna dan ikon (tetap dipertahankan)
+        segment_color = {
+            'Champions': '#FFD700',
+            'Loyal': '#667eea',
+            'Big Spenders': '#f093fb',
+            'Dormant': '#ff6b6b',
+            'Potential': '#11998e',
+            'Standard': '#89f7fe'
+        }.get(segment_type, '#94a3b8')
+        
+        icon = {
+            'Champions': '🏆',
+            'Loyal': '💎',
+            'Big Spenders': '💰',
+            'Dormant': '😴',
+            'Potential': '🌱',
+            'Standard': '📊'
+        }.get(segment_type, '❓')
+
+        # Mulai kolom (menampilkan 2 kartu per baris)
+        with strategy_cols[idx % 2]:
             
-            st.markdown('</div>', unsafe_allow_html=True)
-        
-        # Tampilkan strategi untuk semua segment (non-champion)
-            st.markdown("""
-                <div class="section-header">
-                <div class="section-icon">🎯</div>
-                <div>
-                    <div class="section-title">Segment Strategies</div>
-                    <div class="section-subtitle">Detailed strategies for all customer segments</div>
-                </div>
-            </div>
-            """, unsafe_allow_html=True)
-        
-        # Grid untuk strategi semua segment
-        strategy_cols = st.columns(2)
-        
-        # Tampilkan strategi untuk setiap tipe cluster
-        for idx, (segment_type, details) in enumerate(cluster_full_details.items()):
-            with strategy_cols[idx % 2]:
-                segment_color = {
-                    'Champions': '#FFD700',
-                    'Loyal': '#667eea',
-                    'Big Spenders': '#f093fb',
-                    'Dormant': '#ff6b6b',
-                    'Potential': '#11998e',
-                    'Standard': '#89f7fe'
-                }.get(segment_type, '#94a3b8')
-                
-                st.markdown(f"""
-                <div class="strategy-card" style="border-left: 6px solid {segment_color}; margin-bottom: 1.5rem;">
-                    <div class="strategy-header">
-                        <div class="strategy-name">{'🏆' if segment_type == 'Champions' else '💎' if segment_type == 'Loyal' else '💰' if segment_type == 'Big Spenders' else '😴' if segment_type == 'Dormant' else '🌱' if segment_type == 'Potential' else '📊'} {segment_type}</div>
-                        <div class="priority-badge" style="background: {segment_color}30; border-color: {segment_color}50; color: {segment_color};">{segment_type}</div>
-                    </div>
-                    
-                    <div class="strategy-subtitle">{details['strategi']}</div>
-                    
-                    <div class="tactics-section">
-                        <div class="tactics-title">📊 Karakteristik</div>
-                        <div style="color: rgba(255, 255, 255, 0.9); font-size: 0.9rem; line-height: 1.5; padding: 0.5rem;">
-                            {details['karakteristik'].replace('<br>', '<br>• ').replace('• •', '•')}
-                        </div>
-                    </div>
-                    
-                    <div class="tactics-section">
-                        <div class="tactics-title">🚀 Aksi Konkret</div>
-                        <div style="color: rgba(255, 255, 255, 0.9); font-size: 0.9rem; line-height: 1.5; padding: 0.5rem;">
-                            {details['aksi'].replace('<br>', '<br>• ').replace('• •', '•')}
-                        </div>
-                    </div>
-                    
-                    <div class="tactics-section">
-                        <div class="tactics-title">📈 Target KPI</div>
-                        <div style="color: rgba(255, 255, 255, 0.9); font-size: 0.9rem; line-height: 1.5; padding: 0.5rem;">
-                            {details['kpi'].replace('<br>', '<br>• ').replace('• •', '•')}
-                        </div>
-                    </div>
-                </div>
-                """, unsafe_allow_html=True)
+            # Kartu Strategi Dinamis (Indentasi HTML telah diperbaiki)
+            st.markdown(f"""
+<div class="strategy-card" style="border-left: 6px solid {segment_color}; margin-bottom: 1.5rem;">
+    <div class="strategy-header">
+        <div class="strategy-name">{icon} {segment_type}</div>
+        <div class="priority-badge" style="background: {segment_color}30; border-color: {segment_color}50; color: {segment_color};">{segment_type}</div>
+    </div>
+    
+    <div class="strategy-subtitle">{details['strategi']}</div>
+    
+    <div class="tactics-section">
+        <div class="tactics-title">📊 Karakteristik</div>
+        <div style="color: rgba(255, 255, 255, 0.9); font-size: 0.9rem; line-height: 1.5; padding: 0.5rem;">
+            • {details['karakteristik'].replace('<br>', '<br>• ').replace('• •', '•')}
+        </div>
+    </div>
+    
+    <div class="tactics-section">
+        <div class="tactics-title">🚀 Aksi Konkret</div>
+        <div style="color: rgba(255, 255, 255, 0.9); font-size: 0.9rem; line-height: 1.5; padding: 0.5rem;">
+            • {details['aksi'].replace('<br>', '<br>• ').replace('• •', '•')}
+        </div>
+    </div>
+    
+    <div class="tactics-section">
+        <div class="tactics-title">📈 Target KPI</div>
+        <div style="color: rgba(255, 255, 255, 0.9); font-size: 0.9rem; line-height: 1.5; padding: 0.5rem;">
+            • {details['kpi'].replace('<br>', '<br>• ').replace('• •', '•')}
+        </div>
+    </div>
+</div>
+""", unsafe_allow_html=True)
     
     with tab3:
         if len(filtered_df) > 0:
