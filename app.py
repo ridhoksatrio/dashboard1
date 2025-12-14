@@ -292,6 +292,39 @@ st.markdown("""
         transform: translateY(-2px);
     }
     
+    /* SUB-TABS STYLING */
+    .sub-tabs-container {
+        margin: 1rem 0 2rem 0;
+    }
+    .sub-tabs {
+        display: flex;
+        gap: 0.5rem;
+        margin-bottom: 1.5rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        padding-bottom: 0.5rem;
+    }
+    .sub-tab {
+        padding: 0.75rem 1.5rem;
+        background: rgba(30, 41, 59, 0.5);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 12px;
+        color: #94a3b8;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 0.9rem;
+    }
+    .sub-tab:hover {
+        background: rgba(30, 41, 59, 0.8);
+        color: #fff;
+        border-color: rgba(102, 126, 234, 0.3);
+    }
+    .sub-tab.active {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: #fff;
+        border-color: transparent;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.2);
+    }
     
     /* STRATEGY CARDS */
     .strategy-grid {display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; margin-bottom: 2rem}
@@ -395,7 +428,7 @@ st.markdown("""
         font-weight: 900; 
         color: #667eea; 
         margin-bottom: 1rem; 
-display: flex; 
+        display: flex; 
         align-items: center; 
         gap: 0.75rem;
         padding-bottom: 0.75rem;
@@ -440,6 +473,101 @@ display: flex;
     .segment-expander-content {
         padding: 1.5rem !important;
         background: transparent !important;
+    }
+    
+    /* TEXT VERSION CONTENT */
+    .text-version-content {
+        background: rgba(30, 41, 59, 0.6);
+        border-radius: 16px;
+        padding: 2rem;
+        margin-top: 1.5rem;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .segment-text-block {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        border-left: 4px solid;
+    }
+    
+    .segment-text-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+    }
+    
+    .segment-text-title {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #fff;
+        margin: 0;
+    }
+    
+    .segment-text-priority {
+        font-size: 0.75rem;
+        font-weight: 800;
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+    
+    .segment-text-section {
+        margin: 1rem 0;
+    }
+    
+    .section-label {
+        font-size: 0.875rem;
+        color: #94a3b8;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+    
+    .tactic-text-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 0;
+        color: rgba(255, 255, 255, 0.9);
+    }
+    
+    .kpi-text-item {
+        background: rgba(255, 255, 255, 0.08);
+        border-radius: 8px;
+        padding: 0.75rem;
+        margin: 0.25rem 0;
+        font-size: 0.9rem;
+        color: rgba(255, 255, 255, 0.9);
+    }
+    
+    .segment-text-footer {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 1.5rem;
+        padding-top: 1rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .footer-item {
+        text-align: center;
+        flex: 1;
+    }
+    
+    .footer-label {
+        font-size: 0.8rem;
+        color: #94a3b8;
+        margin-bottom: 0.25rem;
+    }
+    
+    .footer-value {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: #fff;
     }
     
     /* CHAMPION BREAKDOWN */
@@ -1467,198 +1595,154 @@ def main():
             
             st.markdown('</div>', unsafe_allow_html=True)
         
-        # BAGIAN DIUBAH: Segment Strategies Overview dengan Dropdown/Expander
+        # MODIFIED: Segment Strategies Overview dengan Tab untuk Visual dan Text Version
         st.markdown('<div class="strategies-overview-section">', unsafe_allow_html=True)
         st.markdown('<div class="strategies-overview-title">📋 Segment Strategies Overview</div>', unsafe_allow_html=True)
         st.markdown('<p style="color: #94a3b8; margin-bottom: 2rem; font-size: 1.1rem;">Comprehensive view of all customer segments with detailed strategies, tactics, and KPIs</p>', unsafe_allow_html=True)
         
-        # Urutkan segmen berdasarkan prioritas
-        priority_order = {'CRITICAL': 1, 'URGENT': 2, 'HIGH': 3, 'MEDIUM': 4}
-        sorted_profs = sorted(profs.items(), key=lambda x: priority_order.get(x[1]['priority'], 5))
+        # Create tabs for Visual and Text versions
+        tab_visual, tab_text = st.tabs(["🎨 Visual Overview", "📝 Text Version"])
         
-        # Tampilkan semua segmen dalam dropdown/expander
-        for cluster_id, strat in sorted_profs:
-            # Hitung jumlah customer di segmen ini
-            segment_customers = len(rfm[rfm['Cluster_KMeans'] == cluster_id])
+        with tab_visual:
+            # Urutkan segmen berdasarkan prioritas
+            priority_order = {'CRITICAL': 1, 'URGENT': 2, 'HIGH': 3, 'MEDIUM': 4}
+            sorted_profs = sorted(profs.items(), key=lambda x: priority_order.get(x[1]['priority'], 5))
             
-            # Buat expander untuk setiap segment
-            with st.expander(f"{strat['name']} (C{cluster_id}) - {strat['priority']}", expanded=False):
-                # Format tactics sebagai HTML
-                tactics_html = ""
-                for tactic in strat['tactics']:
-                    tactics_html += f'<div class="tactic-item">{tactic}</div>'
+            # Tampilkan semua segmen dalam dropdown/expander
+            for cluster_id, strat in sorted_profs:
+                # Hitung jumlah customer di segmen ini
+                segment_customers = len(rfm[rfm['Cluster_KMeans'] == cluster_id])
                 
-                # Format KPIs sebagai HTML
-                kpis_html = ""
-                for kpi in strat['kpis']:
-                    kpis_html += f'<div class="kpi-item">{kpi}</div>'
-                
-                # Tampilkan content dalam expander
-                st.markdown(f"""
-                <div style="background: {strat['grad']}; border-radius: 16px; padding: 1.5rem; margin-bottom: 1rem;">
-                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1.25rem">
-                        <div style="font-size: 1.5rem; font-weight: 900; margin: 0; line-height: 1.2">{strat['name']} (C{cluster_id})</div>
-                        <div class="priority-badge" style="color: {strat['color']}; border: 1px solid {strat['color']};">{strat['priority']}</div>
-                    </div>
-                    <div style="font-size: 1.1rem; color: rgba(255, 255, 255, 0.9); margin-bottom: 1.5rem; font-weight: 500"><strong>Strategy:</strong> {strat['strategy']}</div>
+                # Buat expander untuk setiap segment
+                with st.expander(f"{strat['name']} (C{cluster_id}) - {strat['priority']}", expanded=False):
+                    # Format tactics sebagai HTML
+                    tactics_html = ""
+                    for tactic in strat['tactics']:
+                        tactics_html += f'<div class="tactic-item">{tactic}</div>'
                     
-                    <div class="tactics-section">
-                        <div class="tactics-title">🎯 Tactics & Actions</div>
-                        <div class="tactics-grid">
-                            {tactics_html}
-                        </div>
-                    </div>
+                    # Format KPIs sebagai HTML
+                    kpis_html = ""
+                    for kpi in strat['kpis']:
+                        kpis_html += f'<div class="kpi-item">{kpi}</div>'
                     
-                    <div class="tactics-section">
-                        <div class="tactics-title">📈 Key Performance Indicators</div>
-                        <div class="kpis-grid">
-                            {kpis_html}
+                    # Tampilkan content dalam expander
+                    st.markdown(f"""
+                    <div style="background: {strat['grad']}; border-radius: 16px; padding: 1.5rem; margin-bottom: 1rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1.25rem">
+                            <div style="font-size: 1.5rem; font-weight: 900; margin: 0; line-height: 1.2">{strat['name']} (C{cluster_id})</div>
+                            <div class="priority-badge" style="color: {strat['color']}; border: 1px solid {strat['color']};">{strat['priority']}</div>
                         </div>
-                    </div>
-                    
-                    <div class="strategy-footer">
-                        <div class="budget-item">
-                            <div class="budget-label">Budget Allocation</div>
-                            <div class="budget-value">{strat['budget']}</div>
-                        </div>
-                        <div class="budget-item">
-                            <div class="budget-label">Expected ROI</div>
-                            <div class="budget-value">{strat['roi']}</div>
-                        </div>
-                        <div class="budget-item">
-                            <div class="budget-label">Segment Size</div>
-                            <div class="budget-value">{segment_customers}</div>
-                        </div>
-                    </div>
-                </div>
-                """, unsafe_allow_html=True)
-        
-        st.markdown('</div>', unsafe_allow_html=True)
-        
-        # Strategy Cards (Existing Code)
-        st.markdown('<div class="section-divider"></div>', unsafe_allow_html=True)
-
-        st.markdown("""
-        <div class="section-header">
-            <div class="section-icon">🎯</div>
-            <div>
-                <div class="section-title">Detailed Segment Strategies</div>
-                <div class="section-subtitle">In-depth action plans for each customer segment with comprehensive tactics and KPIs</div>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
-
-        # Filtered strategy cards based on segment filter
-        strategy_cards_html = ""
-
-        for cid, p in profs.items():
-            if segment_filter == 'all' or segment_filter == cid:
-                
-                # --- LANGKAH PERBAIKAN: Susun Taktik dan KPI secara UTUH dalam string ---
-                
-                # 1. Build tactics HTML (gunakan span atau div sederhana yang pasti ditutup)
-                tactics_html = "".join([
-                    f'<span class="tactic-chip">{tactic}</span>' for tactic in p['tactics']
-                ])
-                
-                # 2. Build KPIs HTML (gunakan span atau div sederhana yang pasti ditutup)
-                kpis_html = "".join([
-                    f'<span class="kpi-badge">{kpi}</span>' for kpi in p['kpis']
-                ])
-                
-                # 3. Gabungkan semua ke dalam template UTUH dan LENGKAP
-                strategy_cards_html += f"""
-                <div class="strategy-card" style="background: {p['grad']}">
-                    <div class="strategy-header">
-                        <div>
-                            <h3 class="strategy-name">{p['name']}</h3>
-                            <div class="strategy-subtitle">{p['strategy']} Strategy</div>
-                        </div>
-                        <div class="priority-badge">{p['priority']}</div>
-                    </div>
-                    
-                    <div class="segment-content">
-                        <div class="segment-section">
-                            <div class="section-title-small">🎯 Key Tactics</div>
+                        <div style="font-size: 1.1rem; color: rgba(255, 255, 255, 0.9); margin-bottom: 1.5rem; font-weight: 500"><strong>Strategy:</strong> {strat['strategy']}</div>
+                        
+                        <div class="tactics-section">
+                            <div class="tactics-title">🎯 Tactics & Actions</div>
                             <div class="tactics-grid">
                                 {tactics_html}
                             </div>
                         </div>
                         
-                        <div class="segment-section">
-                            <div class="section-title-small">📊 Target KPIs</div>
+                        <div class="tactics-section">
+                            <div class="tactics-title">📈 Key Performance Indicators</div>
                             <div class="kpis-grid">
                                 {kpis_html}
                             </div>
                         </div>
+                        
+                        <div class="strategy-footer">
+                            <div class="budget-item">
+                                <div class="budget-label">Budget Allocation</div>
+                                <div class="budget-value">{strat['budget']}</div>
+                            </div>
+                            <div class="budget-item">
+                                <div class="budget-label">Expected ROI</div>
+                                <div class="budget-value">{strat['roi']}</div>
+                            </div>
+                            <div class="budget-item">
+                                <div class="budget-label">Segment Size</div>
+                                <div class="budget-value">{segment_customers}</div>
+                            </div>
+                        </div>
+                    </div>
+                    """, unsafe_allow_html=True)
+        
+        with tab_text:
+            # Text Version Content
+            st.markdown('<div class="text-version-content">', unsafe_allow_html=True)
+            st.markdown('<h3 style="color: #fff; margin-bottom: 1.5rem;">📋 Segment Strategies Overview (Text Version)</h3>', unsafe_allow_html=True)
+            st.markdown('<p style="color: #94a3b8; margin-bottom: 2rem;">Detailed strategies and KPIs for all customer segments (Text-only mode)</p>', unsafe_allow_html=True)
+            
+            # Urutkan segmen berdasarkan prioritas
+            priority_order = {'CRITICAL': 1, 'URGENT': 2, 'HIGH': 3, 'MEDIUM': 4}
+            sorted_profs = sorted(profs.items(), key=lambda x: priority_order.get(x[1]['priority'], 5))
+            
+            # Loop untuk menampilkan semua data segmen dalam format teks
+            for cluster_id, data in sorted_profs:
+                # Determine priority color
+                priority_color = {
+                    'CRITICAL': '#ef4444',
+                    'URGENT': '#f97316',
+                    'HIGH': '#3b82f6',
+                    'MEDIUM': '#10b981'
+                }.get(data['priority'], '#94a3b8')
+                
+                st.markdown(f"""
+                <div class="segment-text-block" style="border-left-color: {data['color']};">
+                    <div class="segment-text-header">
+                        <h4 class="segment-text-title">{data['name']} (C{cluster_id})</h4>
+                        <span class="segment-text-priority" style="background: rgba({int(priority_color[1:3], 16)}, {int(priority_color[3:5], 16)}, {int(priority_color[5:7], 16)}, 0.2); color: {priority_color}; border: 1px solid {priority_color};">
+                            {data['priority']}
+                        </span>
                     </div>
                     
-                    <div class="segment-footer">
-                        <div class="budget-item">
-                            <div class="budget-label">Budget Allocation</div>
-                            <div class="budget-value">{p['budget']}</div>
+                    <div class="segment-text-section">
+                        <div class="section-label">Strategy</div>
+                        <div style="color: #fff; font-weight: 500;">{data['strategy']} Strategy</div>
+                    </div>
+                    
+                    <div class="segment-text-section">
+                        <div class="section-label">Key Tactics</div>
+                """, unsafe_allow_html=True)
+                
+                # Display tactics
+                for tactic in data['tactics']:
+                    st.markdown(f'<div class="tactic-text-item">{tactic}</div>', unsafe_allow_html=True)
+                
+                st.markdown(f"""
+                    </div>
+                    
+                    <div class="segment-text-section">
+                        <div class="section-label">Target KPIs</div>
+                """, unsafe_allow_html=True)
+                
+                # Display KPIs
+                for kpi in data['kpis']:
+                    st.markdown(f'<div class="kpi-text-item">{kpi}</div>', unsafe_allow_html=True)
+                
+                st.markdown(f"""
+                    </div>
+                    
+                    <div class="segment-text-footer">
+                        <div class="footer-item">
+                            <div class="footer-label">Budget Allocation</div>
+                            <div class="footer-value">{data['budget']}</div>
                         </div>
-                        <div class="budget-item">
-                            <div class="budget-label">Expected ROI</div>
-                            <div class="budget-value">{p['roi']}</div>
+                        <div class="footer-item">
+                            <div class="footer-label">Expected ROI</div>
+                            <div class="footer-value">{data['roi']}</div>
+                        </div>
+                        <div class="footer-item">
+                            <div class="footer-label">Segment Size</div>
+                            <div class="footer-value">{len(rfm[rfm['Cluster_KMeans'] == cluster_id])}</div>
                         </div>
                     </div>
                 </div>
-                """
-                
-        if strategy_cards_html:
-            st.markdown(f'<div class="strategy-grid">{strategy_cards_html}</div>', unsafe_allow_html=True)
-        else:
-            st.markdown("""
-            <div class="empty-state">
-                <div class="empty-icon">🎯</div>
-                <h3>No Strategy Cards Available</h3>
-                <p>Try selecting a different segment filter</p>
-            </div>
-            """, unsafe_allow_html=True)
+                """, unsafe_allow_html=True)
+            
+            st.markdown('</div>', unsafe_allow_html=True)
         
-        # --- KODE BARU YANG DITAMBAHKAN ---
-        st.markdown('<div class="section-divider"></div>', unsafe_allow_html=True)
+        st.markdown('</div>', unsafe_allow_html=True)
         
-        # Judul Bagian (Teks Sederhana)
-        st.header("📋 Segment Strategies Overview (Text Version)")
-        st.caption("Detailed strategies and KPIs for all customer segments (Text-only mode)")
-        st.markdown("---") # Garis pembatas
-
-        # Urutkan segmen berdasarkan prioritas
-        priority_order = {'CRITICAL': 1, 'URGENT': 2, 'HIGH': 3, 'MEDIUM': 4}
-        sorted_profs = sorted(profs.items(), key=lambda x: priority_order.get(x[1]['priority'], 5))
-
-        # Loop untuk menampilkan semua data segmen dalam format teks
-        for cluster_id, data in sorted_profs:
-            # Format taktik dan KPI sebagai string berbaris
-            tactics_list = "\n".join(f"  - {tactic}" for tactic in data['tactics'])
-            kpis_list = "\n".join(f"  - {kpi}" for kpi in data['kpis'])
-
-            # Susun string output teks untuk satu segmen
-            segment_output = f"""
-### {data['name']} (C{cluster_id})
-**{data['priority']}**
-**📋 {data['strategy']} Strategy**
-
-**🎯 Key Tactics**
-{tactics_list}
-
-**📊 Target KPIs**
-{kpis_list}
-
-**💰 Budget Allocation**
-**{data['budget']}**
-
-**📈 ROI Target**
-**{data['roi']}**
-
----
-"""
-            # Tampilkan dalam Streamlit
-            st.markdown(segment_output)
-        
-        # --- AKHIR KODE BARU YANG DITAMBAHKAN ---
+        # BAGIAN DETAILED SEGMENT STRATEGIES DIHAPUS SESUAI PERMINTAAN
     
     with tab3:
         if len(filtered_df) > 0:
