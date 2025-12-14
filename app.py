@@ -1389,7 +1389,6 @@ def main():
             st.markdown('<div class="champion-section">', unsafe_allow_html=True)
             st.markdown('<div class="champion-title">🏆 Champion Segments Breakdown</div>', unsafe_allow_html=True)
             
-            cols = st.columns(2)
             for idx, cid in enumerate(sorted(champion_clusters)):
                 if cid in champion_details:
                     det = champion_details[cid]
@@ -1404,10 +1403,6 @@ def main():
                         """, unsafe_allow_html=True)
             
             st.markdown('</div>', unsafe_allow_html=True)
-        
-        # SEMUA BAGIAN "Segment Strategies Overview" TELAH DIHAPUS
-        
-        # BAGIAN DETAILED SEGMENT STRATEGIES DIHAPUS SESUAI PERMINTAAN
     
     with tab3:
         if len(filtered_df) > 0:
