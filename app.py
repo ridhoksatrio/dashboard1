@@ -68,6 +68,46 @@ champion_details = {
     6: {'tier':'Diamond Elite','desc':'Ultra frequent buyers with exceptional loyalty','char':'1d recency, 126.8 orders, £33,796 spend'}
 }
 
+# Detail lengkap untuk setiap tipe cluster
+cluster_full_details = {
+    'Champions': {
+        'karakteristik': '• Recency sangat rendah<br>• Frequency tinggi<br>• Monetary sangat tinggi',
+        'strategi': 'Fokus retensi dan peningkatan nilai jangka panjang',
+        'aksi': '• Beri akses produk lebih awal sebelum rilis umum<br>• Sediakan customer manager khusus untuk transaksi besar<br>• Kirim hadiah premium setiap milestone transaksi<br>• Undang ke event eksklusif online atau offline<br>• Buat program referral VIP',
+        'kpi': '• Retention di atas 95 persen<br>• Upsell rate di atas 40 persen<br>• Referral contribution di atas 30 persen'
+    },
+    'Loyal': {
+        'karakteristik': '• Recency rendah<br>• Frequency tinggi<br>• Monetary menengah',
+        'strategi': 'Tingkatkan loyalitas agar naik kelas ke Champions',
+        'aksi': '• Terapkan loyalty tier berbasis poin<br>• Beri benefit khusus via aplikasi atau akun member<br>• Kirim promo ulang tahun dan anniversary<br>• Dorong referral dengan insentif langsung<br>• Beri akses flash sale terbatas',
+        'kpi': '• Retention di atas 85 persen<br>• Kenaikan frekuensi pembelian minimal 20 persen<br>• NPS di atas 8'
+    },
+    'Big Spenders': {
+        'karakteristik': '• Monetary sangat tinggi<br>• Frequency tidak selalu tinggi<br>• Recency bervariasi',
+        'strategi': 'Maksimalkan nilai transaksi per pelanggan',
+        'aksi': '• Tawarkan cicilan atau metode pembayaran fleksibel<br>• Beri free express delivery tanpa minimum<br>• Buat bundling produk bernilai tinggi<br>• Sediakan layanan concierge order<br>• Kirim hadiah eksklusif berbasis nilai belanja',
+        'kpi': '• AOV naik minimal 15 persen<br>• Retention di atas 90 persen<br>• Kepuasan pelanggan di atas 4.8 dari 5'
+    },
+    'Dormant': {
+        'karakteristik': '• Recency tinggi<br>• Frequency rendah<br>• Risiko churn besar',
+        'strategi': 'Aktifkan kembali pelanggan yang tidak aktif',
+        'aksi': '• Kirim diskon agresif 25 sampai 30 persen<br>• Gunakan email, WhatsApp, dan iklan retargeting<br>• Tawarkan promo dengan batas waktu pendek<br>• Lakukan pendekatan personal untuk pelanggan bernilai tinggi<br>• Kirim reminder berbasis produk terakhir',
+        'kpi': '• Win back rate di atas 25 persen<br>• Response rate di atas 15 persen<br>• ROI kampanye di atas 200 persen'
+    },
+    'Potential': {
+        'karakteristik': '• Recency rendah<br>• Frequency masih rendah<br>• Monetary rendah sampai menengah',
+        'strategi': 'Percepat pembelian kedua',
+        'aksi': '• Kirim edukasi produk dan use case<br>• Beri diskon khusus pembelian kedua<br>• Aktifkan welcome email flow bertahap<br>• Rekomendasikan produk pelengkap<br>• Gunakan cross sell sederhana',
+        'kpi': '• Conversion ke repeat buyer di atas 35 persen<br>• Pembelian kedua kurang dari 30 hari<br>• LTV naik minimal 25 persen'
+    },
+    'Standard': {
+        'karakteristik': '• RFM rata rata<br>• Volume besar<br>• Nilai per pelanggan stabil',
+        'strategi': 'Jaga engagement dengan biaya efisien',
+        'aksi': '• Kirim newsletter rutin dengan konten relevan<br>• Jalankan promo musiman<br>• Gunakan rekomendasi produk berbasis AI<br>• Beri reward kecil tak terduga<br>• Bangun komunitas atau program member ringan',
+        'kpi': '• Engagement rate di atas 40 persen<br>• Retensi stabil<br>• Kepuasan pelanggan di atas 3.5 dari 5'
+    }
+}
+
 def get_strat(cid, data):
     cd = data[data['Cluster_KMeans'] == cid]
     if len(cd) == 0:
@@ -432,6 +472,58 @@ st.markdown("""
         padding: 0.75rem; 
         border-radius: 10px;
         border: 1px solid rgba(255, 215, 0, 0.2);
+    }
+    
+    /* CHAMPION DETAIL CARD - BARU */
+    .champion-detail-card {
+        background: linear-gradient(135deg, rgba(255, 215, 0, 0.12) 0%, rgba(255, 140, 0, 0.08) 100%); 
+        border: 1px solid rgba(255, 215, 0, 0.25); 
+        border-radius: 16px; 
+        padding: 1.5rem; 
+        margin: 1rem 0;
+        box-shadow: 0 8px 20px rgba(255, 215, 0, 0.1);
+    }
+    
+    .detail-section {
+        margin-bottom: 1.5rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+    }
+    
+    .detail-section:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+        padding-bottom: 0;
+    }
+    
+    .detail-title {
+        font-size: 1rem; 
+        font-weight: 700; 
+        color: #FFD700; 
+        margin-bottom: 0.75rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .detail-content {
+        font-size: 0.9rem; 
+        color: rgba(255, 255, 255, 0.9); 
+        line-height: 1.5;
+        padding-left: 0.5rem;
+    }
+    
+    .detail-item {
+        margin-bottom: 0.5rem;
+        padding-left: 0.75rem;
+        position: relative;
+    }
+    
+    .detail-item:before {
+        content: "•";
+        color: #FFD700;
+        position: absolute;
+        left: 0;
     }
     
     /* INSIGHTS SECTION - DIPERBAIKI */
@@ -968,7 +1060,7 @@ def create_charts(df):
                 cells=dict(
                     values=[segment_table['Segment'], segment_table['Count']],
                     fill_color=['rgba(30, 41, 59, 0.6)', 'rgba(30, 41, 59, 0.4)'],
-                    align='center',
+                    align= 'center',
                     font=dict(size=11, color='white'),
                     height=35,
                     line=dict(color='#334155')
@@ -1392,6 +1484,7 @@ def main():
                 if cid in champion_details:
                     det = champion_details[cid]
                     with cols[idx % 2]:
+                        # Card utama
                         st.markdown(f"""
                         <div class="champion-card">
                             <div class="champion-number">Champion C{cid}</div>
@@ -1400,8 +1493,107 @@ def main():
                             <div class="champion-chars">📊 {det['char']}</div>
                         </div>
                         """, unsafe_allow_html=True)
+                        
+                        # Detail lengkap solusi untuk Champions
+                        st.markdown("""
+                        <div class="champion-detail-card">
+                            <div class="detail-section">
+                                <div class="detail-title">📊 Karakteristik</div>
+                                <div class="detail-content">
+                                    <div class="detail-item">Recency sangat rendah</div>
+                                    <div class="detail-item">Frequency tinggi</div>
+                                    <div class="detail-item">Monetary sangat tinggi</div>
+                                </div>
+                            </div>
+                            
+                            <div class="detail-section">
+                                <div class="detail-title">🎯 Strategi Utama</div>
+                                <div class="detail-content">
+                                    Fokus retensi dan peningkatan nilai jangka panjang
+                                </div>
+                            </div>
+                            
+                            <div class="detail-section">
+                                <div class="detail-title">🚀 Aksi Konkret</div>
+                                <div class="detail-content">
+                                    <div class="detail-item">Beri akses produk lebih awal sebelum rilis umum</div>
+                                    <div class="detail-item">Sediakan customer manager khusus untuk transaksi besar</div>
+                                    <div class="detail-item">Kirim hadiah premium setiap milestone transaksi</div>
+                                    <div class="detail-item">Undang ke event eksklusif online atau offline</div>
+                                    <div class="detail-item">Buat program referral VIP</div>
+                                </div>
+                            </div>
+                            
+                            <div class="detail-section">
+                                <div class="detail-title">📈 Target KPI</div>
+                                <div class="detail-content">
+                                    <div class="detail-item">Retention di atas 95 persen</div>
+                                    <div class="detail-item">Upsell rate di atas 40 persen</div>
+                                    <div class="detail-item">Referral contribution di atas 30 persen</div>
+                                </div>
+                            </div>
+                        </div>
+                        """, unsafe_allow_html=True)
             
             st.markdown('</div>', unsafe_allow_html=True)
+        
+        # Tampilkan strategi untuk semua segment (non-champion)
+        st.markdown("""
+        <div class="section-header">
+            <div class="section-icon">🎯</div>
+            <div>
+                <div class="section-title">Segment Strategies</div>
+                <div class="section-subtitle">Detailed strategies for all customer segments</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        # Grid untuk strategi semua segment
+        strategy_cols = st.columns(2)
+        
+        # Tampilkan strategi untuk setiap tipe cluster
+        for idx, (segment_type, details) in enumerate(cluster_full_details.items()):
+            with strategy_cols[idx % 2]:
+                segment_color = {
+                    'Champions': '#FFD700',
+                    'Loyal': '#667eea',
+                    'Big Spenders': '#f093fb',
+                    'Dormant': '#ff6b6b',
+                    'Potential': '#11998e',
+                    'Standard': '#89f7fe'
+                }.get(segment_type, '#94a3b8')
+                
+                st.markdown(f"""
+                <div class="strategy-card" style="border-left: 6px solid {segment_color}; margin-bottom: 1.5rem;">
+                    <div class="strategy-header">
+                        <div class="strategy-name">{'🏆' if segment_type == 'Champions' else '💎' if segment_type == 'Loyal' else '💰' if segment_type == 'Big Spenders' else '😴' if segment_type == 'Dormant' else '🌱' if segment_type == 'Potential' else '📊'} {segment_type}</div>
+                        <div class="priority-badge" style="background: {segment_color}30; border-color: {segment_color}50; color: {segment_color};">{segment_type}</div>
+                    </div>
+                    
+                    <div class="strategy-subtitle">{details['strategi']}</div>
+                    
+                    <div class="tactics-section">
+                        <div class="tactics-title">📊 Karakteristik</div>
+                        <div style="color: rgba(255, 255, 255, 0.9); font-size: 0.9rem; line-height: 1.5; padding: 0.5rem;">
+                            {details['karakteristik'].replace('<br>', '<br>• ').replace('• •', '•')}
+                        </div>
+                    </div>
+                    
+                    <div class="tactics-section">
+                        <div class="tactics-title">🚀 Aksi Konkret</div>
+                        <div style="color: rgba(255, 255, 255, 0.9); font-size: 0.9rem; line-height: 1.5; padding: 0.5rem;">
+                            {details['aksi'].replace('<br>', '<br>• ').replace('• •', '•')}
+                        </div>
+                    </div>
+                    
+                    <div class="tactics-section">
+                        <div class="tactics-title">📈 Target KPI</div>
+                        <div style="color: rgba(255, 255, 255, 0.9); font-size: 0.9rem; line-height: 1.5; padding: 0.5rem;">
+                            {details['kpi'].replace('<br>', '<br>• ').replace('• •', '•')}
+                        </div>
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
     
     with tab3:
         if len(filtered_df) > 0:
