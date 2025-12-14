@@ -1583,16 +1583,16 @@ def main():
     # TAB 4: SELLING STRATEGY - VERSI INTERAKTIF YANG DIMINTA
     with tab4:
         st.markdown("""
-    <div class="section-header">
-        <div class="section-icon">📋</div>
-        <div>
-            <div class="section-title">Selling Strategy</div>
-            <div class="section-subtitle">
-                Strategi penjualan interaktif berdasarkan segmen pelanggan
+        <div class="section-header">
+            <div class="section-icon">📋</div>
+            <div>
+                <div class="section-title">Selling Strategy</div>
+                <div class="section-subtitle">
+                    Strategi penjualan interaktif berdasarkan segmen pelanggan
+                </div>
             </div>
         </div>
-    </div>
-    """, unsafe_allow_html=True)
+        """, unsafe_allow_html=True)
 
         # === PILIH SEGMEN ===
         segment_names = list(cluster_full_details.keys())
@@ -1606,41 +1606,41 @@ def main():
         details = cluster_full_details[selected_segment]
 
         # === CARD STRATEGY ===
-        st.markdown(f"""
-    <div class="strategy-card">
-        <div class="strategy-header">
-            <h2 class="strategy-name">{selected_segment}</h2>
-        </div>
+        st.markdown("""
+        <div class="strategy-card">
+            <div class="strategy-header">
+                <h2 class="strategy-name">{selected_segment}</h2>
+            </div>
 
-        <div class="detail-section">
-            <div class="detail-title">📊 Karakteristik</div>
-            <div class="detail-content">
-                {format_content(details['karakteristik'])}
+            <div class="detail-section">
+                <div class="detail-title">📊 Karakteristik</div>
+                <div class="detail-content">
+                    {format_content(details['karakteristik'])}
+                </div>
+            </div>
+
+            <div class="detail-section">
+                <div class="detail-title">🎯 Strategi Utama</div>
+                <div class="detail-content">
+                    {format_content(details['strategi'])}
+                </div>
+            </div>
+
+            <div class="detail-section">
+                <div class="detail-title">⚙️ Aksi Penjualan</div>
+                <div class="detail-content">
+                    {format_content(details['aksi'])}
+                </div>
+            </div>
+
+            <div class="detail-section">
+                <div class="detail-title">📈 KPI Target</div>
+                <div class="detail-content">
+                    {format_content(details['kpi'])}
+                </div>
             </div>
         </div>
-
-        <div class="detail-section">
-            <div class="detail-title">🎯 Strategi Utama</div>
-            <div class="detail-content">
-                {format_content(details['strategi'])}
-            </div>
-        </div>
-
-        <div class="detail-section">
-            <div class="detail-title">⚙️ Aksi Penjualan</div>
-            <div class="detail-content">
-                {format_content(details['aksi'])}
-            </div>
-        </div>
-
-        <div class="detail-section">
-            <div class="detail-title">📈 KPI Target</div>
-            <div class="detail-content">
-                {format_content(details['kpi'])}
-            </div>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
+        """, unsafe_allow_html=True)
         
         # === INFORMASI TAMBAHAN ===
         st.markdown("""
