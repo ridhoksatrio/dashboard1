@@ -1388,7 +1388,7 @@ def main():
         if len(champion_clusters) > 0:
             st.markdown('<div class="champion-section">', unsafe_allow_html=True)
             st.markdown('<div class="champion-title">🏆 Champion Segments Breakdown</div>', unsafe_allow_html=True)
-            
+            cols = st.columns(2)
             for idx, cid in enumerate(sorted(champion_clusters)):
                 if cid in champion_details:
                     det = champion_details[cid]
