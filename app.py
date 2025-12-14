@@ -1606,7 +1606,7 @@ def main():
         details = cluster_full_details[selected_segment]
 
         # === CARD STRATEGY ===
-        st.markdown("""
+        st.markdown(f"""
         <div class="strategy-card">
             <div class="strategy-header">
                 <h2 class="strategy-name">{selected_segment}</h2>
