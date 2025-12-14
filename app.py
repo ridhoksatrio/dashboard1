@@ -1452,7 +1452,6 @@ def main():
             key="selling_strategy_segment"
         )
         
-        st.markdown("</div>", unsafe_allow_html=True)
         
         # Dua kolom untuk detail strategi (layout sama seperti tab3)
         details = cluster_full_details[selected_segment]
