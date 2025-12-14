@@ -1473,27 +1473,195 @@ def main():
             """, unsafe_allow_html=True)
     
     with tab2:
-        # Champion Breakdown Section
+    # Champion Breakdown Section
         champion_clusters = [c for c in filtered_df['Cluster_KMeans'].unique() 
-                        if c in profs and profs[c]['name'] == '🏆 Champions']
+                    if c in profs and profs[c]['name'] == '🏆 Champions']
+
+    if len(champion_clusters) > 0:
+        st.markdown('<div class="champion-title">🏆 Champion Segments Breakdown</div>', unsafe_allow_html=True)
+        cols = st.columns(2)
+        for idx, cid in enumerate(sorted(champion_clusters)):
+            if cid in champion_details:
+                det = champion_details[cid]
+                with cols[idx % 2]:
+                    st.markdown(f"""
+                    <div class="champion-card">
+                        <div class="champion-number">Champion C{cid}</div>
+                        <div class="champion-tier">🏅 {det['tier']}</div>
+                        <div class="champion-desc">{det['desc']}</div>
+                        <div class="champion-chars">📊 {det['char']}</div>
+                    </div>
+                    """, unsafe_allow_html=True)
+        
+        st.markdown('</div>', unsafe_allow_html=True)
+
+    # NEW: Segment Strategy Playbook Section
+    st.markdown("""
+    <div class="section-header">
+        <div class="section-icon">🎯</div>
+        <div>
+            <div class="section-title">Segment Strategy Playbook</div>
+            <div class="section-subtitle">Comprehensive business strategies for each customer segment based on RFM analysis</div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
     
-        if len(champion_clusters) > 0:
-            st.markdown('<div class="champion-title">🏆 Champion Segments Breakdown</div>', unsafe_allow_html=True)
-            cols = st.columns(2)
-            for idx, cid in enumerate(sorted(champion_clusters)):
-                if cid in champion_details:
-                    det = champion_details[cid]
-                    with cols[idx % 2]:
-                        st.markdown(f"""
-                        <div class="champion-card">
-                            <div class="champion-number">Champion C{cid}</div>
-                            <div class="champion-tier">🏅 {det['tier']}</div>
-                            <div class="champion-desc">{det['desc']}</div>
-                            <div class="champion-chars">📊 {det['char']}</div>
-                        </div>
-                        """, unsafe_allow_html=True)
+    # Define strategy data for all clusters
+    segment_strategies = {
+        'Champions': {
+            'icon': '🏆',
+            'color': '#FFD700',
+            'rfm_characteristics': '• Recency: sangat rendah (baru saja bertransaksi)<br>• Frequency: tinggi (sering membeli)<br>• Monetary: sangat tinggi (nilai transaksi besar)',
+            'main_strategy': 'Fokus retensi dan peningkatan nilai jangka panjang',
+            'concrete_actions': [
+                'Beri akses produk lebih awal sebelum rilis umum',
+                'Sediakan customer manager khusus untuk transaksi besar',
+                'Kirim hadiah premium setiap milestone transaksi',
+                'Undang ke event eksklusif online atau offline',
+                'Buat program referral VIP dengan komisi tinggi'
+            ],
+            'target_kpis': [
+                'Retention rate di atas 95%',
+                'Upsell rate di atas 40%',
+                'Referral contribution di atas 30%'
+            ]
+        },
+        'Loyal': {
+            'icon': '💎',
+            'color': '#667eea',
+            'rfm_characteristics': '• Recency: rendah (baru bertransaksi)<br>• Frequency: tinggi (sering membeli)<br>• Monetary: menengah (nilai transaksi stabil)',
+            'main_strategy': 'Tingkatkan loyalitas agar naik kelas ke Champions',
+            'concrete_actions': [
+                'Terapkan loyalty tier berbasis poin',
+                'Beri benefit khusus via aplikasi atau akun member',
+                'Kirim promo ulang tahun dan anniversary',
+                'Dorong referral dengan insentif langsung',
+                'Beri akses flash sale terbatas'
+            ],
+            'target_kpis': [
+                'Retention rate di atas 85%',
+                'Kenaikan frekuensi pembelian minimal 20%',
+                'NPS (Net Promoter Score) di atas 8'
+            ]
+        },
+        'Big Spenders': {
+            'icon': '💰',
+            'color': '#f093fb',
+            'rfm_characteristics': '• Recency: bervariasi<br>• Frequency: tidak selalu tinggi<br>• Monetary: sangat tinggi (transaksi besar)',
+            'main_strategy': 'Maksimalkan nilai transaksi per pelanggan',
+            'concrete_actions': [
+                'Tawarkan cicilan atau metode pembayaran fleksibel',
+                'Beri free express delivery tanpa minimum',
+                'Buat bundling produk bernilai tinggi',
+                'Sediakan layanan concierge order',
+                'Kirim hadiah eksklusif berbasis nilai belanja'
+            ],
+            'target_kpis': [
+                'AOV (Average Order Value) naik minimal 15%',
+                'Retention rate di atas 90%',
+                'Kepuasan pelanggan di atas 4.8/5'
+            ]
+        },
+        'Dormant': {
+            'icon': '😴',
+            'color': '#ff6b6b',
+            'rfm_characteristics': '• Recency: tinggi (lama tidak transaksi)<br>• Frequency: rendah (jarang membeli)<br>• Monetary: berisiko churn',
+            'main_strategy': 'Aktifkan kembali pelanggan yang tidak aktif',
+            'concrete_actions': [
+                'Kirim diskon agresif 25-30%',
+                'Gunakan email, WhatsApp, dan iklan retargeting',
+                'Tawarkan promo dengan batas waktu pendek',
+                'Lakukan pendekatan personal untuk pelanggan bernilai tinggi',
+                'Kirim reminder berbasis produk terakhir dibeli'
+            ],
+            'target_kpis': [
+                'Win-back rate di atas 25%',
+                'Response rate di atas 15%',
+                'ROI kampanye di atas 200%'
+            ]
+        },
+        'Potential': {
+            'icon': '🌱',
+            'color': '#11998e',
+            'rfm_characteristics': '• Recency: rendah (baru bertransaksi)<br>• Frequency: masih rendah<br>• Monetary: rendah sampai menengah',
+            'main_strategy': 'Percepat pembelian kedua',
+            'concrete_actions': [
+                'Kirim edukasi produk dan use case',
+                'Beri diskon khusus pembelian kedua',
+                'Aktifkan welcome email flow bertahap',
+                'Rekomendasikan produk pelengkap',
+                'Gunakan cross-sell sederhana'
+            ],
+            'target_kpis': [
+                'Conversion ke repeat buyer di atas 35%',
+                'Pembelian kedua kurang dari 30 hari',
+                'LTV (Lifetime Value) naik minimal 25%'
+            ]
+        },
+        'Standard': {
+            'icon': '📊',
+            'color': '#89f7fe',
+            'rfm_characteristics': '• Recency: rata-rata<br>• Frequency: stabil<br>• Monetary: konsisten',
+            'main_strategy': 'Jaga engagement dengan biaya efisien',
+            'concrete_actions': [
+                'Kirim newsletter rutin dengan konten relevan',
+                'Jalankan promo musiman',
+                'Gunakan rekomendasi produk berbasis AI',
+                'Beri reward kecil tak terduga',
+                'Bangun komunitas atau program member ringan'
+            ],
+            'target_kpis': [
+                'Engagement rate di atas 40%',
+                'Retensi stabil tanpa penurunan signifikan',
+                'Kepuasan pelanggan di atas 3.5/5'
+            ]
+        }
+    }
+    
+    # Create strategy cards in 2-column grid
+    strategy_cols = st.columns(2)
+    
+    for idx, (segment_name, strategy_data) in enumerate(segment_strategies.items()):
+        with strategy_cols[idx % 2]:
+            # Convert lists to HTML
+            actions_html = "".join([f"<li>{action}</li>" for action in strategy_data['concrete_actions']])
+            kpis_html = "".join([f"<li>{kpi}</li>" for kpi in strategy_data['target_kpis']])
             
-            st.markdown('</div>', unsafe_allow_html=True)
+            strategy_card_html = f"""
+            <div class="insight-card" style="border-left: 4px solid {strategy_data['color']}; margin-bottom: 1.5rem;">
+                <div class="insight-card-header">
+                    <div class="insight-card-title">
+                        {strategy_data['icon']} {segment_name}
+                    </div>
+                    <div class="insight-card-subtitle">
+                        {strategy_data['main_strategy']}
+                    </div>
+                </div>
+                
+                <div class="segment-section">
+                    <div class="section-title-small">📊 Karakteristik RFM</div>
+                    <div style="color: rgba(255, 255, 255, 0.9); font-size: 0.9rem; line-height: 1.5; padding: 0.5rem 0;">
+                        {strategy_data['rfm_characteristics']}
+                    </div>
+                </div>
+                
+                <div class="segment-section">
+                    <div class="section-title-small">🚀 Aksi Konkret</div>
+                    <ul class="insight-list" style="margin-top: 0.5rem;">
+                        {actions_html}
+                    </ul>
+                </div>
+                
+                <div class="segment-section">
+                    <div class="section-title-small">📈 Target KPI</div>
+                    <ul class="insight-list" style="margin-top: 0.5rem;">
+                        {kpis_html}
+                    </ul>
+                </div>
+            </div>
+            """
+            
+            st.markdown(strategy_card_html, unsafe_allow_html=True)
     
     with tab3:
         if len(filtered_df) > 0:
